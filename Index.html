@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Roonburg Getränkekarte</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg: #050505;
+      --card: rgba(0, 0, 0, 0.68);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.72);
+      --accent: #ff3333;
+      --accent-soft: rgba(255, 51, 51, 0.28);
+      --radius-xl: 24px;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.48);
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(
+          rgba(0, 0, 0, 0.72),
+          rgba(0, 0, 0, 0.88)
+        ),
+        url("https://images.unsplash.com/photo-1578736641330-3155e606cd40?auto=format&fit=crop&w=1200&q=75");
+      background-size: cover;
+      background-position: center;
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 51, 51, 0.18), transparent 28%),
+        radial-gradient(circle at 85% 8%, rgba(255, 180, 80, 0.14), transparent 26%),
+        radial-gradient(circle at 50% 95%, rgba(255, 51, 120, 0.14), transparent 34%);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: 14px 14px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero {
+      text-align: center;
+      padding-top: 2px;
+      margin-bottom: 8px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .logo-mark {
+      width: 118px;
+      height: 118px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.72);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo-mark img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .kicker {
+      margin: 0 0 7px;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.15rem, 12vw, 3.1rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -0.07em;
+    }
+
+    .intro {
+      margin: 10px auto 0;
+      max-width: 320px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .menu-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .menu-card {
+      position: relative;
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      min-height: 104px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      isolation: isolate;
+      touch-action: manipulation;
+    }
+
+    .menu-card:active {
+      transform: scale(0.985);
+      border-color: rgba(255, 51, 51, 0.75);
+    }
+
+    .menu-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.36;
+      z-index: -2;
+    }
+
+    .menu-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.9),
+          rgba(0, 0, 0, 0.52)
+        ),
+        radial-gradient(circle at 90% 10%, var(--accent-soft), transparent 35%);
+      z-index: -1;
+    }
+
+    .menu-card-content {
+      min-height: 104px;
+      padding: 17px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .menu-card h2 {
+      margin: 0 0 5px;
+      font-size: 1.35rem;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+
+    .menu-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.32;
+      max-width: 250px;
+    }
+
+    .icon {
+      flex: 0 0 auto;
+      width: 43px;
+      height: 43px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.11);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 1.25rem;
+    }
+
+    .cocktails::before {
+      background-image: url("https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=900&q=70");
+    }
+
+    .shots::before {
+      background-image: url("https://images.unsplash.com/photo-1614632537423-1e6c2e7e0aab?auto=format&fit=crop&w=900&q=70");
+    }
+
+    .longdrinks::before {
+      background-image: url("https://images.unsplash.com/photo-1609951651556-5334e2706168?auto=format&fit=crop&w=900&q=70");
+    }
+
+    .zero::before {
+      background-image: url("https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=900&q=70");
+    }
+
+    .footer-note {
+      margin: 18px 0 0;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 0.72rem;
+      line-height: 1.35;
+    }
+
+    @media (max-height: 700px) {
+      .page {
+        padding-top: 10px;
+        padding-bottom: 14px;
+      }
+
+      .hero {
+        margin-bottom: 8px;
+      }
+
+      .logo-mark {
+        width: 92px;
+        height: 92px;
+        padding: 10px;
+      }
+
+      .logo-wrap {
+        margin-bottom: 8px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .intro {
+        display: none;
+      }
+
+      .menu-card,
+      .menu-card-content {
+        min-height: 92px;
+      }
+
+      .menu-card-content {
+        padding: 14px 16px;
+      }
+
+      .footer-note {
+        margin-top: 12px;
+      }
+    }
+
+    @media (min-width: 700px) {
+      .page {
+        max-width: 860px;
+        padding: 34px 22px;
+      }
+
+      .hero {
+        margin-bottom: 20px;
+      }
+
+      .logo-mark {
+        width: 136px;
+        height: 136px;
+        padding: 14px;
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .menu-card,
+      .menu-card-content {
+        min-height: 160px;
+      }
+
+      .menu-card-content {
+        align-items: flex-end;
+        padding: 22px;
+      }
+
+      .menu-card h2 {
+        font-size: 1.6rem;
+      }
+
+      .menu-card p {
+        font-size: 0.95rem;
+      }
+
+      .icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.45rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="logo-wrap">
+        <div class="logo-mark">
+          <img
+            src="https://roonburg.de/media/default/assets/config/roonburg/images/roonburg-logo.png"
+            alt="Roonburg Logo"
+          />
+        </div>
+      </div>
+
+      <p class="kicker">Roonburg</p>
+      <h1>Getränke<br>karte</h1>
+      <p class="intro">
+        Wähle deine Kategorie und finde den passenden Drink für den Abend.
+      </p>
+    </section>
+
+    <section class="menu-grid" aria-label="Getränkekategorien">
+      <a class="menu-card cocktails" href="index.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Cocktails</h2>
+            <p>Classics, Signatures und Roonburg Favorites.</p>
+          </div>
+          <div class="icon">🍸</div>
+        </div>
+      </a>
+
+      <a class="menu-card shots" href="shots.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Shots</h2>
+            <p>Kurz, direkt und perfekt für die nächste Runde.</p>
+          </div>
+          <div class="icon">🥃</div>
+        </div>
+      </a>
+
+      <a class="menu-card longdrinks" href="longdrinks.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Longdrinks</h2>
+            <p>Einfach, stark und immer eine sichere Wahl.</p>
+          </div>
+          <div class="icon">🍹</div>
+        </div>
+      </a>
+
+      <a class="menu-card zero" href="alkoholfrei.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Alkoholfrei</h2>
+            <p>Frisch, fruchtig und ohne Alkohol.</p>
+          </div>
+          <div class="icon">🌴</div>
+        </div>
+      </a>
+    </section>
+
+    <p class="footer-note">
+      Roonburg Köln · Bitte verantwortungsvoll genießen
+    </p>
+  </main>
+</body>
+</html>
