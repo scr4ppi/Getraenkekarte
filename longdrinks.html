@@ -14,15 +14,12 @@
 
     :root {
       --bg: #050505;
-      --card: rgba(0, 0, 0, 0.62);
-      --border: rgba(255, 255, 255, 0.13);
+      --card: rgba(0, 0, 0, 0.64);
+      --border: rgba(255, 255, 255, 0.14);
       --text: #ffffff;
-      --muted: rgba(255, 255, 255, 0.72);
+      --muted: rgba(255, 255, 255, 0.68);
       --accent: #ff3333;
-      --accent-soft: rgba(255, 51, 51, 0.22);
-      --yellow: #ffd166;
-      --radius-xl: 28px;
-      --radius-lg: 22px;
+      --radius-xl: 22px;
       --shadow: 0 16px 38px rgba(0, 0, 0, 0.46);
     }
 
@@ -32,48 +29,26 @@
       padding: 0;
       min-height: 100%;
       font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
+      background:
+        radial-gradient(circle at 20% 8%, rgba(255, 51, 51, 0.16), transparent 28%),
+        radial-gradient(circle at 82% 12%, rgba(255, 190, 80, 0.1), transparent 26%),
+        linear-gradient(180deg, #080808, #030303 72%);
       color: var(--text);
     }
 
     body {
-      position: relative;
       overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        linear-gradient(rgba(0, 0, 0, 0.76), rgba(0, 0, 0, 0.9)),
-        url("https://images.unsplash.com/photo-1578736641330-3155e606cd40?auto=format&fit=crop&w=1400&q=80");
-      background-size: cover;
-      background-position: center;
-      z-index: -3;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 18% 12%, rgba(255, 51, 51, 0.22), transparent 30%),
-        radial-gradient(circle at 86% 20%, rgba(255, 200, 80, 0.12), transparent 28%),
-        radial-gradient(circle at 50% 92%, rgba(255, 51, 140, 0.16), transparent 38%);
-      z-index: -2;
-      pointer-events: none;
     }
 
     .page {
       width: min(100%, 760px);
       margin: 0 auto;
-      padding: 18px 14px 34px;
+      padding: 22px 14px 34px;
     }
 
     .hero {
       text-align: center;
-      padding-top: 8px;
+      padding-top: 10px;
       margin-bottom: 18px;
     }
 
@@ -119,45 +94,25 @@
       letter-spacing: -0.07em;
     }
 
-    .intro {
-      margin: 12px auto 0;
-      max-width: 390px;
-      color: var(--muted);
-      font-size: 0.96rem;
-      line-height: 1.45;
-    }
-
     .top-actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
       margin: 18px 0 14px;
     }
 
-    .random-btn,
     .back-btn {
+      display: block;
       width: 100%;
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 999px;
       padding: 14px 18px;
+      background: rgba(0, 0, 0, 0.58);
+      color: #fff;
       font-size: 0.92rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #fff;
       text-decoration: none;
       text-align: center;
-      cursor: pointer;
       box-shadow: var(--shadow);
-    }
-
-    .random-btn {
-      background:
-        linear-gradient(135deg, rgba(255, 51, 51, 0.95), rgba(180, 0, 60, 0.95));
-    }
-
-    .back-btn {
-      background: rgba(0, 0, 0, 0.58);
     }
 
     .filters {
@@ -194,221 +149,38 @@
 
     .list {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .card {
+    .drink-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
       border-radius: var(--radius-xl);
-      overflow: hidden;
+      padding: 17px 18px;
       background: var(--card);
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
     }
 
-    .card-toggle {
-      width: 100%;
-      border: 0;
-      padding: 0;
-      display: flex;
-      align-items: stretch;
-      text-align: left;
-      color: var(--text);
-      background: transparent;
-      cursor: pointer;
-    }
-
-    .drink-image {
-      width: 96px;
-      min-height: 124px;
-      flex: 0 0 96px;
-      background:
-        radial-gradient(circle at 40% 25%, rgba(255, 255, 255, 0.45), transparent 18%),
-        linear-gradient(145deg, rgba(255, 51, 51, 0.58), rgba(255, 180, 60, 0.14)),
-        rgba(255, 255, 255, 0.06);
-      display: grid;
-      place-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .drink-image::after {
-      content: "";
-      width: 36px;
-      height: 78px;
-      border: 3px solid rgba(255, 255, 255, 0.78);
-      border-top-width: 5px;
-      border-radius: 9px 9px 15px 15px;
-      background: linear-gradient(to top, rgba(255, 51, 51, 0.54), rgba(255, 255, 255, 0.06));
-      box-shadow: 0 0 24px rgba(255, 51, 51, 0.32);
-    }
-
-    .card-body {
-      flex: 1;
-      padding: 16px 16px 14px;
-      min-width: 0;
-    }
-
-    .card-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-
-    .card-title {
+    .drink-name {
       margin: 0;
-      font-size: 1.18rem;
-      line-height: 1.05;
+      min-width: 0;
+      font-size: 1.08rem;
+      line-height: 1.08;
       text-transform: uppercase;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.035em;
+      overflow-wrap: anywhere;
     }
 
-    .price {
+    .drink-price {
       flex: 0 0 auto;
       font-weight: 900;
       color: var(--accent);
       font-size: 1rem;
-    }
-
-    .card-note {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.87rem;
-      line-height: 1.35;
-    }
-
-    .card-meta {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-      color: rgba(255, 255, 255, 0.76);
-      font-size: 0.78rem;
-    }
-
-    .stars {
-      color: var(--yellow);
-      letter-spacing: 0.04em;
-    }
-
-    .card-panel {
-      display: none;
-      padding: 0 16px 16px 112px;
-    }
-
-    .card.open .card-panel {
-      display: block;
-    }
-
-    .panel-box {
-      border-radius: var(--radius-lg);
-      background: rgba(255, 255, 255, 0.055);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      padding: 14px;
-    }
-
-    .panel-box h4 {
-      margin: 0 0 8px;
-      font-size: 0.82rem;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .ingredients {
-      margin: 0 0 12px;
-      padding-left: 18px;
-      color: rgba(255, 255, 255, 0.86);
-      font-size: 0.9rem;
-      line-height: 1.45;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-
-    .chip {
-      border-radius: 999px;
-      padding: 6px 9px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.82);
-      font-size: 0.74rem;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      display: none;
-      place-items: center;
-      padding: 18px;
-      background: rgba(0, 0, 0, 0.78);
-      z-index: 50;
-    }
-
-    .modal.show {
-      display: grid;
-    }
-
-    .modal-card {
-      width: min(100%, 420px);
-      border-radius: 30px;
-      padding: 22px;
-      background:
-        linear-gradient(145deg, rgba(80, 0, 0, 0.82), rgba(0, 0, 0, 0.92));
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.72);
-      text-align: center;
-    }
-
-    .modal-kicker {
-      margin: 0 0 8px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 0.76rem;
-      font-weight: 900;
-    }
-
-    .modal-title {
-      margin: 0;
-      font-size: 2rem;
-      text-transform: uppercase;
-      letter-spacing: -0.06em;
-    }
-
-    .modal-text {
-      margin: 12px auto 18px;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .modal-actions {
-      display: grid;
-      gap: 10px;
-    }
-
-    .modal-btn {
-      border: 0;
-      border-radius: 999px;
-      padding: 13px 16px;
-      color: #fff;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      cursor: pointer;
-    }
-
-    .modal-btn.primary {
-      background: var(--accent);
-    }
-
-    .modal-btn.secondary {
-      background: rgba(255, 255, 255, 0.12);
+      white-space: nowrap;
     }
 
     @media (max-width: 430px) {
@@ -416,36 +188,11 @@
         width: 104px;
         height: 104px;
       }
-
-      .card-panel {
-        padding-left: 16px;
-      }
-
-      .drink-image {
-        width: 86px;
-        flex-basis: 86px;
-      }
-
-      .card-title {
-        font-size: 1.05rem;
-      }
     }
 
     @media (min-width: 720px) {
-      .top-actions {
-        grid-template-columns: 1fr 1fr;
-      }
-
       .list {
         grid-template-columns: repeat(2, 1fr);
-      }
-
-      .card-toggle {
-        min-height: 152px;
-      }
-
-      .card-panel {
-        padding-left: 16px;
       }
     }
   </style>
@@ -465,13 +212,9 @@
 
       <p class="kicker">Roonburg</p>
       <h1>Longdrinks</h1>
-      <p class="intro">
-        Klassische Longdrinks, einfach verständlich und perfekt für die schnelle Auswahl an der Bar.
-      </p>
     </section>
 
     <div class="top-actions">
-      <button class="random-btn" id="randomDrinkBtn" type="button">Zufalls-Longdrink</button>
       <a class="back-btn" href="Auswahlseite.html">Zurück zur Auswahl</a>
     </div>
 
@@ -488,303 +231,158 @@
     <section class="list" id="drinkList" aria-label="Longdrinkliste"></section>
   </main>
 
-  <div class="modal" id="drinkModal" aria-hidden="true">
-    <div class="modal-card">
-      <p class="modal-kicker">Barkeeper's Choice</p>
-      <h2 class="modal-title" id="modalTitle">Longdrink</h2>
-      <p class="modal-text" id="modalText"></p>
-      <div class="modal-actions">
-        <button class="modal-btn primary" id="modalOpenDrink" type="button">Longdrink anzeigen</button>
-        <button class="modal-btn secondary" id="modalClose" type="button">Schließen</button>
-      </div>
-    </div>
-  </div>
-
   <script>
     const longdrinks = [
       {
-        id: "vodka-lemon",
-        name: "Vodka Lemon",
-        category: "VODKA",
-        price: "7,00 €",
-        note: "Klarer Klassiker mit Vodka und bitter-frischer Zitrone.",
-        ingredients: ["Vodka", "Bitter Lemon", "Zitrone", "Eis"],
-        contents: ["alkoholhaltig", "Säurungsmittel", "chininhaltig"],
-        alcohol: 3,
-        fruity: 2
+            "id": "vodka-lemon",
+            "name": "Vodka Lemon",
+            "category": "VODKA",
+            "price": "7,00 €"
       },
       {
-        id: "vodka-energy",
-        name: "Vodka Energy",
-        category: "VODKA",
-        price: "7,50 €",
-        note: "Der Party-Klassiker mit Vodka und Energy Drink.",
-        ingredients: ["Vodka", "Energy Drink", "Eis"],
-        contents: ["alkoholhaltig", "koffeinhaltig", "taurinhaltig", "Farbstoff(e)"],
-        alcohol: 3,
-        fruity: 2
+            "id": "vodka-energy",
+            "name": "Vodka Energy",
+            "category": "VODKA",
+            "price": "7,50 €"
       },
       {
-        id: "vodka-orange",
-        name: "Vodka Orange",
-        category: "VODKA",
-        price: "7,00 €",
-        note: "Fruchtig, mild und unkompliziert.",
-        ingredients: ["Vodka", "Orangensaft", "Eis"],
-        contents: ["alkoholhaltig"],
-        alcohol: 3,
-        fruity: 5
+            "id": "vodka-orange",
+            "name": "Vodka Orange",
+            "category": "VODKA",
+            "price": "7,00 €"
       },
       {
-        id: "vodka-cranberry",
-        name: "Vodka Cranberry",
-        category: "VODKA",
-        price: "7,00 €",
-        note: "Leicht herb, fruchtig und angenehm frisch.",
-        ingredients: ["Vodka", "Cranberrysaft", "Limette", "Eis"],
-        contents: ["alkoholhaltig", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 4
+            "id": "vodka-cranberry",
+            "name": "Vodka Cranberry",
+            "category": "VODKA",
+            "price": "7,00 €"
       },
       {
-        id: "vodka-soda",
-        name: "Vodka Soda",
-        category: "VODKA",
-        price: "7,00 €",
-        note: "Trocken, leicht und weniger süß.",
-        ingredients: ["Vodka", "Soda", "Limette", "Eis"],
-        contents: ["alkoholhaltig"],
-        alcohol: 3,
-        fruity: 1
+            "id": "vodka-soda",
+            "name": "Vodka Soda",
+            "category": "VODKA",
+            "price": "7,00 €"
       },
       {
-        id: "gin-tonic",
-        name: "Gin Tonic",
-        category: "GIN",
-        price: "7,50 €",
-        note: "Klassisch herb mit Gin, Tonic Water und Zitrus.",
-        ingredients: ["Gin", "Tonic Water", "Zitrone oder Limette", "Eis"],
-        contents: ["alkoholhaltig", "chininhaltig", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 2
+            "id": "gin-tonic",
+            "name": "Gin Tonic",
+            "category": "GIN",
+            "price": "7,50 €"
       },
       {
-        id: "gin-lemon",
-        name: "Gin Lemon",
-        category: "GIN",
-        price: "7,50 €",
-        note: "Gin mit Bitter Lemon — frischer und etwas weicher als Gin Tonic.",
-        ingredients: ["Gin", "Bitter Lemon", "Zitrone", "Eis"],
-        contents: ["alkoholhaltig", "chininhaltig", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 2
+            "id": "gin-lemon",
+            "name": "Gin Lemon",
+            "category": "GIN",
+            "price": "7,50 €"
       },
       {
-        id: "gin-basil",
-        name: "Gin Basil",
-        category: "GIN",
-        price: "8,00 €",
-        note: "Frisch, kräutrig und etwas moderner.",
-        ingredients: ["Gin", "Basilikum", "Zitronensaft", "Soda", "Zuckersirup", "Eis"],
-        contents: ["alkoholhaltig", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 2
+            "id": "gin-basil",
+            "name": "Gin Basil",
+            "category": "GIN",
+            "price": "8,00 €"
       },
       {
-        id: "cuba-libre",
-        name: "Cuba Libre",
-        category: "RUM",
-        price: "7,50 €",
-        note: "Rum, Cola und Limette — einer der bekanntesten Longdrink-Klassiker.",
-        ingredients: ["Rum", "Cola", "Limette", "Eis"],
-        contents: ["alkoholhaltig", "koffeinhaltig", "Farbstoff(e)", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 2
+            "id": "cuba-libre",
+            "name": "Cuba Libre",
+            "category": "RUM",
+            "price": "7,50 €"
       },
       {
-        id: "rum-cola",
-        name: "Rum Cola",
-        category: "RUM",
-        price: "7,00 €",
-        note: "Einfacher Rum-Klassiker mit Cola.",
-        ingredients: ["Rum", "Cola", "Eis"],
-        contents: ["alkoholhaltig", "koffeinhaltig", "Farbstoff(e)", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 1
+            "id": "rum-cola",
+            "name": "Rum Cola",
+            "category": "RUM",
+            "price": "7,00 €"
       },
       {
-        id: "dark-stormy",
-        name: "Dark ’n’ Stormy",
-        category: "RUM",
-        price: "8,00 €",
-        note: "Dunkler Rum mit Ginger Beer und Limette.",
-        ingredients: ["Dunkler Rum", "Ginger Beer", "Limettensaft", "Eis"],
-        contents: ["alkoholhaltig", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 2
+            "id": "dark-stormy",
+            "name": "Dark ’n’ Stormy",
+            "category": "RUM",
+            "price": "8,00 €"
       },
       {
-        id: "malibu-pineapple",
-        name: "Malibu Pineapple",
-        category: "LIKÖR",
-        price: "7,00 €",
-        note: "Kokos trifft Ananas — mild, süß und tropisch.",
-        ingredients: ["Malibu", "Ananassaft", "Eis"],
-        contents: ["alkoholhaltig"],
-        alcohol: 2,
-        fruity: 5
+            "id": "malibu-pineapple",
+            "name": "Malibu Pineapple",
+            "category": "LIKÖR",
+            "price": "7,00 €"
       },
       {
-        id: "whisky-cola",
-        name: "Whisky Cola",
-        category: "WHISKY",
-        price: "7,50 €",
-        note: "Klassischer Whisky-Longdrink mit Cola.",
-        ingredients: ["Whisky", "Cola", "Eis"],
-        contents: ["alkoholhaltig", "koffeinhaltig", "Farbstoff(e)", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 1
+            "id": "whisky-cola",
+            "name": "Whisky Cola",
+            "category": "WHISKY",
+            "price": "7,50 €"
       },
       {
-        id: "jacky-cola",
-        name: "Jacky Cola",
-        category: "WHISKY",
-        price: "8,00 €",
-        note: "Jack Daniel’s mit Cola — süß, würzig und bekannt.",
-        ingredients: ["Jack Daniel’s", "Cola", "Eis"],
-        contents: ["alkoholhaltig", "koffeinhaltig", "Farbstoff(e)", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 1
+            "id": "jacky-cola",
+            "name": "Jacky Cola",
+            "category": "WHISKY",
+            "price": "8,00 €"
       },
       {
-        id: "whisky-ginger",
-        name: "Whisky Ginger",
-        category: "WHISKY",
-        price: "8,00 €",
-        note: "Whisky mit Ginger Ale — würzig, aber weicher als Cola.",
-        ingredients: ["Whisky", "Ginger Ale", "Limette", "Eis"],
-        contents: ["alkoholhaltig", "Farbstoff(e)", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 2
+            "id": "whisky-ginger",
+            "name": "Whisky Ginger",
+            "category": "WHISKY",
+            "price": "8,00 €"
       },
       {
-        id: "tequila-sunrise",
-        name: "Tequila Sunrise",
-        category: "TEQUILA",
-        price: "8,00 €",
-        note: "Tequila, Orange und Grenadine mit klassischem Farbverlauf.",
-        ingredients: ["Tequila", "Orangensaft", "Grenadine", "Eis"],
-        contents: ["alkoholhaltig", "Farbstoff(e)"],
-        alcohol: 3,
-        fruity: 5
+            "id": "tequila-sunrise",
+            "name": "Tequila Sunrise",
+            "category": "TEQUILA",
+            "price": "8,00 €"
       },
       {
-        id: "tequila-soda",
-        name: "Tequila Soda",
-        category: "TEQUILA",
-        price: "7,50 €",
-        note: "Frisch, trocken und weniger süß.",
-        ingredients: ["Tequila", "Soda", "Limette", "Eis"],
-        contents: ["alkoholhaltig"],
-        alcohol: 3,
-        fruity: 1
+            "id": "tequila-soda",
+            "name": "Tequila Soda",
+            "category": "TEQUILA",
+            "price": "7,50 €"
       },
       {
-        id: "paloma",
-        name: "Paloma",
-        category: "TEQUILA",
-        price: "8,00 €",
-        note: "Tequila mit Grapefruit-Limonade — herb, frisch und beliebt.",
-        ingredients: ["Tequila", "Grapefruit-Limonade", "Limettensaft", "Salz", "Eis"],
-        contents: ["alkoholhaltig", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 4
+            "id": "paloma",
+            "name": "Paloma",
+            "category": "TEQUILA",
+            "price": "8,00 €"
       },
       {
-        id: "moscow-mule",
-        name: "Moscow Mule",
-        category: "VODKA",
-        price: "8,00 €",
-        note: "Vodka, Ginger Beer und Limette — würzig und frisch.",
-        ingredients: ["Vodka", "Ginger Beer", "Limettensaft", "Gurke", "Eis"],
-        contents: ["alkoholhaltig", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 2
+            "id": "moscow-mule",
+            "name": "Moscow Mule",
+            "category": "VODKA",
+            "price": "8,00 €"
       },
       {
-        id: "london-mule",
-        name: "London Mule",
-        category: "GIN",
-        price: "8,00 €",
-        note: "Gin-Variante des Mule mit Ginger Beer und Limette.",
-        ingredients: ["Gin", "Ginger Beer", "Limettensaft", "Gurke", "Eis"],
-        contents: ["alkoholhaltig", "Säurungsmittel"],
-        alcohol: 3,
-        fruity: 2
+            "id": "london-mule",
+            "name": "London Mule",
+            "category": "GIN",
+            "price": "8,00 €"
       },
       {
-        id: "campari-orange",
-        name: "Campari Orange",
-        category: "LIKÖR",
-        price: "7,50 €",
-        note: "Bitter, fruchtig und klassisch italienisch.",
-        ingredients: ["Campari", "Orangensaft", "Eis"],
-        contents: ["alkoholhaltig", "Farbstoff(e)"],
-        alcohol: 2,
-        fruity: 4
+            "id": "campari-orange",
+            "name": "Campari Orange",
+            "category": "LIKÖR",
+            "price": "7,50 €"
       },
       {
-        id: "aperol-spritz",
-        name: "Aperol Spritz",
-        category: "LIKÖR",
-        price: "8,00 €",
-        note: "Leichter Aperitif mit Aperol, Prosecco und Soda.",
-        ingredients: ["Aperol", "Prosecco", "Soda", "Orange", "Eis"],
-        contents: ["alkoholhaltig", "Sulfite", "Farbstoff(e)"],
-        alcohol: 2,
-        fruity: 3
+            "id": "aperol-spritz",
+            "name": "Aperol Spritz",
+            "category": "LIKÖR",
+            "price": "8,00 €"
       },
       {
-        id: "licor-43-milk",
-        name: "43 Milch",
-        category: "LIKÖR",
-        price: "7,50 €",
-        note: "Süß, cremig und vanillig.",
-        ingredients: ["Licor 43", "Milch", "Eis"],
-        contents: ["alkoholhaltig", "Milch/Laktose"],
-        alcohol: 2,
-        fruity: 0
+            "id": "licor-43-milk",
+            "name": "43 Milch",
+            "category": "LIKÖR",
+            "price": "7,50 €"
       },
       {
-        id: "southern-ginger",
-        name: "Southern Ginger",
-        category: "WHISKY",
-        price: "7,50 €",
-        note: "Southern Comfort mit Ginger Ale — weich, süß und würzig.",
-        ingredients: ["Southern Comfort", "Ginger Ale", "Limette", "Eis"],
-        contents: ["alkoholhaltig", "Farbstoff(e)", "Säurungsmittel"],
-        alcohol: 2,
-        fruity: 2
+            "id": "southern-ginger",
+            "name": "Southern Ginger",
+            "category": "WHISKY",
+            "price": "7,50 €"
       }
-    ];
+];
 
     const list = document.getElementById("drinkList");
     const filterButtons = document.querySelectorAll(".filter-btn");
-    const randomBtn = document.getElementById("randomDrinkBtn");
-    const modal = document.getElementById("drinkModal");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalText = document.getElementById("modalText");
-    const modalClose = document.getElementById("modalClose");
-    const modalOpenDrink = document.getElementById("modalOpenDrink");
 
     let currentCategory = "ALL";
-    let selectedRandomDrink = null;
-
-    function stars(value) {
-      const full = "★".repeat(value);
-      const empty = "☆".repeat(5 - value);
-      return full + empty;
-    }
 
     function renderDrinks() {
       list.innerHTML = "";
@@ -794,53 +392,16 @@
         : longdrinks.filter(drink => drink.category === currentCategory);
 
       visibleDrinks.forEach(drink => {
-        const card = document.createElement("article");
-        card.className = "card";
-        card.dataset.id = drink.id;
-        card.dataset.category = drink.category;
+        const row = document.createElement("article");
+        row.className = "drink-row";
+        row.dataset.category = drink.category;
 
-        card.innerHTML = `
-          <button class="card-toggle" type="button" aria-expanded="false">
-            <div class="drink-image" aria-hidden="true"></div>
-
-            <div class="card-body">
-              <div class="card-title-row">
-                <h3 class="card-title">${drink.name}</h3>
-                <div class="price">${drink.price}</div>
-              </div>
-
-              <p class="card-note">${drink.note}</p>
-
-              <div class="card-meta">
-                <span>Alkohol: <span class="stars">${stars(drink.alcohol)}</span></span>
-                <span>Fruchtig: <span class="stars">${stars(drink.fruity)}</span></span>
-              </div>
-            </div>
-          </button>
-
-          <div class="card-panel">
-            <div class="panel-box">
-              <h4>Zutaten</h4>
-              <ul class="ingredients">
-                ${drink.ingredients.map(item => `<li>${item}</li>`).join("")}
-              </ul>
-
-              <h4>Inhaltsstoffe</h4>
-              <div class="chips">
-                ${drink.contents.map(item => `<span class="chip">${item}</span>`).join("")}
-              </div>
-            </div>
-          </div>
+        row.innerHTML = `
+          <h3 class="drink-name">${drink.name}</h3>
+          <div class="drink-price">${drink.price}</div>
         `;
 
-        const toggle = card.querySelector(".card-toggle");
-
-        toggle.addEventListener("click", () => {
-          const isOpen = card.classList.toggle("open");
-          toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        });
-
-        list.appendChild(card);
+        list.appendChild(row);
       });
     }
 
@@ -853,58 +414,6 @@
         renderDrinks();
       });
     });
-
-    randomBtn.addEventListener("click", () => {
-      const pool = currentCategory === "ALL"
-        ? longdrinks
-        : longdrinks.filter(drink => drink.category === currentCategory);
-
-      selectedRandomDrink = pool[Math.floor(Math.random() * pool.length)];
-
-      modalTitle.textContent = selectedRandomDrink.name;
-      modalText.textContent = selectedRandomDrink.note;
-      modal.classList.add("show");
-      modal.setAttribute("aria-hidden", "false");
-    });
-
-    modalClose.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", event => {
-      if (event.target === modal) {
-        closeModal();
-      }
-    });
-
-    modalOpenDrink.addEventListener("click", () => {
-      if (!selectedRandomDrink) return;
-
-      closeModal();
-
-      currentCategory = "ALL";
-      filterButtons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.category === "ALL");
-      });
-
-      renderDrinks();
-
-      setTimeout(() => {
-        const card = document.querySelector(`[data-id="${selectedRandomDrink.id}"]`);
-        if (!card) return;
-
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
-        card.classList.add("open");
-
-        const toggle = card.querySelector(".card-toggle");
-        if (toggle) {
-          toggle.setAttribute("aria-expanded", "true");
-        }
-      }, 50);
-    });
-
-    function closeModal() {
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden", "true");
-    }
 
     renderDrinks();
   </script>
