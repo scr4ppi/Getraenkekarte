@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <title>Roonburg Shots</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
 
   <style>
     * {
@@ -540,6 +542,107 @@
         min-height: 142px;
       }
     }
+    /* PROMO POPUP STYLING */
+    .promo-popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .promo-popup-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Der Wrapper ist wichtig für den Schatten, da clip-path den Schatten abschneiden würde */
+    .promo-popup-wrapper {
+      position: relative;
+      width: min(90%, 360px);
+      transform: scale(0.7);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 0 25px rgba(255, 0, 60, 0.8));
+    }
+
+    .promo-popup-overlay.show .promo-popup-wrapper {
+      transform: scale(1);
+    }
+
+    /* Die eigentliche Sternen-Form */
+    .promo-popup-shape {
+      background: linear-gradient(135deg, var(--neon-rot), #ff7300);
+      /* Viel Padding, damit der Text sicher in der Mitte bleibt */
+      padding: 65px 40px;
+      text-align: center;
+      /* CSS-Polygon für einen coolen Action-Zacken-Stern */
+      clip-path: polygon(
+        50% 2%, 61% 14%, 80% 8%, 82% 25%, 98% 30%, 86% 45%,
+        98% 60%, 84% 68%, 82% 86%, 65% 78%, 50% 95%, 35% 78%,
+        18% 86%, 16% 68%, 2% 60%, 14% 45%, 2% 30%, 18% 25%,
+        20% 8%, 39% 14%
+      );
+    }
+
+    .promo-shot-img {
+      width: 90px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    .promo-title {
+      font-size: 1.8rem;
+      margin: 0 0 8px;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 900;
+      text-shadow: 2px 2px 0px #000;
+      line-height: 1;
+    }
+
+    .promo-text {
+      font-size: 0.95rem;
+      color: #fff;
+      font-weight: 700;
+      margin: 0;
+      text-shadow: 1px 1px 0px #000;
+      line-height: 1.4;
+    }
+
+    .promo-close-btn {
+      position: absolute;
+      top: -15px;
+      right: -10px;
+      width: 48px;
+      height: 48px;
+      background: #000;
+      border: 2px solid #fff;
+      color: #fff;
+      font-size: 2rem;
+      line-height: 1;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+      transition: transform 0.2s;
+    }
+
+    .promo-close-btn:active {
+      transform: scale(0.9);
+    }
   </style>
 </head>
 
@@ -590,6 +693,19 @@
       <div class="modal-actions" id="modalActions" style="display: none;">
         <button class="modal-btn primary" id="modalOpenShot" type="button">Shot anzeigen</button>
         <button class="modal-btn secondary" id="modalClose" type="button">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="promo-popup-overlay" id="promoPopup" aria-hidden="true">
+    <div class="promo-popup-wrapper">
+      <button class="promo-close-btn" id="promoClose" aria-label="Schließen">×</button>
+      
+      <div class="promo-popup-shape">
+        <img class="promo-shot-img" src="Shots/PinkDiva.webp" alt="Shot des Tages" />
+        
+        <h2 class="promo-title">Shot Alert!</h2>
+        <p class="promo-text">Probier unseren "Pink Diva" Shot.<br>Heute nur für kurze Zeit im Special!</p>
       </div>
     </div>
   </div>
@@ -846,6 +962,48 @@
     let currentCategory = "ALL";
     let selectedRandomShot = null;
 
+    // --- PROMO POPUP LOGIK ---
+    
+    // HIER SCHALTER UMLEGEN: 
+    // true  = Popup ist aktiv
+    // false = Popup ist komplett ausgeschaltet
+    const enablePromoPopup = true; 
+
+    if (enablePromoPopup) {
+      const promoPopup = document.getElementById("promoPopup");
+      const promoClose = document.getElementById("promoClose");
+
+      // Prüft im Browser-Speicher, ob das Popup schon mal geschlossen wurde
+      const hasSeenPromo = localStorage.getItem("promoSeen_v1");
+
+      // Nur anzeigen, wenn es noch nicht gesehen wurde
+      if (!hasSeenPromo) {
+        setTimeout(() => {
+          promoPopup.classList.add("show");
+          promoPopup.setAttribute("aria-hidden", "false");
+        }, 1500);
+      }
+
+      // Funktion zum Schließen und Speichern
+      function closePromo() {
+        promoPopup.classList.remove("show");
+        promoPopup.setAttribute("aria-hidden", "true");
+        
+        // Speichert dauerhaft im Browser, dass das Popup erledigt ist
+        localStorage.setItem("promoSeen_v1", "true");
+      }
+
+      // Beim Klick auf das X schließen
+      promoClose.addEventListener("click", closePromo);
+
+      // Beim Klick auf den dunklen Hintergrund schließen
+      promoPopup.addEventListener("click", (event) => {
+        if (event.target === promoPopup) {
+          closePromo();
+        }
+      });
+    }
+
     function renderShots() {
       list.innerHTML = "";
 
@@ -1033,6 +1191,8 @@
     }
 
     renderShots();
+
+    
   </script>
 </body>
 </html>
