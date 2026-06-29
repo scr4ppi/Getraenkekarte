@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roonburg Biere</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="logo-wrap">
+        <div class="logo-mark">
+          <img
+            src="https://roonburg.de/media/default/assets/config/roonburg/images/roonburg-logo.png"
+            alt="Roonburg Logo"
+          />
+        </div>
+      </div>
+
+      <p class="kicker">Roonburg</p>
+      <h1>Biere</h1>
+      <p class="intro">Flaschenbiere, kühle Mixgetränke und frisch gezapftes Kölsch vom Fass.</p>
+    </section>
+
+    <div class="top-actions">
+      <a class="back-btn" href="index.html">Zurück zur Auswahl</a>
+    </div>
+
+    <nav class="filters" aria-label="Bier Kategorien">
+      <button class="filter-btn active" type="button" data-category="ALL">Alle</button>
+      <button class="filter-btn" type="button" data-category="FASS">Fassbier</button>
+      <button class="filter-btn" type="button" data-category="FLASCHE">Flaschen</button>
+      <button class="filter-btn" type="button" data-category="MIX">Mix</button>
+      <button class="filter-btn" type="button" data-category="ALKOHOLFREI">Alkoholfrei</button>
+    </nav>
+
+    <section class="list" id="bottleList" aria-label="Bierliste"></section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
