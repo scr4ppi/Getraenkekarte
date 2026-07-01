@@ -2,10 +2,366 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roonburg Biere</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <link rel="stylesheet" href="style.css" />
+  <title>Roonburg Biere</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --card: rgba(0, 0, 0, 0.65);
+      --border: rgba(255, 255, 255, 0.15);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.75);
+      
+      /* Zurück zum originalen Neon-Farbschema */
+      --accent: #ff003c;
+      --neon-rot: #ff003c;
+      --neon-gruen: #39ff14;
+      --neon-lila: #b026ff;
+      --neon-blau: #00e5ff;
+      --neon-gelb: #ffcc00;
+
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --shadow: 0 16px 38px rgba(0, 0, 0, 0.6);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: transparent;
+      color: var(--text);
+    }
+
+    body {
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Hintergrundbild */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(5, 5, 5, 0.75) 0%, rgba(5, 5, 5, 0.4) 100%),
+        url("Beers/backround.png");
+      background-size: cover;
+      background-position: center bottom;
+      z-index: -3;
+    }
+
+    /* Originale Neon-Lichtreflexe */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 0, 60, 0.15), transparent 30%),
+        radial-gradient(circle at 86% 20%, rgba(176, 38, 255, 0.1), transparent 28%),
+        radial-gradient(circle at 50% 92%, rgba(57, 255, 20, 0.1), transparent 38%);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .page {
+      width: min(100%, 760px);
+      margin: 0 auto;
+      padding: 20px 14px 40px;
+    }
+
+    /* HERO BEREICH */
+    .hero {
+      text-align: center;
+      padding: 30px 20px;
+      margin-bottom: 24px;
+      background: rgba(15, 15, 15, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .logo-mark {
+      width: 100%;
+      max-width: 240px; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-mark img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 12vw, 4rem);
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: -0.05em;
+      color: #fff;
+      /* Rotes Neon-Leuchten für den Titel */
+      text-shadow: 
+        0 0 10px rgba(255, 0, 60, 0.5),
+        0 0 20px rgba(255, 0, 60, 0.3),
+        0 0 40px rgba(255, 0, 60, 0.2);
+    }
+
+    .intro {
+      margin: 16px auto 0;
+      max-width: 400px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: center;
+      margin: 0 0 24px;
+    }
+
+    .back-btn {
+      width: 100%;
+      max-width: 360px;
+      border-radius: 999px;
+      padding: 16px 20px;
+      font-size: 1rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: rgba(25, 25, 25, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .back-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* FILTER */
+    .filters {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 4px 4px 18px;
+      margin-bottom: 8px;
+      scrollbar-width: none;
+    }
+
+    .filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Kategorien Farben zugewiesen */
+    .filter-btn[data-category="ALL"] { --neon: #ffffff; }
+    .filter-btn[data-category="Kölsch"] { --neon: var(--neon-rot); }
+    .filter-btn[data-category="Pils & Lager"] { --neon: var(--neon-gruen); }
+    .filter-btn[data-category="Weizen"] { --neon: var(--neon-lila); }
+    .filter-btn[data-category="Specials"] { --neon: var(--neon-gelb); }
+    .filter-btn[data-category="Alkoholfrei"] { --neon: var(--neon-blau); }
+
+    .filter-btn {
+      flex: 0 0 auto;
+      border: 2px solid var(--neon);
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: rgba(10, 10, 10, 0.6);
+      color: var(--neon);
+      font-size: 0.85rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .filter-btn.active {
+      text-shadow: 0 0 10px var(--neon);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6), 0 0 15px var(--neon), inset 0 0 10px var(--neon);
+      background: rgba(255, 255, 255, 0.1); 
+      transform: translateY(-2px);
+    }
+
+    /* KARTEN */
+    .list {
+      display: grid;
+      gap: 14px;
+      align-items: start; 
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .card:active {
+      transform: scale(0.98);
+    }
+
+    .card-toggle {
+      width: 100%;
+      border: 0;
+      padding: 0;
+      display: flex;
+      align-items: stretch;
+      text-align: left;
+      color: var(--text);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .drink-image {
+      width: 100px;
+      min-height: 120px;
+      flex: 0 0 100px;
+      object-fit: cover;
+      background: rgba(255, 255, 255, 0.05);
+      border-right: 1px solid var(--border);
+      padding: 10px; 
+    }
+
+    .card-body {
+      flex: 1;
+      padding: 16px 20px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 800;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .price {
+      flex: 0 0 auto;
+      font-weight: 900;
+      color: #fff;
+      font-size: 1.1rem;
+      background: rgba(255,255,255,0.15);
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    .card-panel {
+      display: none;
+      padding: 0 20px 20px 120px;
+    }
+
+    .card.open .card-panel {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-box {
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px;
+    }
+
+    .panel-box h4 {
+      margin: 0 0 10px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .ingredients {
+      margin: 0 0 14px;
+      padding-left: 20px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* RESPONSIVE ANPASSUNGEN */
+    @media (max-width: 480px) {
+      .logo-mark { max-width: 200px; }
+      .card-panel { padding: 0 16px 16px 16px; }
+      .drink-image {
+        width: 90px;
+        flex-basis: 90px;
+      }
+      .card-title { font-size: 1.25rem; }
+      .filters { padding-bottom: 12px; }
+    }
+
+    @media (min-width: 720px) {
+      .list { grid-template-columns: repeat(2, 1fr); }
+      .card-toggle { min-height: 142px; }
+    }
+  </style>
 </head>
 
 <body>
@@ -20,9 +376,10 @@
         </div>
       </div>
 
-      <p class="kicker">Roonburg</p>
       <h1>Biere</h1>
-      <p class="intro">Flaschenbiere, kühle Mixgetränke und frisch gezapftes Kölsch vom Fass.</p>
+      <p class="intro">
+        Frisch gezapftes Kölsch oder eiskaltes Flaschenbier. Greif dir deinen Favoriten.
+      </p>
     </section>
 
     <div class="top-actions">
@@ -31,15 +388,194 @@
 
     <nav class="filters" aria-label="Bier Kategorien">
       <button class="filter-btn active" type="button" data-category="ALL">Alle</button>
-      <button class="filter-btn" type="button" data-category="FASS">Fassbier</button>
-      <button class="filter-btn" type="button" data-category="FLASCHE">Flaschen</button>
-      <button class="filter-btn" type="button" data-category="MIX">Mix</button>
-      <button class="filter-btn" type="button" data-category="ALKOHOLFREI">Alkoholfrei</button>
+      <button class="filter-btn" type="button" data-category="Kölsch">Kölsch</button>
+      <button class="filter-btn" type="button" data-category="Pils & Lager">Pils & Lager</button>
+      <button class="filter-btn" type="button" data-category="Weizen">Weizen</button>
+      <button class="filter-btn" type="button" data-category="Specials">Specials</button>
+      <button class="filter-btn" type="button" data-category="Alkoholfrei">Alkoholfrei</button>
     </nav>
 
-    <section class="list" id="bottleList" aria-label="Bierliste"></section>
+    <section class="list" id="drinkList" aria-label="Bierliste"></section>
   </main>
 
-  <script src="main.js"></script>
+  <script>
+    const beers = [
+      // ==========================
+      // KÖLSCH (FASS)
+      // ==========================
+      {
+        id: "hellers-koelsch",
+        name: "Hellers Kölsch (Fass)",
+        category: "Kölsch",
+        price: "3 €", /* Preis ggf. anpassen */
+        image: "Beers/hellers.webp", /* Pfad anpassen */
+        ingredients: ["Wasser", "Gerstenmalz", "Weizenmalz", "Hopfen"],
+        contents: ["4.5% vol", "0.3l", "Frisch gezapft", "Glutenhaltig"]
+      },
+      // ==========================
+      // PILS & LAGER
+      // ==========================
+      {
+        id: "becks",
+        name: "Beck's",
+        category: "Pils & Lager",
+        price: "4,00 €",
+        image: "Beers/becks.webp",
+        ingredients: ["Wasser", "Gerstenmalz", "Hopfen"],
+        contents: ["4.9% vol", "0.33l", "Glutenhaltig"]
+      },
+      {
+        id: "heineken",
+        name: "Heineken",
+        category: "Pils & Lager",
+        price: "3 €",
+        image: "Beers/heineken.webp",
+        ingredients: ["Wasser", "Gerstenmalz", "Hopfenextrakt"],
+        contents: ["5.0% vol", "0.33l", "Glutenhaltig"]
+      },
+      {
+        id: "corona",
+        name: "Corona Extra",
+        category: "Pils & Lager",
+        price: "4,00 €",
+        image: "Beers/corona.webp",
+        ingredients: ["Wasser", "Gerstenmalz", "Mais", "Hopfen"],
+        contents: ["4.5% vol", "0.33l", "Glutenhaltig"]
+      },
+
+      // ==========================
+      // WEIZEN
+      // ==========================
+
+      {
+        id: "paulaner",
+        name: "Paulaner Hefe-Weizenbier",
+        category: "Weizen",
+        price: "4,50 €",
+        image: "Beers/paulaner.webp",
+        ingredients: ["Wasser", "Weizenmalz", "Gerstenmalz", "Hefe", "Hopfen"],
+        contents: ["5.5% vol", "0.5l", "Glutenhaltig"]
+      },
+      // ==========================
+      // SPECIALS
+      // ==========================
+      {
+        id: "desperados",
+        name: "Desperados",
+        category: "Specials",
+        price: "4,00 €",
+        image: "Beers/desperados.webp",
+        ingredients: ["Wasser", "Gerstenmalz", "Glukosesirup", "Tequila-Aroma"],
+        contents: ["5.9% vol", "0.33l", "Glutenhaltig"]
+      },
+      {
+        id: "salitos-ice",
+        name: "Salitos Ice",
+        category: "Specials",
+        price: "5,00 €",
+        image: "Beers/salitos.webp",
+        ingredients: ["Fruchtwein", "Kohlensäure", "Zitronenaroma"],
+        contents: ["5.2% vol", "0.33l", "Farbstoffe"]
+      },
+      {
+        id: "guinness",
+        name: "Guinness Draught",
+        category: "Specials",
+        price: "5,50 €",
+        image: "Beers/guinness.webp",
+        ingredients: ["Wasser", "Gerstenmalz", "Gerste", "Röstgerste", "Hopfen", "Hefe"],
+        contents: ["4.2% vol", "0.33l", "Glutenhaltig"]
+      },
+      // ==========================
+      // ALKOHOLFREI
+      // ==========================
+      {
+        id: "becks-blue",
+        name: "Beck's Blue",
+        category: "Alkoholfrei",
+        price: "4,00 €",
+        image: "Beers/becksblue.webp",
+        ingredients: ["Wasser", "Gerstenmalz", "Hopfen"],
+        contents: ["Alkoholfrei", "0.33l", "Glutenhaltig"]
+      },
+      {
+        id: "heineken-zero",
+        name: "Heineken 0.0",
+        category: "Alkoholfrei",
+        price: "4,50 €",
+        image: "Beers/heinekenzero.webp",
+        ingredients: ["Wasser", "Gerstenmalz", "Hopfenextrakt", "Natürliche Aromen"],
+        contents: ["Alkoholfrei", "0.33l", "Glutenhaltig"]
+      }
+    ];
+
+    const list = document.getElementById("drinkList");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    let currentCategory = "ALL";
+
+    function renderDrinks() {
+      list.innerHTML = "";
+
+      const visibleDrinks = currentCategory === "ALL"
+        ? beers
+        : beers.filter(drink => drink.category === currentCategory);
+
+      visibleDrinks.forEach(drink => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.dataset.id = drink.id;
+        card.dataset.category = drink.category;
+
+        card.innerHTML = `
+          <button class="card-toggle" type="button" aria-expanded="false">
+            <img class="drink-image" src="${drink.image}" alt="${drink.name}" loading="lazy" />
+
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 class="card-title">${drink.name}</h3>
+                <div class="price">${drink.price}</div>
+              </div>
+            </div>
+          </button>
+
+          <div class="card-panel">
+            <div class="panel-box">
+              <h4>Inhalt & Infos</h4>
+              <ul class="ingredients">
+                ${drink.ingredients.map(item => `<li>${item}</li>`).join("")}
+              </ul>
+              
+              <div class="chips">
+                ${drink.contents.map(item => `<span class="chip">${item}</span>`).join("")}
+              </div>
+            </div>
+          </div>
+        `;
+
+        const toggle = card.querySelector(".card-toggle");
+
+        toggle.addEventListener("click", () => {
+          const isOpen = card.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
+
+        list.appendChild(card);
+      });
+    }
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        currentCategory = button.dataset.category;
+        renderDrinks();
+      });
+    });
+
+    // Initiales Laden
+    renderDrinks();
+
+  </script>
 </body>
 </html>
