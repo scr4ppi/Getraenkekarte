@@ -185,45 +185,46 @@
       padding: 10px;
     }
 
-    .beer-body {
+   .beer-body {
       flex: 1;
       min-width: 0;
-      padding: 16px 14px 14px 0;
-      display: grid;
-      align-content: center;
+      /* WICHTIG: 85px Abstand rechts, damit lange Namen nicht in den Preis laufen */
+      padding: 16px 85px 14px 0; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       gap: 10px;
+      position: relative; /* Macht diese Box zum Anker für den Preis */
     }
 
-   .beer-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start; /* Zwingt den Preis auf die oberste Textlinie */
-      gap: 10px;
+    .beer-title-row {
+      display: block; /* Flexbox hier rausnehmen, damit der Text frei fließen kann */
       width: 100%;
     }
 
     .beer-name {
       margin: 0;
-      flex: 1; /* Nimmt den restlichen Platz ein */
-      min-width: 0;
-      font-size: 1rem; /* Minimal kleiner für besseren Fluss */
-      line-height: 1.1;
+      font-size: 1.05rem; /* Minimal kleiner für saubere Umbrüche */
+      line-height: 1.15;
       text-transform: uppercase;
       letter-spacing: -0.035em;
-      overflow-wrap: break-word; /* Bricht extrem lange Wörter hart um */
+      overflow-wrap: break-word; /* Bricht Endlos-Wörter wie WEIZENBIER um */
       hyphens: auto;
     }
 
     .beer-price {
-      flex: 0 0 auto;
+      position: absolute;
+      right: 14px; /* Nagelt den Preis exakt 14px vor der rechten Kante fest */
+      top: 50%;
+      transform: translateY(-50%); /* Zwingt den Preis vertikal immer genau in die Mitte */
       font-weight: 900;
       color: #ffffff;
       font-size: 0.95rem;
-      background: rgba(255, 255, 255, 0.15); /* Leicht grauer Hintergrund für den Preis */
-      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 5px 12px;
       border-radius: 12px;
-      margin-top: -2px; /* Zieht den Kasten optisch auf Texthöhe */
-      white-space: nowrap;
+      margin: 0; 
+      white-space: nowrap; /* Hält Zahl und Euro-Zeichen zusammen */
     }
 
     .beer-meta {
