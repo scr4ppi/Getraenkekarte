@@ -266,39 +266,46 @@
       border-right: 1px solid var(--border);
     }
 
-    .card-body {
+   .card-body {
       flex: 1;
-      padding: 16px 20px;
       min-width: 0;
+      /* 95px unsichtbarer Puffer rechts, damit Text nicht unter den Preis rutscht */
+      padding: 16px 95px 16px 20px; 
       display: flex;
       flex-direction: column;
       justify-content: center;
+      position: relative; /* WICHTIG: Erlaubt uns, den Preis relativ zu dieser Box zu platzieren */
     }
 
     .card-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+      display: block; /* Flexbox deaktiviert, Text fließt natürlich nach unten */
+      width: 100%;
     }
 
     .card-title {
       margin: 0;
-      font-size: 1.4rem;
+      font-size: 1.3rem; /* Minimal verkleinert, damit "MASKULINER MANN" geschmeidiger passt */
       font-weight: 800;
-      line-height: 1.1;
+      line-height: 1.15;
       text-transform: uppercase;
       letter-spacing: -0.02em;
+      overflow-wrap: break-word; /* Erzwingt Zeilenumbruch bei Monsternamen */
+      hyphens: auto;
     }
 
     .price {
-      flex: 0 0 auto;
+      position: absolute;
+      right: 16px; /* Immer 16px vom rechten Rand */
+      top: 50%;
+      transform: translateY(-50%); /* Nagelt den Preis exakt vertikal mittig an die Box */
       font-weight: 900;
       color: #fff;
       font-size: 1.1rem;
-      background: rgba(255,255,255,0.15);
-      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
       border-radius: 12px;
+      margin: 0;
+      white-space: nowrap; /* Preis bleibt 100% einzeilig */
     }
 
     .card-panel {
