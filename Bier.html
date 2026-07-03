@@ -162,11 +162,11 @@
       gap: 12px;
     }
 
-    .beer-card {
+.beer-card {
       display: flex;
-      align-items: stretch;
+      align-items: center; /* Zentriert den Inhalt vertikal */
       gap: 14px;
-      min-height: 132px;
+      height: 132px; /* Feste Höhe statt min-height! */
       border-radius: var(--radius-xl);
       background: var(--card);
       border: 1px solid var(--border);
@@ -177,11 +177,12 @@
 
     .beer-image {
       width: 104px;
+      height: 100%; /* Orientiert sich an den 132px der Karte */
       flex: 0 0 104px;
-      min-height: 132px;
       background: rgba(255,255,255,0.05);
       display: block;
-      object-fit: cover;
+      object-fit: contain; /* Wichtig: Bild wird eingepasst, nicht beschnitten */
+      padding: 10px;
     }
 
     .beer-body {
@@ -193,28 +194,35 @@
       gap: 10px;
     }
 
-    .beer-title-row {
+   .beer-title-row {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
+      align-items: flex-start; /* Zwingt den Preis auf die oberste Textlinie */
+      gap: 10px;
+      width: 100%;
     }
 
     .beer-name {
       margin: 0;
+      flex: 1; /* Nimmt den restlichen Platz ein */
       min-width: 0;
-      font-size: 1.08rem;
-      line-height: 1.08;
+      font-size: 1rem; /* Minimal kleiner für besseren Fluss */
+      line-height: 1.1;
       text-transform: uppercase;
       letter-spacing: -0.035em;
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word; /* Bricht extrem lange Wörter hart um */
+      hyphens: auto;
     }
 
     .beer-price {
       flex: 0 0 auto;
       font-weight: 900;
-      color: var(--accent);
-      font-size: 1rem;
+      color: #ffffff;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.15); /* Leicht grauer Hintergrund für den Preis */
+      padding: 4px 10px;
+      border-radius: 12px;
+      margin-top: -2px; /* Zieht den Kasten optisch auf Texthöhe */
       white-space: nowrap;
     }
 
