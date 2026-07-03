@@ -233,7 +233,7 @@
       transform: scale(0.98);
     }
 
-    .card-toggle {
+.card-toggle {
       width: 100%;
       border: 0;
       padding: 0;
@@ -243,13 +243,14 @@
       color: var(--text);
       background: transparent;
       cursor: pointer;
+      height: 140px; /* Hier die feste Höhe setzen! */
     }
 
     .drink-image {
       width: 100px;
-      min-height: 120px;
+      height: 100%; /* Nimmt exakt die 140px der Karte an */
       flex: 0 0 100px;
-      object-fit: cover;
+      object-fit: contain; /* 'contain' statt 'cover', damit nichts abgeschnitten wird */
       background: rgba(255, 255, 255, 0.05);
       border-right: 1px solid var(--border);
       padding: 10px; 
@@ -483,7 +484,7 @@
         name: "Salitos Ice / Pink / Mojito",
         category: "Specials",
         price: "4,00 €",
-        image: "BFlaschenbier/salitos.webp",
+        image: "Flaschenbier/salitos.webp",
         ingredients: ["Fruchtwein", "Kohlensäure", "Zitronenaroma"],
         contents: ["5.2% vol", "0.33l", "Farbstoffe"]
       },
