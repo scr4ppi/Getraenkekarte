@@ -4,94 +4,114 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Roonburg Biere</title>
+
   <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     :root {
-      --card: rgba(0, 0, 0, 0.65);
-      --border: rgba(255, 255, 255, 0.15);
+      --bg: #050505;
+      --card: rgba(35, 35, 35, 0.85);
+      --card-img-bg: rgba(45, 45, 45, 0.4);
+      --border: rgba(255, 255, 255, 0.08);
       --text: #ffffff;
-      --accent: #ff003c;
-      --radius-xl: 28px;
-      --shadow: 0 16px 38px rgba(0, 0, 0, 0.6);
+      --muted: rgba(255, 255, 255, 0.68);
+      --accent: #ff3333;
+      --radius-xl: 22px;
+      --shadow: 0 16px 38px rgba(0, 0, 0, 0.46);
     }
 
-    body {
-      margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif;
-      background: #050505; color: #fff;
-      background: linear-gradient(to bottom, rgba(5, 5, 5, 0.8), rgba(0, 0, 0, 1));
+    html, body {
+      margin: 0; padding: 0; min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at 20% 8%, rgba(255, 51, 51, 0.16), transparent 28%),
+                  radial-gradient(circle at 82% 12%, rgba(255, 190, 80, 0.1), transparent 26%),
+                  linear-gradient(180deg, #121212, #000000 72%);
+      color: var(--text);
     }
 
-    .page { width: min(100%, 760px); margin: 0 auto; }
-    h1 { text-align: center; text-transform: uppercase; font-size: 3rem; margin-bottom: 30px; }
+    .page { width: min(100%, 760px); margin: 0 auto; padding: 22px 14px 34px; }
+    .hero { text-align: center; padding-top: 10px; margin-bottom: 18px; }
+    .logo-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
+    .logo-mark { width: 112px; height: 112px; border-radius: 999px; display: grid; place-items: center; background: rgba(0, 0, 0, 0.72); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 12px; backdrop-filter: blur(10px); }
+    .logo-mark img { width: 100%; height: auto; display: block; }
+    h1 { margin: 0; font-size: clamp(2.35rem, 13vw, 4rem); text-transform: uppercase; letter-spacing: -0.07em; }
+    .intro { max-width: 460px; margin: 12px auto 0; color: var(--muted); font-size: 0.95rem; }
+    
+    .back-btn { display: block; width: 100%; border-radius: 999px; padding: 14px 18px; background: var(--accent); color: #fff; font-size: 0.92rem; font-weight: 800; text-transform: uppercase; text-decoration: none; text-align: center; box-shadow: var(--shadow); margin: 18px 0; }
+    
+    .filters { display: flex; gap: 9px; overflow-x: auto; padding: 4px 0 14px; margin-bottom: 6px; scrollbar-width: none; }
+    .filter-btn { flex: 0 0 auto; border: 1px solid var(--border); border-radius: 999px; padding: 10px 14px; background: rgba(0, 0, 0, 0.56); color: var(--text); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; cursor: pointer; }
+    .filter-btn.active { background: var(--accent); }
 
-    /* Zurück-Button im originalen Neon-Stil */
-    .back-btn {
-      display: block; width: 100%; border-radius: 999px; padding: 16px; margin-bottom: 30px;
-      background: rgba(25, 25, 25, 0.8); border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #fff; text-align: center; text-transform: uppercase; font-weight: 900;
-      text-decoration: none; backdrop-filter: blur(10px);
-    }
+    /* Karten-Design */
+    .list { display: grid; gap: 12px; }
+    .beer-card { display: flex; align-items: stretch; height: 130px; border-radius: var(--radius-xl); background: var(--card); border: 1px solid rgba(255,255,255,0.06); box-shadow: var(--shadow); overflow: hidden; }
+    .beer-image-wrap { width: 105px; flex-shrink: 0; background: var(--card-img-bg); border-right: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; padding: 12px; }
+    .beer-image { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)); }
+    .beer-body { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 0 18px; min-width: 0; }
+    .beer-name { margin: 0; font-size: 1.15rem; font-weight: 900; text-transform: uppercase; padding-right: 15px; }
+    .beer-price { background: rgba(255, 255, 255, 0.18); padding: 6px 14px; border-radius: 12px; font-weight: 900; white-space: nowrap; }
 
-    /* Das neue Raster-Layout */
-    .list { display: grid; gap: 14px; grid-template-columns: 1fr; }
-    @media (min-width: 600px) { .list { grid-template-columns: 1fr 1fr; } }
-
-    /* Die Karten im originalen Shot-Design */
-    .card {
-      display: flex; align-items: center; height: 120px;
-      border-radius: var(--radius-xl); background: var(--card);
-      border: 1px solid var(--border); box-shadow: var(--shadow);
-      backdrop-filter: blur(12px); overflow: hidden;
-    }
-    .drink-image {
-      width: 100px; height: 100%; flex: 0 0 100px;
-      object-fit: contain; background: rgba(255, 255, 255, 0.05);
-      border-right: 1px solid var(--border); padding: 10px;
-    }
-    .card-body {
-      flex: 1; padding: 0 20px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .card-title { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin: 0; }
-    .price {
-      font-weight: 900; color: #fff; font-size: 1rem;
-      background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 12px;
-    }
+    @media (min-width: 720px) { .list { grid-template-columns: repeat(2, 1fr); } }
   </style>
 </head>
 <body>
   <main class="page">
-    <h1>Biere</h1>
+    <section class="hero">
+      <div class="logo-wrap"><div class="logo-mark"><img src="https://roonburg.de/media/default/assets/config/roonburg/images/roonburg-logo.png" alt="Logo" /></div></div>
+      <h1>Biere</h1>
+    </section>
     <a class="back-btn" href="index.html">Zurück zur Auswahl</a>
+    <nav class="filters">
+      <button class="filter-btn active" data-category="ALL">Alle</button>
+      <button class="filter-btn" data-category="FASS">Fassbier</button>
+      <button class="filter-btn" data-category="FLASCHENBIER">Flaschenbier</button>
+    </nav>
     <section class="list" id="beerList"></section>
   </main>
 
   <script>
     const beers = [
-      { name: "Hellers Kölsch (Gezapft)", price: "3 €", img: "Beers/hellers.webp" },
-      { name: "Beck's", price: "4,00 €", img: "Flaschenbier/becks.webp" },
-      { name: "Heineken", price: "3 €", img: "Flaschenbier/Heineken.webp" },
-      { name: "Super Bock", price: "3,50 €", img: "Flaschenbier/superbock.webp" },
-      { name: "Franziskaner Weizen", price: "6 €", img: "Flaschenbier/franziskaner.webp" },
-      { name: "Desperados", price: "4,00 €", img: "Flaschenbier/Desperados.webp" },
-      { name: "Corona Extra", price: "4,00 €", img: "Flaschenbier/corona.webp" },
-      { name: "Salitos Ice / Pink / Mojito", price: "4,00 €", img: "Flaschenbier/salitos.webp" },
-      { name: "Gösser Naturradler", price: "3,50 €", img: "Flaschenbier/goesser.webp" },
-      { name: "Heineken 0.0", price: "4,50 €", img: "Flaschenbier/heineken00.webp" }
+      { id: "hellers", name: "Hellers Kölsch", category: "FASS", liter: "0,25", price: "3,00 €", img: "bottles/hellers.webp" },
+      { id: "becks", name: "Beck's", category: "FLASCHENBIER", liter: "0,33", price: "3,50 €", img: "bottles/becks.webp" },
+      { id: "heineken", name: "Heineken", category: "FLASCHENBIER", liter: "0,33", price: "3,00 €", img: "bottles/heineken.webp" },
+      { id: "super-bock", name: "Super Bock", category: "FLASCHENBIER", liter: "0,33", price: "3,50 €", img: "bottles/superbock.webp" },
+      { id: "franziskaner", name: "Franziskaner", category: "FASS", liter: "0,5", price: "6,00 €", img: "bottles/franziskaner.webp" },
+      { id: "desperados", name: "Desperados", category: "FLASCHENBIER", liter: "0,33", price: "4,00 €", img: "bottles/desperados.webp" },
+      { id: "corona", name: "Corona Extra", category: "FLASCHENBIER", liter: "0,33", price: "4,00 €", img: "bottles/corona.webp" },
+      { id: "salitos", name: "Salitos", category: "FLASCHENBIER", liter: "0,33", price: "4,00 €", img: "bottles/salitos.webp" },
+      { id: "goesser", name: "Gösser Radler", category: "FLASCHENBIER", liter: "0,33", price: "3,50 €", img: "bottles/goesser.webp" },
+      { id: "heineken-0", name: "Heineken 0.0", category: "FLASCHENBIER", liter: "0,33", price: "4,50 €", img: "bottles/heineken00.webp" }
     ];
 
     const list = document.getElementById("beerList");
-    beers.forEach(b => {
-      const card = document.createElement("article");
-      card.className = "card";
-      card.innerHTML = `
-        <img class="drink-image" src="${b.img}" alt="${b.name}">
-        <div class="card-body">
-          <h3 class="card-title">${b.name}</h3>
-          <div class="price">${b.price}</div>
-        </div>
-      `;
-      list.appendChild(card);
-    });
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    let currentCategory = "ALL";
+
+    function renderBeers() {
+      list.innerHTML = "";
+      const filtered = currentCategory === "ALL" ? beers : beers.filter(b => b.category === currentCategory);
+      filtered.forEach(b => {
+        const card = document.createElement("article");
+        card.className = "beer-card";
+        card.innerHTML = `
+          <div class="beer-image-wrap"><img class="beer-image" src="${b.img}" alt="${b.name}"></div>
+          <div class="beer-body">
+            <h3 class="beer-name">${b.name}</h3>
+            <div class="beer-price">${b.price}</div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    filterButtons.forEach(btn => btn.addEventListener("click", (e) => {
+      filterButtons.forEach(b => b.classList.remove("active"));
+      e.target.classList.add("active");
+      currentCategory = e.target.dataset.category;
+      renderBeers();
+    }));
+
+    renderBeers();
   </script>
 </body>
 </html>
