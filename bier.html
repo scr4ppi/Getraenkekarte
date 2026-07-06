@@ -6,76 +6,72 @@
   <title>Roonburg Biere</title>
   <style>
     :root {
-      --bg: #050505;
-      --card: rgba(35, 35, 35, 0.85);
-      --border: rgba(255, 255, 255, 0.08);
+      --card: rgba(0, 0, 0, 0.65);
+      --border: rgba(255, 255, 255, 0.15);
       --text: #ffffff;
-      --accent: #ff3333;
-      --radius-xl: 22px;
-      --shadow: 0 16px 38px rgba(0, 0, 0, 0.46);
+      --accent: #ff003c;
+      --radius-xl: 28px;
+      --shadow: 0 16px 38px rgba(0, 0, 0, 0.6);
     }
-    body { margin: 0; padding: 20px 10px; font-family: Arial, sans-serif; background: #000; color: #fff; }
-    .page { width: min(100%, 760px); margin: 0 auto; }
-    
-    /* Karten-Design wie in deiner Longdrink-Vorlage */
-    .list { display: grid; gap: 12px; grid-template-columns: 1fr; }
-    @media (min-width: 600px) { .list { grid-template-columns: repeat(2, 1fr); } }
 
-    .card {
-      display: flex;
-      align-items: center;
-      height: 120px;
-      background: var(--card);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border);
-      overflow: hidden;
+    body {
+      margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif;
+      background: #050505; color: #fff;
+      background: linear-gradient(to bottom, rgba(5, 5, 5, 0.8), rgba(0, 0, 0, 1));
     }
-    .card-img {
-      width: 90px;
-      height: 100%;
-      background: rgba(255,255,255,0.05);
-      border-right: 1px solid var(--border);
-      padding: 10px;
-      object-fit: contain;
+
+    .page { width: min(100%, 760px); margin: 0 auto; }
+    h1 { text-align: center; text-transform: uppercase; font-size: 3rem; margin-bottom: 30px; }
+
+    /* Zurück-Button im originalen Neon-Stil */
+    .back-btn {
+      display: block; width: 100%; border-radius: 999px; padding: 16px; margin-bottom: 30px;
+      background: rgba(25, 25, 25, 0.8); border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff; text-align: center; text-transform: uppercase; font-weight: 900;
+      text-decoration: none; backdrop-filter: blur(10px);
+    }
+
+    /* Das neue Raster-Layout */
+    .list { display: grid; gap: 14px; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .list { grid-template-columns: 1fr 1fr; } }
+
+    /* Die Karten im originalen Shot-Design */
+    .card {
+      display: flex; align-items: center; height: 120px;
+      border-radius: var(--radius-xl); background: var(--card);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      backdrop-filter: blur(12px); overflow: hidden;
+    }
+    .drink-image {
+      width: 100px; height: 100%; flex: 0 0 100px;
+      object-fit: contain; background: rgba(255, 255, 255, 0.05);
+      border-right: 1px solid var(--border); padding: 10px;
     }
     .card-body {
-      flex: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
+      flex: 1; padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
     }
-    .card-title {
-      font-size: 1rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      line-height: 1.1;
-      margin: 0;
-      max-width: 60%;
+    .card-title { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin: 0; }
+    .price {
+      font-weight: 900; color: #fff; font-size: 1rem;
+      background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 12px;
     }
-    .card-price {
-      background: rgba(255,255,255,0.15);
-      padding: 6px 12px;
-      border-radius: 10px;
-      font-weight: 900;
-      font-size: 0.9rem;
-    }
-    .back-btn { display: block; text-align: center; background: var(--accent); color: white; padding: 15px; border-radius: 999px; text-decoration: none; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
   </style>
 </head>
 <body>
   <main class="page">
+    <h1>Biere</h1>
     <a class="back-btn" href="index.html">Zurück zur Auswahl</a>
     <section class="list" id="beerList"></section>
   </main>
 
   <script>
     const beers = [
-      { name: "Hellers Kölsch (Fass)", price: "105 €", img: "Beers/hellers.webp" },
+      { name: "Hellers Kölsch (Gezapft)", price: "3 €", img: "Beers/hellers.webp" },
       { name: "Beck's", price: "4,00 €", img: "Flaschenbier/becks.webp" },
-      { name: "Heineken", price: "3,00 €", img: "Flaschenbier/Heineken.webp" },
+      { name: "Heineken", price: "3 €", img: "Flaschenbier/Heineken.webp" },
       { name: "Super Bock", price: "3,50 €", img: "Flaschenbier/superbock.webp" },
-      { name: "Franziskaner Hefe-Weizenbier", price: "6,00 €", img: "Flaschenbier/franziskaner.webp" },
+      { name: "Franziskaner Weizen", price: "6 €", img: "Flaschenbier/franziskaner.webp" },
       { name: "Desperados", price: "4,00 €", img: "Flaschenbier/Desperados.webp" },
       { name: "Corona Extra", price: "4,00 €", img: "Flaschenbier/corona.webp" },
       { name: "Salitos Ice / Pink / Mojito", price: "4,00 €", img: "Flaschenbier/salitos.webp" },
@@ -85,16 +81,16 @@
 
     const list = document.getElementById("beerList");
     beers.forEach(b => {
-      const div = document.createElement("div");
-      div.className = "card";
-      div.innerHTML = `
-        <img class="card-img" src="${b.img}" alt="${b.name}">
+      const card = document.createElement("article");
+      card.className = "card";
+      card.innerHTML = `
+        <img class="drink-image" src="${b.img}" alt="${b.name}">
         <div class="card-body">
           <h3 class="card-title">${b.name}</h3>
-          <div class="card-price">${b.price}</div>
+          <div class="price">${b.price}</div>
         </div>
       `;
-      list.appendChild(div);
+      list.appendChild(card);
     });
   </script>
 </body>
