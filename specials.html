@@ -225,6 +225,36 @@
       font-size: 0.75rem;
       line-height: 1.35;
     }
+
+    /* Der pulsierende Effekt für die aktive Karte */
+@keyframes card-pulse {
+  0% {
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
+    border-color: rgba(255, 51, 51, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 51, 51, 0.7);
+    border-color: rgba(255, 51, 51, 1);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
+    border-color: rgba(255, 51, 51, 0.6);
+  }
+}
+
+/* Wir überschreiben die alte .active Klasse */
+.special-card.active {
+  background: rgba(40, 10, 10, 0.85) !important;
+  transform: scale(1.03);
+  animation: card-pulse 2.5s infinite; /* Aktiviert das Pulsen */
+  z-index: 10;
+}
+
+.special-card.active .time-badge {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255,51,51,0.5);
+}
   </style>
 </head>
 <body>
@@ -318,6 +348,73 @@
         weekday: "short",
         hourCycle: "h23"
       });
+
+      document.addEventListener("DOMContentLoaded", () => {
+  
+  function updateActiveSpecial() {
+    // Zeit in Berlin/Köln holen
+    const formatter = new Intl.DateTimeFormat("de-DE", {
+      timeZone: "Europe/Berlin",
+      hour: "numeric",
+      weekday: "short",
+      hourCycle: "h23"
+    });
+
+    const parts = formatter.formatToParts(new Date());
+    let currentHour = 0;
+    let currentWeekday = "";
+
+    parts.forEach(part => {
+      if (part.type === "hour") currentHour = parseInt(part.value, 10);
+      if (part.type === "weekday") currentWeekday = part.value; // z.B. "Fr", "Sa", "So"
+    });
+
+    // Logik: Ist gerade eine "Freitag- oder Samstagnacht"?
+    let isPartyNight = false;
+    
+    // Freitag ab 22 Uhr oder Samstag ab 22 Uhr
+    if ((currentWeekday === "Fr" || currentWeekday === "Sa") && currentHour >= 22) {
+      isPartyNight = true; 
+    }
+    // Samstag bis 5 Uhr morgens oder Sonntag bis 5 Uhr morgens
+    if ((currentWeekday === "Sa" || currentWeekday === "So") && currentHour < 5) {
+      isPartyNight = true; 
+    }
+
+    const cards = document.querySelectorAll('.special-card');
+    
+    // Zuerst bei allen Karten die Markierung entfernen
+    cards.forEach(card => card.classList.remove('active'));
+
+    // Wenn Partynacht ist, markiere das exakt zur Stunde passende Element
+    if (isPartyNight) {
+      cards.forEach(card => {
+        const cardHour = parseInt(card.getAttribute('data-hour'), 10);
+        if (cardHour === currentHour) {
+          
+          // Nur scrollen, wenn die Karte nicht eh schon aktiv war (verhindert nerviges Ruckeln)
+          const wasAlreadyActive = card.dataset.isActive === "true";
+          card.classList.add('active');
+          card.dataset.isActive = "true";
+          
+          if (!wasAlreadyActive) {
+            setTimeout(() => {
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+          }
+        } else {
+          card.dataset.isActive = "false";
+        }
+      });
+    }
+  }
+
+  // 1. Sofort beim Laden der Seite prüfen
+  updateActiveSpecial();
+
+  // 2. Einen Timer starten, der jede Minute (60.000 Millisekunden) die Uhrzeit checkt
+  setInterval(updateActiveSpecial, 60000);
+});
 
       const parts = formatter.formatToParts(new Date());
       let currentHour = 0;
