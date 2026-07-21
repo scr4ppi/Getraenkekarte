@@ -340,16 +340,7 @@
   </main>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Zeit in Berlin/Köln holen
-      const formatter = new Intl.DateTimeFormat("de-DE", {
-        timeZone: "Europe/Berlin",
-        hour: "numeric",
-        weekday: "short",
-        hourCycle: "h23"
-      });
-
-      document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   
   function updateActiveSpecial() {
     // Zeit in Berlin/Köln holen
@@ -360,39 +351,56 @@
       hourCycle: "h23"
     });
 
-    const parts = formatter.formatToParts(new Date());
+    const parts = formatter.formatToParts(new Date("2026-07-24T23:30:00"));
     let currentHour = 0;
     let currentWeekday = "";
 
     parts.forEach(part => {
       if (part.type === "hour") currentHour = parseInt(part.value, 10);
-      if (part.type === "weekday") currentWeekday = part.value; // z.B. "Fr", "Sa", "So"
+      if (part.type === "weekday") currentWeekday = part.value; // "Fr", "Sa", "So"
     });
 
-    // Logik: Ist gerade eine "Freitag- oder Samstagnacht"?
+    // --- 1. LOGIK FÜR DEN AUTOMATISCHEN SEITEN-WECHSEL (THEMA) ---
+    let currentTheme = "Samstag"; // Standardmäßig zeigen wir Samstag (auch unter der Woche)
+
+    // Wenn es Freitag nach 5:00 Uhr morgens ist ODER Samstagmorgen vor 5:00 Uhr (die Freitagnacht läuft noch)
+    if ((currentWeekday === "Fr" && currentHour >= 5) || (currentWeekday === "Sa" && currentHour < 5)) {
+      currentTheme = "Freitag";
+    }
+
+    // Elemente auf der Seite anpassen
+    const kickerEl = document.getElementById("heroKicker");
+    const headlineEl = document.getElementById("heroHeadline");
+    const introEl = document.getElementById("heroIntro");
+
+    if (currentTheme === "Freitag") {
+      kickerEl.innerText = "Gönn dir Freitag";
+      headlineEl.innerHTML = "Gönn dir<br>Freitag";
+      introEl.innerText = "Musikgenre: Pop- und Clubhits von früher bis heute. Jede Stunde ein neues Special!";
+    } else {
+      kickerEl.innerText = "Shake it Samstag";
+      headlineEl.innerHTML = "Shake it<br>Samstag";
+      introEl.innerText = "Das Roonburg Special. Die legendäre Samstagnacht mit unseren stündlichen Deals!";
+    }
+
+
+    // --- 2. LOGIK FÜR DAS LIVE-LEUCHTEN DER KARTEN ---
     let isPartyNight = false;
     
-    // Freitag ab 22 Uhr oder Samstag ab 22 Uhr
     if ((currentWeekday === "Fr" || currentWeekday === "Sa") && currentHour >= 22) {
       isPartyNight = true; 
     }
-    // Samstag bis 5 Uhr morgens oder Sonntag bis 5 Uhr morgens
     if ((currentWeekday === "Sa" || currentWeekday === "So") && currentHour < 5) {
       isPartyNight = true; 
     }
 
     const cards = document.querySelectorAll('.special-card');
-    
-    // Zuerst bei allen Karten die Markierung entfernen
     cards.forEach(card => card.classList.remove('active'));
 
-    // Wenn Partynacht ist, markiere das exakt zur Stunde passende Element
     if (isPartyNight) {
       cards.forEach(card => {
         const cardHour = parseInt(card.getAttribute('data-hour'), 10);
         if (cardHour === currentHour) {
-          
-          // Nur scrollen, wenn die Karte nicht eh schon aktiv war (verhindert nerviges Ruckeln)
           const wasAlreadyActive = card.dataset.isActive === "true";
           card.classList.add('active');
           card.dataset.isActive = "true";
@@ -409,49 +417,10 @@
     }
   }
 
-  // 1. Sofort beim Laden der Seite prüfen
+  // Sofort prüfen und jede Minute im Hintergrund wiederholen
   updateActiveSpecial();
-
-  // 2. Einen Timer starten, der jede Minute (60.000 Millisekunden) die Uhrzeit checkt
   setInterval(updateActiveSpecial, 60000);
 });
-
-      const parts = formatter.formatToParts(new Date());
-      let currentHour = 0;
-      let currentWeekday = "";
-
-      parts.forEach(part => {
-        if (part.type === "hour") currentHour = parseInt(part.value, 10);
-        if (part.type === "weekday") currentWeekday = part.value; // z.B. "Fr", "Sa", "So"
-      });
-
-      // Logik: Ist gerade eine "Freitag- oder Samstagnacht"?
-      // Eine Partynacht geht von 22 Uhr bis 5 Uhr morgens des Folgetages.
-      let isPartyNight = false;
-      
-      if (currentWeekday === "Fr" || currentWeekday === "Sa") {
-        if (currentHour >= 22) isPartyNight = true; // Freitag ab 22 / Samstag ab 22
-      }
-      if (currentWeekday === "Sa" || currentWeekday === "So") {
-        if (currentHour < 5) isPartyNight = true; // Samstag bis 5 Uhr / Sonntag bis 5 Uhr
-      }
-
-      // Wenn Partynacht ist, markiere das entsprechende Element
-      if (isPartyNight) {
-        const cards = document.querySelectorAll('.special-card');
-        cards.forEach(card => {
-          const cardHour = parseInt(card.getAttribute('data-hour'), 10);
-          if (cardHour === currentHour) {
-            card.classList.add('active');
-            
-            // Optional: Scrolle das aktive Element leicht in den Sichtbereich
-            setTimeout(() => {
-              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 500);
-          }
-        });
-      }
-    });
   </script>
 </body>
 </html>
