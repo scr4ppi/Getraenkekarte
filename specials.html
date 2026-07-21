@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Roonburg Weekend Specials</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg: #050505;
+      --card: rgba(0, 0, 0, 0.68);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.72);
+      --accent: #ff3333;
+      --accent-soft: rgba(255, 51, 51, 0.15);
+      --radius-xl: 24px;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.48);
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+    }
+
+    body {
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(
+          rgba(0, 0, 0, 0.4),
+          rgba(0, 0, 0, 0.6)
+        ),
+        url("Clubhochkant.png"); /* Tausche dies ggf. gegen ein passendes Hintergrundbild */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 51, 51, 0.18), transparent 28%),
+        radial-gradient(circle at 85% 8%, rgba(255, 180, 80, 0.14), transparent 26%),
+        radial-gradient(circle at 50% 95%, rgba(255, 51, 120, 0.14), transparent 34%);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: 14px 14px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-nav {
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      margin: 0 0 7px;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 10vw, 2.8rem);
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: -0.05em;
+    }
+
+    .intro {
+      margin: 12px auto 0;
+      max-width: 320px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .special-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 16px 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      transition: 0.3s ease;
+      overflow: hidden;
+    }
+
+    /* Leuchteffekt für das aktuell aktive Special */
+    .special-card.active {
+      border-color: var(--accent);
+      background: rgba(40, 10, 10, 0.85);
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+      transform: scale(1.02);
+    }
+
+    .special-card.active::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: var(--accent);
+    }
+
+    .time-badge {
+      flex: 0 0 65px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--accent);
+      background: rgba(255, 51, 51, 0.1);
+      padding: 8px 0;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 51, 51, 0.3);
+    }
+
+    .special-card.active .time-badge {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .special-content {
+      flex: 1;
+    }
+
+    .special-title {
+      margin: 0 0 4px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .special-desc {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    
+    .price-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-weight: bold;
+      color: #fff;
+      background: rgba(255,255,255,0.15);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+
+    .footer-note {
+      margin: 30px 0 0;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 0.75rem;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="header-nav">
+      <a href="Auswahlseite.html" class="back-btn">← Zurück</a>
+    </nav>
+
+    <section class="hero">
+      <p class="kicker">Freitag & Samstag</p>
+      <h1>Weekend<br>Specials</h1>
+      <p class="intro">
+        Der Fahrplan für deine Nacht. Jede Stunde ein neues Special!
+      </p>
+    </section>
+
+    <section class="timeline" id="specialTimeline">
+      
+      <div class="special-card" data-hour="22">
+        <div class="time-badge">22-23<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Cocktail Happy Hour</h2>
+          <p class="special-desc">2 for 1 auf ausgewählte Cocktails.</p>
+        </div>
+      </div>
+
+      <div class="special-card" data-hour="23">
+        <div class="time-badge">23-00<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Slush Happy Hour</h2>
+          <p class="special-desc">Mango Slush 2,50€ alkoholfrei / 4,00€ inkl. Shot.</p>
+        </div>
+      </div>
+
+      <div class="special-card" data-hour="0">
+        <div class="time-badge">00-01<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Spritz Happy Hour</h2>
+          <p class="special-desc">Alle Spritzgetränke 30% off.</p>
+        </div>
+      </div>
+
+      <div class="special-card" data-hour="1">
+        <div class="time-badge">01-02<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Frozen Aperol Spritz</h2>
+          <p class="special-desc">Der Hit für heiße Nächte.</p>
+          <span class="price-tag">Nur 6,00€</span>
+        </div>
+      </div>
+
+      <div class="special-card" data-hour="2">
+        <div class="time-badge">02-03<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Sourz Shots</h2>
+          <p class="special-desc">Alle Sourz Shots 30% off.</p>
+        </div>
+      </div>
+
+      <div class="special-card" data-hour="3">
+        <div class="time-badge">03-04<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Virgin Happy Hour</h2>
+          <p class="special-desc">30% auf alle alkoholfreien Cocktails.</p>
+        </div>
+      </div>
+
+      <div class="special-card" data-hour="4">
+        <div class="time-badge">04-05<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Late Night Beer</h2>
+          <p class="special-desc">Desperados für den perfekten Abschluss.</p>
+          <span class="price-tag">Nur 3,00€</span>
+        </div>
+      </div>
+
+    </section>
+
+    <p class="footer-note">
+      Roonburg Köln · Bitte verantwortungsvoll genießen<br>
+      Aktionen gültig freitags & samstags im Aktionszeitraum.
+    </p>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Zeit in Berlin/Köln holen
+      const formatter = new Intl.DateTimeFormat("de-DE", {
+        timeZone: "Europe/Berlin",
+        hour: "numeric",
+        weekday: "short",
+        hourCycle: "h23"
+      });
+
+      const parts = formatter.formatToParts(new Date());
+      let currentHour = 0;
+      let currentWeekday = "";
+
+      parts.forEach(part => {
+        if (part.type === "hour") currentHour = parseInt(part.value, 10);
+        if (part.type === "weekday") currentWeekday = part.value; // z.B. "Fr", "Sa", "So"
+      });
+
+      // Logik: Ist gerade eine "Freitag- oder Samstagnacht"?
+      // Eine Partynacht geht von 22 Uhr bis 5 Uhr morgens des Folgetages.
+      let isPartyNight = false;
+      
+      if (currentWeekday === "Fr" || currentWeekday === "Sa") {
+        if (currentHour >= 22) isPartyNight = true; // Freitag ab 22 / Samstag ab 22
+      }
+      if (currentWeekday === "Sa" || currentWeekday === "So") {
+        if (currentHour < 5) isPartyNight = true; // Samstag bis 5 Uhr / Sonntag bis 5 Uhr
+      }
+
+      // Wenn Partynacht ist, markiere das entsprechende Element
+      if (isPartyNight) {
+        const cards = document.querySelectorAll('.special-card');
+        cards.forEach(card => {
+          const cardHour = parseInt(card.getAttribute('data-hour'), 10);
+          if (cardHour === currentHour) {
+            card.classList.add('active');
+            
+            // Optional: Scrolle das aktive Element leicht in den Sichtbereich
+            setTimeout(() => {
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
