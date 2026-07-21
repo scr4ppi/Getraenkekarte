@@ -339,88 +339,98 @@
     </p>
   </main>
 
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  
-  function updateActiveSpecial() {
-    // Zeit in Berlin/Köln holen
-    const formatter = new Intl.DateTimeFormat("de-DE", {
-      timeZone: "Europe/Berlin",
-      hour: "numeric",
-      weekday: "short",
-      hourCycle: "h23"
-    });
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      function updateActiveSpecial() {
+        // Test-Datum: Samstag, 25. Juli 2026 um 22:45 Uhr
+        const testDate = new Date("2026-07-25T22:45:00");
+        
+        // HINWEIS: Wenn du live gehst, tausche die Zeile drüber hiermit aus:
+        // const testDate = new Date();
 
-    const parts = formatter.formatToParts(new Date("2026-07-25T22:45:00"));
-    let currentHour = 0;
-    let currentWeekday = "";
+        const formatter = new Intl.DateTimeFormat("de-DE", {
+          timeZone: "Europe/Berlin",
+          hour: "numeric",
+          weekday: "short",
+          hour12: false // Sicherstellen, dass es 24-Stunden-Format ist
+        });
 
-    parts.forEach(part => {
-      if (part.type === "hour") currentHour = parseInt(part.value, 10);
-      if (part.type === "weekday") currentWeekday = part.value; // "Fr", "Sa", "So"
-    });
+        const parts = formatter.formatToParts(testDate);
+        let currentHour = 0;
+        let currentWeekday = "";
 
-    // --- 1. LOGIK FÜR DEN AUTOMATISCHEN SEITEN-WECHSEL (THEMA) ---
-    let currentTheme = "Samstag"; // Standardmäßig zeigen wir Samstag (auch unter der Woche)
-
-    // Wenn es Freitag nach 5:00 Uhr morgens ist ODER Samstagmorgen vor 5:00 Uhr (die Freitagnacht läuft noch)
-    if ((currentWeekday === "Fr" && currentHour >= 5) || (currentWeekday === "Sa" && currentHour < 5)) {
-      currentTheme = "Freitag";
-    }
-
-    // Elemente auf der Seite anpassen
-    const kickerEl = document.getElementById("heroKicker");
-    const headlineEl = document.getElementById("heroHeadline");
-    const introEl = document.getElementById("heroIntro");
-
-    if (currentTheme === "Freitag") {
-      kickerEl.innerText = "Gönn dir Freitag";
-      headlineEl.innerHTML = "Gönn dir<br>Freitag";
-      introEl.innerText = "Musikgenre: Pop- und Clubhits von früher bis heute. Jede Stunde ein neues Special!";
-    } else {
-      kickerEl.innerText = "Shake it Samstag";
-      headlineEl.innerHTML = "Shake it<br>Samstag";
-      introEl.innerText = "Das Roonburg Special. Die legendäre Samstagnacht mit unseren stündlichen Deals!";
-    }
-
-
-    // --- 2. LOGIK FÜR DAS LIVE-LEUCHTEN DER KARTEN ---
-    let isPartyNight = false;
-    
-    if ((currentWeekday === "Fr" || currentWeekday === "Sa") && currentHour >= 22) {
-      isPartyNight = true; 
-    }
-    if ((currentWeekday === "Sa" || currentWeekday === "So") && currentHour < 5) {
-      isPartyNight = true; 
-    }
-
-    const cards = document.querySelectorAll('.special-card');
-    cards.forEach(card => card.classList.remove('active'));
-
-    if (isPartyNight) {
-      cards.forEach(card => {
-        const cardHour = parseInt(card.getAttribute('data-hour'), 10);
-        if (cardHour === currentHour) {
-          const wasAlreadyActive = card.dataset.isActive === "true";
-          card.classList.add('active');
-          card.dataset.isActive = "true";
-          
-          if (!wasAlreadyActive) {
-            setTimeout(() => {
-              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
+        parts.forEach(part => {
+          if (part.type === "hour") {
+            currentHour = parseInt(part.value, 10);
           }
-        } else {
-          card.dataset.isActive = "false";
-        }
-      });
-    }
-  }
+          if (part.type === "weekday") {
+            // WICHTIG: Entfernt eventuelle Punkte, z.B. "Sa." wird zu "Sa"
+            currentWeekday = part.value.replace(".", "").trim(); 
+          }
+        });
 
-  // Sofort prüfen und jede Minute im Hintergrund wiederholen
-  updateActiveSpecial();
-  setInterval(updateActiveSpecial, 60000);
-});
+        // --- 1. LOGIK FÜR DEN AUTOMATISCHEN SEITEN-WECHSEL (THEMA) ---
+        let currentTheme = "Samstag"; // Standard
+
+        // Freitag nach 5:00 Uhr bis Samstag vor 5:00 Uhr
+        if ((currentWeekday === "Fr" && currentHour >= 5) || (currentWeekday === "Sa" && currentHour < 5)) {
+          currentTheme = "Freitag";
+        }
+
+        const kickerEl = document.getElementById("heroKicker");
+        const headlineEl = document.getElementById("heroHeadline");
+        const introEl = document.getElementById("heroIntro");
+
+        if (currentTheme === "Freitag") {
+          if (kickerEl) kickerEl.innerText = "Gönn dir Freitag";
+          if (headlineEl) headlineEl.innerHTML = "Gönn dir<br>Freitag";
+          if (introEl) introEl.innerText = "Musikgenre: Pop- und Clubhits von früher bis heute. Jede Stunde ein neues Special!";
+        } else {
+          if (kickerEl) kickerEl.innerText = "Shake it Samstag";
+          if (headlineEl) headlineEl.innerHTML = "Shake it<br>Samstag";
+          if (introEl) introEl.innerText = "Das Roonburg Special. Die legendäre Samstagnacht mit unseren stündlichen Deals!";
+        }
+
+
+        // --- 2. LOGIK FÜR DAS LIVE-LEUCHTEN DER KARTEN ---
+        let isPartyNight = false;
+        
+        if ((currentWeekday === "Fr" || currentWeekday === "Sa") && currentHour >= 22) {
+          isPartyNight = true; 
+        }
+        if ((currentWeekday === "Sa" || currentWeekday === "So") && currentHour < 5) {
+          isPartyNight = true; 
+        }
+
+        const cards = document.querySelectorAll('.special-card');
+        cards.forEach(card => card.classList.remove('active'));
+
+        if (isPartyNight) {
+          cards.forEach(card => {
+            const cardHour = parseInt(card.getAttribute('data-hour'), 10);
+            
+            if (cardHour === currentHour) {
+              const wasAlreadyActive = card.dataset.isActive === "true";
+              card.classList.add('active');
+              card.dataset.isActive = "true";
+              
+              if (!wasAlreadyActive) {
+                setTimeout(() => {
+                  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+              }
+            } else {
+              card.dataset.isActive = "false";
+            }
+          });
+        }
+      }
+
+      // Sofort prüfen und jede Minute wiederholen
+      updateActiveSpecial();
+      setInterval(updateActiveSpecial, 60000);
+    });
   </script>
 </body>
 </html>
