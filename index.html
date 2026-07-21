@@ -342,6 +342,116 @@
         height: 50px;
         font-size: 1.45rem;
       }
+
+      /* --- CSS für den leuchtenden & schimmernden Weekend Specials Button --- */
+
+.specials {
+  /* Grundlegendes Styling für die Kachel */
+  position: relative; /* Wichtig für den Schimmer-Effekt */
+  overflow: hidden; /* Der Schimmer darf nicht über den Rand ragen */
+  
+  /* Wir überschreiben die Standard-Transparenz der :before/:after-Layer
+     aus deinem Basis-CSS, um Platz für unsere eigenen Effekte zu schaffen.
+     Der rote Glow soll von der Kachel selbst ausgehen. */
+  border-color: rgba(255, 51, 51, 0.7); /* Hellerer Rand */
+  background: rgba(30, 0, 0, 0.7); /* Etwas rötlicherer, dunklerer Hintergrund */
+  
+  /* --- EFFEKT 1: Kontinuierliches Pulsieren (Leuchten) --- */
+  /* Wir nutzen ein kontinuierliches 'box-shadow' Pulsieren.
+     Die Animation ist unendlich (infinite). */
+  animation: pulse-glow 3s infinite;
+}
+
+/* Definition des Puls-Effekts */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+  }
+}
+
+/* --- EFFEKT 2: Diagonales Schimmern --- */
+/* Wir verwenden ein Pseudoelement, um einen diagonalen Lichtstreifen 
+   zu erstellen und ihn über die Kachel zu schieben. */
+.specials::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%; /* Startet weit außerhalb des sichtbaren Bereichs links */
+  width: 100%;
+  height: 100%;
+  
+  /* Der Lichtstreifen: Eine diagonal gedrehte, halbdurchsichtige rote Linie.
+     Ersetze die rgba-Werte mit deiner gewünschten Farbe, falls du es ändern magst. */
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4) 15%, /* Heller weißer Kern des Schimmers */
+    rgba(255, 51, 51, 0.5) 30%, /* Roter Rand */
+    transparent
+  );
+  
+  transform: skewX(-20deg); /* Diagonal gekippt */
+  z-index: 1; /* Über dem Text */
+  
+  /* Die Animation: Schnell über den Button streichen, dann lange Pause. */
+  animation: shine-sweep 5s infinite;
+}
+
+/* Definition des Schimmer-Effekts */
+@keyframes shine-sweep {
+  0% {
+    left: -150%; /* Start weit links */
+  }
+  20% {
+    left: 150%; /* Nach 20% der Zeit schnell nach rechts geschoben */
+  }
+  100% {
+    left: 150%; /* Bleibt rechts, um eine Pause zu erzeugen (bis 5 Sekunden vorbei sind) */
+  }
+}
+
+/* --- Anpassungen am Text-Inhalt --- */
+/* Damit der Text lesbar bleibt, müssen wir seinen z-index erhöhen. */
+.specials .menu-card-content {
+  position: relative;
+  z-index: 2; /* Über dem Schimmer-Layer */
+}
+
+/* Textfarbe intensivieren */
+.specials h2 {
+  color: #fff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); /* Subtiler Leuchteffekt für den Text */
+}
+
+/* Beschreibungstext sichtbar halten */
+.specials p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* --- Hover-Effekt (bei Berührung oder Maus) --- */
+/* Intensiviert den Puls-Effekt */
+.specials:hover {
+  animation: pulse-glow-hover 1.5s infinite;
+  border-color: rgba(255, 51, 51, 1);
+}
+
+@keyframes pulse-glow-hover {
+  0% {
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 51, 51, 1), 0 0 60px rgba(255, 51, 51, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4);
+  }
+}
     }
   </style>
 </head>
@@ -425,6 +535,16 @@
           <div class="icon">🌴</div>
         </div>
       </a> -->
+
+      <a class="menu-card specials" href="specials.html">
+  <div class="menu-card-content">
+    <div>
+      <h2>Weekend Specials</h2>
+      <p>Der Fahrplan für Freitag & Samstag. Stündlich neue Deals!</p>
+    </div>
+    <div class="icon">🔥</div>
+  </div>
+</a>
       
     </section>
 
