@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Roonburg Shots</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg: #050505;
+      --card: rgba(0, 0, 0, 0.64);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.68);
+      --accent: #ff3333;
+      --radius-xl: 22px;
+      --shadow: 0 16px 38px rgba(0, 0, 0, 0.46);
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 20% 8%, rgba(255, 51, 51, 0.16), transparent 28%),
+        radial-gradient(circle at 82% 12%, rgba(255, 190, 80, 0.1), transparent 26%),
+        linear-gradient(180deg, #080808, #030303 72%);
+      color: var(--text);
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .page {
+      width: min(100%, 760px);
+      margin: 0 auto;
+      padding: 22px 14px 34px;
+    }
+
+    .hero {
+      text-align: center;
+      padding-top: 10px;
+      margin-bottom: 18px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .logo-mark {
+      width: 112px;
+      height: 112px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.72);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo-mark img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .kicker {
+      margin: 0 0 7px;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.35rem, 13vw, 4rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -0.07em;
+    }
+
+    .top-actions {
+      margin: 18px 0 24px;
+    }
+
+    .back-btn {
+      display: block;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      padding: 14px 18px;
+      background: rgba(0, 0, 0, 0.58);
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .drink-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      border-radius: var(--radius-xl);
+      padding: 17px 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .drink-name {
+      margin: 0;
+      min-width: 0;
+      font-size: 1.08rem;
+      line-height: 1.08;
+      text-transform: uppercase;
+      letter-spacing: -0.035em;
+      overflow-wrap: anywhere;
+    }
+
+    .drink-price {
+      flex: 0 0 auto;
+      font-weight: 900;
+      color: var(--accent);
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 430px) {
+      .logo-mark {
+        width: 104px;
+        height: 104px;
+      }
+    }
+
+    @media (min-width: 720px) {
+      .list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="logo-wrap">
+        <div class="logo-mark">
+          <img
+            src="https://roonburg.de/media/default/assets/config/roonburg/images/roonburg-logo.png"
+            alt="Roonburg Logo"
+          />
+        </div>
+      </div>
+
+      <p class="kicker">2 CL</p>
+      <h1>Shots</h1>
+    </section>
+
+    <div class="top-actions">
+      <a class="back-btn" href="index.html">Zurück zur Auswahl</a>
+    </div>
+
+    <section class="list" id="drinkList" aria-label="Shotsliste"></section>
+  </main>
+
+  <script>
+    const shots = [
+      { name: "Wodka", price: "2,80 €" },
+      { name: "Flimm / Xuxu", price: "2,80 €" },
+      { name: "Wodka + Ahoj Brause", price: "3,20 €" },
+      { name: "Sambuca", price: "2,80 €" },
+      { name: "Tequila Gold/Silver", price: "2,80 €" },
+      { name: "Mexikölner", price: "3,20 €" },
+      { name: "Jägermeister", price: "2,80 €" },
+      { name: "Kölsche Koks", price: "3,20 €" },
+      { name: "Sourz", price: "2,80 €" },
+      { name: "Pfeffi", price: "2,80 €" },
+      { name: "Blind Shot", price: "2,50 €" },
+      { name: "Dos Mas", price: "2,80 €" }
+    ];
+
+    const list = document.getElementById("drinkList");
+
+    function renderDrinks() {
+      list.innerHTML = "";
+
+      shots.forEach(drink => {
+        const row = document.createElement("article");
+        row.className = "drink-row";
+
+        row.innerHTML = `
+          <h3 class="drink-name">${drink.name}</h3>
+          <div class="drink-price">${drink.price}</div>
+        `;
+
+        list.appendChild(row);
+      });
+    }
+
+    // Direkt ausführen, da keine Filter mehr nötig sind
+    renderDrinks();
+  </script>
+</body>
+</html>
