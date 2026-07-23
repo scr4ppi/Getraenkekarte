@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Roonburg Getränkekarte</title>
-<link rel="icon" type="image/png" href="logo.png">
+  <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
   <style>
     * {
@@ -31,7 +31,6 @@
       padding: 0;
       min-height: 100%;
       font-family: Arial, Helvetica, sans-serif;
-    
       color: var(--text);
     }
 
@@ -154,6 +153,7 @@
       box-shadow: var(--shadow);
       isolation: isolate;
       touch-action: manipulation;
+      cursor: pointer;
     }
 
     .menu-card:active {
@@ -192,6 +192,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
+      position: relative;
+      z-index: 2;
     }
 
     .menu-card h2 {
@@ -222,31 +224,51 @@
       font-size: 1.25rem;
     }
 
-    .cocktails::before {
-      background-image: url("Cocktailtaste.png");
+    /* Dropdown Styling für Wein + Sekt */
+    .dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
+      padding: 0 18px;
+      opacity: 0;
+      background: rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 2;
     }
 
-    .shots::before {
-      background-image: url("shottaste.png");
+    .menu-card.open .dropdown-content {
+      max-height: 150px;
+      padding: 0 18px 18px 18px;
+      opacity: 1;
     }
 
-    .longdrinks::before {
-      background-image: url("VodkaE .png");
+    .dropdown-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      font-size: 0.95rem;
+      color: #fff;
     }
 
-    .zero::before {
-      background-image: url("https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=900&q=70");
+    .dropdown-item:not(:last-child) {
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
     }
 
-    .biere::before {
-      /* Ersetze den Link durch dein passendes Bier-Bild */
-      background-image: url("Bier.webp"); 
+    .item-name {
+      font-weight: bold;
     }
 
-    .flaschen::before {
-      /* Ersetze den Link durch dein passendes Flaschen-Bild */
-      background-image: url("Flaschen.webp"); 
+    .item-price {
+      font-weight: 900;
+      color: var(--accent);
     }
+
+    .cocktails::before { background-image: url("Cocktailtaste.png"); }
+    .shots::before { background-image: url("shottaste.png"); }
+    .longdrinks::before { background-image: url("VodkaE .png"); }
+    .biere::before { background-image: url("Bier.webp"); }
+    .flaschen::before { background-image: url("Flaschen.webp"); }
 
     .footer-note {
       margin: 18px 0 0;
@@ -257,201 +279,92 @@
     }
 
     @media (max-height: 700px) {
-      .page {
-        padding-top: 10px;
-        padding-bottom: 14px;
-      }
-
-      .hero {
-        margin-bottom: 8px;
-      }
-
-      .logo-mark {
-        width: 92px;
-        height: 92px;
-        padding: 10px;
-      }
-
-      .logo-wrap {
-        margin-bottom: 8px;
-      }
-
-      h1 {
-        font-size: 2rem;
-      }
-
-      .intro {
-        display: none;
-      }
-
-      .menu-card,
-      .menu-card-content {
-        min-height: 92px;
-      }
-
-      .menu-card-content {
-        padding: 14px 16px;
-      }
-
-      .footer-note {
-        margin-top: 12px;
-      }
+      .page { padding-top: 10px; padding-bottom: 14px; }
+      .hero { margin-bottom: 8px; }
+      .logo-mark { width: 92px; height: 92px; padding: 10px; }
+      .logo-wrap { margin-bottom: 8px; }
+      h1 { font-size: 2rem; }
+      .intro { display: none; }
+      .menu-card, .menu-card-content { min-height: 92px; }
+      .menu-card-content { padding: 14px 16px; }
+      .footer-note { margin-top: 12px; }
     }
 
     @media (min-width: 700px) {
-      .page {
-        max-width: 860px;
-        padding: 34px 22px;
-      }
+      .page { max-width: 860px; padding: 34px 22px; }
+      .hero { margin-bottom: 20px; }
+      .logo-mark { width: 136px; height: 136px; padding: 14px; }
+      .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .menu-card, .menu-card-content { min-height: 160px; }
+      .menu-card-content { align-items: flex-end; padding: 22px; }
+      .menu-card h2 { font-size: 1.6rem; }
+      .menu-card p { font-size: 0.95rem; }
+      .icon { width: 50px; height: 50px; font-size: 1.45rem; }
+    }
 
-      .hero {
-        margin-bottom: 20px;
-      }
+    /* --- CSS für den leuchtenden & schimmernden Weekend Specials Button --- */
+    .specials {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(255, 51, 51, 0.7);
+      background: rgba(30, 0, 0, 0.7);
+      animation: pulse-glow 3s infinite;
+    }
 
-      .logo-mark {
-        width: 136px;
-        height: 136px;
-        padding: 14px;
-      }
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 10px rgba(255, 51, 51, 0.4); }
+      50% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4); }
+      100% { box-shadow: 0 0 10px rgba(255, 51, 51, 0.4); }
+    }
 
-      .menu-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-      }
+    .specials::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4) 15%,
+        rgba(255, 51, 51, 0.5) 30%,
+        transparent
+      );
+      transform: skewX(-20deg);
+      z-index: 1;
+      animation: shine-sweep 5s infinite;
+    }
 
-      .menu-card,
-      .menu-card-content {
-        min-height: 160px;
-      }
+    @keyframes shine-sweep {
+      0% { left: -150%; }
+      20% { left: 150%; }
+      100% { left: 150%; }
+    }
 
-      .menu-card-content {
-        align-items: flex-end;
-        padding: 22px;
-      }
+    .specials .menu-card-content {
+      position: relative;
+      z-index: 2;
+    }
 
-      .menu-card h2 {
-        font-size: 1.6rem;
-      }
+    .specials h2 {
+      color: #fff;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    }
 
-      .menu-card p {
-        font-size: 0.95rem;
-      }
+    .specials p {
+      color: rgba(255, 255, 255, 0.9);
+    }
 
-      .icon {
-        width: 50px;
-        height: 50px;
-        font-size: 1.45rem;
-      }
+    .specials:hover {
+      animation: pulse-glow-hover 1.5s infinite;
+      border-color: rgba(255, 51, 51, 1);
+    }
 
-      /* --- CSS für den leuchtenden & schimmernden Weekend Specials Button --- */
-
-.specials {
-  /* Grundlegendes Styling für die Kachel */
-  position: relative; /* Wichtig für den Schimmer-Effekt */
-  overflow: hidden; /* Der Schimmer darf nicht über den Rand ragen */
-  
-  /* Wir überschreiben die Standard-Transparenz der :before/:after-Layer
-     aus deinem Basis-CSS, um Platz für unsere eigenen Effekte zu schaffen.
-     Der rote Glow soll von der Kachel selbst ausgehen. */
-  border-color: rgba(255, 51, 51, 0.7); /* Hellerer Rand */
-  background: rgba(30, 0, 0, 0.7); /* Etwas rötlicherer, dunklerer Hintergrund */
-  
-  /* --- EFFEKT 1: Kontinuierliches Pulsieren (Leuchten) --- */
-  /* Wir nutzen ein kontinuierliches 'box-shadow' Pulsieren.
-     Die Animation ist unendlich (infinite). */
-  animation: pulse-glow 3s infinite;
-}
-
-/* Definition des Puls-Effekts */
-@keyframes pulse-glow {
-  0% {
-    box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4);
-  }
-  100% {
-    box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
-  }
-}
-
-/* --- EFFEKT 2: Diagonales Schimmern --- */
-/* Wir verwenden ein Pseudoelement, um einen diagonalen Lichtstreifen 
-   zu erstellen und ihn über die Kachel zu schieben. */
-.specials::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -150%; /* Startet weit außerhalb des sichtbaren Bereichs links */
-  width: 100%;
-  height: 100%;
-  
-  /* Der Lichtstreifen: Eine diagonal gedrehte, halbdurchsichtige rote Linie.
-     Ersetze die rgba-Werte mit deiner gewünschten Farbe, falls du es ändern magst. */
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4) 15%, /* Heller weißer Kern des Schimmers */
-    rgba(255, 51, 51, 0.5) 30%, /* Roter Rand */
-    transparent
-  );
-  
-  transform: skewX(-20deg); /* Diagonal gekippt */
-  z-index: 1; /* Über dem Text */
-  
-  /* Die Animation: Schnell über den Button streichen, dann lange Pause. */
-  animation: shine-sweep 5s infinite;
-}
-
-/* Definition des Schimmer-Effekts */
-@keyframes shine-sweep {
-  0% {
-    left: -150%; /* Start weit links */
-  }
-  20% {
-    left: 150%; /* Nach 20% der Zeit schnell nach rechts geschoben */
-  }
-  100% {
-    left: 150%; /* Bleibt rechts, um eine Pause zu erzeugen (bis 5 Sekunden vorbei sind) */
-  }
-}
-
-/* --- Anpassungen am Text-Inhalt --- */
-/* Damit der Text lesbar bleibt, müssen wir seinen z-index erhöhen. */
-.specials .menu-card-content {
-  position: relative;
-  z-index: 2; /* Über dem Schimmer-Layer */
-}
-
-/* Textfarbe intensivieren */
-.specials h2 {
-  color: #fff;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); /* Subtiler Leuchteffekt für den Text */
-}
-
-/* Beschreibungstext sichtbar halten */
-.specials p {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* --- Hover-Effekt (bei Berührung oder Maus) --- */
-/* Intensiviert den Puls-Effekt */
-.specials:hover {
-  animation: pulse-glow-hover 1.5s infinite;
-  border-color: rgba(255, 51, 51, 1);
-}
-
-@keyframes pulse-glow-hover {
-  0% {
-    box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(255, 51, 51, 1), 0 0 60px rgba(255, 51, 51, 0.6);
-  }
-  100% {
-    box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4);
-  }
-}
+    @keyframes pulse-glow-hover {
+      0% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(255, 51, 51, 1), 0 0 60px rgba(255, 51, 51, 0.6); }
+      100% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4); }
     }
   </style>
 </head>
@@ -506,7 +419,7 @@
         </div>
       </a>
 
-            <a class="menu-card shots" href="shots.html">
+      <a class="menu-card shots" href="shots.html">
         <div class="menu-card-content">
           <div>
             <h2>Shots</h2>
@@ -526,6 +439,26 @@
         </div>
       </a>
 
+      <div class="menu-card wein-sekt" id="weinSektToggle" tabindex="0" role="button" aria-expanded="false">
+        <div class="menu-card-content">
+          <div>
+            <h2>Wein + Sekt</h2>
+            <p>Prickelnde Traubenerzeugnisse</p>
+          </div>
+          <div class="icon">🥂</div>
+        </div>
+        <div class="dropdown-content">
+          <div class="dropdown-item">
+            <span class="item-name">Weißwein Cuvée</span>
+            <span class="item-price">4,00 €</span>
+          </div>
+          <div class="dropdown-item">
+            <span class="item-name">Glas Sekt</span>
+            <span class="item-price">4,00 €</span>
+          </div>
+        </div>
+      </div>
+
       <a class="menu-card flaschen" href="flaschen.html">
         <div class="menu-card-content">
           <div>
@@ -536,31 +469,37 @@
         </div>
       </a>
 
- <!--    <a class="menu-card zero" href="alkoholfrei.html">
+      <a class="menu-card specials" href="specials.html">
         <div class="menu-card-content">
           <div>
-            <h2>Alkoholfrei</h2>
-            <p>Frisch, fruchtig und ohne Alkohol.</p>
+            <h2>Weekend Specials</h2>
+            <p>Der Fahrplan für Freitag & Samstag. Stündlich neue Deals!</p>
           </div>
-          <div class="icon">🌴</div>
+          <div class="icon">🔥</div>
         </div>
-      </a> -->
-
-      <a class="menu-card specials" href="specials.html">
-  <div class="menu-card-content">
-    <div>
-      <h2>Weekend Specials</h2>
-      <p>Der Fahrplan für Freitag & Samstag. Stündlich neue Deals!</p>
-    </div>
-    <div class="icon">🔥</div>
-  </div>
-</a>
-      
+      </a>
     </section>
 
     <p class="footer-note">
       Roonburg Köln · Bitte verantwortungsvoll genießen
     </p>
   </main>
+
+  <script>
+    // JS Logik für das Wein & Sekt Dropdown
+    document.addEventListener("DOMContentLoaded", () => {
+      const weinSektBtn = document.getElementById("weinSektToggle");
+      
+      if(weinSektBtn) {
+        weinSektBtn.addEventListener("click", () => {
+          weinSektBtn.classList.toggle("open");
+          
+          // ARIA Status für Barrierefreiheit updaten
+          const isOpen = weinSektBtn.classList.contains("open");
+          weinSektBtn.setAttribute("aria-expanded", isOpen);
+        });
+      }
+    });
+  </script>
 </body>
 </html>
