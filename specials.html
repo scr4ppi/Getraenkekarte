@@ -340,7 +340,24 @@
   </main>
 
 <script>
+
+ 
     document.addEventListener("DOMContentLoaded", () => {
+      
+      // SCHALTER: setze ihn auf 'false', um das automatische Umschalten abzustellen.
+      // Setze ihn auf 'true', wenn die Uhrzeit wieder automatisch erkannt werden soll.
+      const automatikAktiv = false; 
+
+      function updateActiveSpecial() {
+        
+        // Wenn der Schalter auf false steht, brechen wir hier sofort ab:
+        if (!automatikAktiv) return; 
+
+        const testDate = new Date();
+        // ... (dein restlicher Code bleibt ab hier völlig unverändert) ...
+
+
+      
       
       function updateActiveSpecial() {
 
