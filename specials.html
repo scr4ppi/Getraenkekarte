@@ -340,114 +340,92 @@
   </main>
 
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // SCHALTER: Auf 'true' setzen, damit die Erkennung live läuft
+    const automatikAktiv = true; 
 
- 
-    document.addEventListener("DOMContentLoaded", () => {
-      
-      // SCHALTER: setze ihn auf 'false', um das automatische Umschalten abzustellen.
-      // Setze ihn auf 'true', wenn die Uhrzeit wieder automatisch erkannt werden soll.
-      const automatikAktiv = false; 
+    function updateActiveSpecial() {
+      if (!automatikAktiv) return;
 
-      function updateActiveSpecial() {
-        
-        // Wenn der Schalter auf false steht, brechen wir hier sofort ab:
-        if (!automatikAktiv) return; 
+      const testDate = new Date(); // Holt die echte Live-Zeit
 
-        const testDate = new Date();
-        // ... (dein restlicher Code bleibt ab hier völlig unverändert) ...
+      const formatter = new Intl.DateTimeFormat("de-DE", {
+        timeZone: "Europe/Berlin",
+        hour: "numeric",
+        weekday: "short",
+        hour12: false
+      });
 
+      const parts = formatter.formatToParts(testDate);
+      let currentHour = 0;
+      let currentWeekday = "";
 
-      
-      
-      function updateActiveSpecial() {
-
-const testDate = new Date();
-        
-        // HINWEIS: Wenn du live gehst, tausche die Zeile drüber hiermit aus:
-        // const testDate = new Date();
-
-        const formatter = new Intl.DateTimeFormat("de-DE", {
-          timeZone: "Europe/Berlin",
-          hour: "numeric",
-          weekday: "short",
-          hour12: false // Sicherstellen, dass es 24-Stunden-Format ist
-        });
-
-        const parts = formatter.formatToParts(testDate);
-        let currentHour = 0;
-        let currentWeekday = "";
-
-        parts.forEach(part => {
-          if (part.type === "hour") {
-            currentHour = parseInt(part.value, 10);
-          }
-          if (part.type === "weekday") {
-            // WICHTIG: Entfernt eventuelle Punkte, z.B. "Sa." wird zu "Sa"
-            currentWeekday = part.value.replace(".", "").trim(); 
-          }
-        });
-
-        // --- 1. LOGIK FÜR DEN AUTOMATISCHEN SEITEN-WECHSEL (THEMA) ---
-        let currentTheme = "Samstag"; // Standard
-
-        // Freitag nach 5:00 Uhr bis Samstag vor 5:00 Uhr
-        if ((currentWeekday === "Fr" && currentHour >= 5) || (currentWeekday === "Sa" && currentHour < 5)) {
-          currentTheme = "Freitag";
+      parts.forEach(part => {
+        if (part.type === "hour") {
+          currentHour = parseInt(part.value, 10);
         }
-
-        const kickerEl = document.getElementById("heroKicker");
-        const headlineEl = document.getElementById("heroHeadline");
-        const introEl = document.getElementById("heroIntro");
-
-        if (currentTheme === "Freitag") {
-          if (kickerEl) kickerEl.innerText = "Gönn dir Freitag";
-          if (headlineEl) headlineEl.innerHTML = "Gönn dir<br>Freitag";
-          if (introEl) introEl.innerText = "Musikgenre: Pop- und Clubhits von früher bis heute. Jede Stunde ein neues Special!";
-        } else {
-          if (kickerEl) kickerEl.innerText = "Shake it Samstag";
-          if (headlineEl) headlineEl.innerHTML = "Shake it<br>Samstag";
-          if (introEl) introEl.innerText = "Das Roonburg Special. Die legendäre Samstagnacht mit unseren stündlichen Deals!";
+        if (part.type === "weekday") {
+          currentWeekday = part.value.replace(".", "").trim(); 
         }
+      });
 
-
-        // --- 2. LOGIK FÜR DAS LIVE-LEUCHTEN DER KARTEN ---
-        let isPartyNight = false;
-        
-        if ((currentWeekday === "Fr" || currentWeekday === "Sa") && currentHour >= 22) {
-          isPartyNight = true; 
-        }
-        if ((currentWeekday === "Sa" || currentWeekday === "So") && currentHour < 5) {
-          isPartyNight = true; 
-        }
-
-        const cards = document.querySelectorAll('.special-card');
-        cards.forEach(card => card.classList.remove('active'));
-
-        if (isPartyNight) {
-          cards.forEach(card => {
-            const cardHour = parseInt(card.getAttribute('data-hour'), 10);
-            
-            if (cardHour === currentHour) {
-              const wasAlreadyActive = card.dataset.isActive === "true";
-              card.classList.add('active');
-              card.dataset.isActive = "true";
-              
-              if (!wasAlreadyActive) {
-                setTimeout(() => {
-                  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 300);
-              }
-            } else {
-              card.dataset.isActive = "false";
-            }
-          });
-        }
+      // 1. Theme-Wechsel (Freitag / Samstag)
+      let currentTheme = "Samstag";
+      if ((currentWeekday === "Fr" && currentHour >= 5) || (currentWeekday === "Sa" && currentHour < 5)) {
+        currentTheme = "Freitag";
       }
 
-      // Sofort prüfen und jede Minute wiederholen
-      updateActiveSpecial();
-      setInterval(updateActiveSpecial, 60000);
-    });
-  </script>
+      const kickerEl = document.getElementById("heroKicker");
+      const headlineEl = document.getElementById("heroHeadline");
+      const introEl = document.getElementById("heroIntro");
+
+      if (currentTheme === "Freitag") {
+        if (kickerEl) kickerEl.innerText = "Gönn dir Freitag";
+        if (headlineEl) headlineEl.innerHTML = "Gönn dir<br>Freitag";
+        if (introEl) introEl.innerText = "Musikgenre: Pop- und Clubhits von früher bis heute. Jede Stunde ein neues Special!";
+      } else {
+        if (kickerEl) kickerEl.innerText = "Shake it Samstag";
+        if (headlineEl) headlineEl.innerHTML = "Shake it<br>Samstag";
+        if (introEl) introEl.innerText = "Das Roonburg Special. Die legendäre Samstagnacht mit unseren stündlichen Deals!";
+      }
+
+      // 2. Leuchten während der Party-Zeiten (Fr/Sa ab 22 Uhr bis 5 Uhr morgens)
+      let isPartyNight = false;
+      if ((currentWeekday === "Fr" || currentWeekday === "Sa") && currentHour >= 22) {
+        isPartyNight = true; 
+      }
+      if ((currentWeekday === "Sa" || currentWeekday === "So") && currentHour < 5) {
+        isPartyNight = true; 
+      }
+
+      const cards = document.querySelectorAll('.special-card');
+      cards.forEach(card => card.classList.remove('active'));
+
+      if (isPartyNight) {
+        cards.forEach(card => {
+          const cardHour = parseInt(card.getAttribute('data-hour'), 10);
+          
+          if (cardHour === currentHour) {
+            const wasAlreadyActive = card.dataset.isActive === "true";
+            card.classList.add('active');
+            card.dataset.isActive = "true";
+            
+            if (!wasAlreadyActive) {
+              setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }, 300);
+            }
+          } else {
+            card.dataset.isActive = "false";
+          }
+        });
+      }
+    }
+
+    // Sofort ausführen und minütlich aktualisieren
+    updateActiveSpecial();
+    setInterval(updateActiveSpecial, 60000);
+  });
+</script>
 </body>
 </html>
