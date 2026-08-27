@@ -300,7 +300,7 @@
 
     <section class="timeline" id="specialTimeline">
       
-      <!-- Neues großes Special: Startet um 18, Endet um 22 -->
+      <!-- Erstes Special: 18 bis 22 Uhr -->
       <div class="special-card" data-start="18" data-end="22">
         <div class="time-badge">18-22<br>Uhr</div>
         <div class="special-content">
@@ -324,7 +324,27 @@
           <div class="tags-container">
             <span class="price-tag">Jeder Drink 6,00€</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Zweites Special: 22 bis 5 Uhr morgens -->
+      <div class="special-card" data-start="22" data-end="5">
+        <div class="time-badge">Ab 22<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Late Night Spritz</h2>
+          <p class="special-desc" style="margin-bottom: 12px;">Das exklusive Angebot für den Rest der Nacht. Gilt an der Haupttheke und der Cocktailbar.</p>
           
+          <ul class="drinks-list">
+            <li>Aperol Spritz</li>
+            <li>Wildberry Lillet</li>
+            <li>Sarti Lemon Spritz</li>
+            <li>Frozen Aperol</li>
+          </ul>
+
+          <div class="tags-container">
+            <span class="price-tag">Jeder Spritz 6,00€</span>
+          </div>
+
           <a href="https://www.roonburg-cocktails.de/" class="cocktail-btn" target="_blank">🍸 Zur gesamten Cocktailkarte</a>
         </div>
       </div>
@@ -333,7 +353,7 @@
 
     <p class="footer-note">
       Roonburg Köln · Bitte verantwortungsvoll genießen<br>
-      Aktion gültig diesen Freitag von 18 bis 22 Uhr.
+      Aktionen gültig diesen Freitag.
     </p>
   </main>
 
@@ -365,18 +385,37 @@
         }
       });
 
+      // Wir definieren "Freitagnacht" als Zeitraum zwischen Fr 18:00 und Sa 04:59
+      let isFridayNight = false;
+      if (currentWeekday === "Fr" && currentHour >= 18) isFridayNight = true;
+      if (currentWeekday === "Sa" && currentHour < 5) isFridayNight = true;
+
       const cards = document.querySelectorAll('.special-card');
       
-      // Um Konflikte zu vermeiden, entfernen wir erst die Klasse überall
+      // Erstmal bei allen Karten die aktive Klasse entfernen
       cards.forEach(card => card.classList.remove('active'));
 
-      // Nur Freitags-Special aktiv
-      if (currentWeekday === "Fr") {
+      if (isFridayNight) {
         cards.forEach(card => {
           const startHour = parseInt(card.getAttribute('data-start'), 10);
           const endHour = parseInt(card.getAttribute('data-end'), 10);
           
-          if (currentHour >= startHour && currentHour < endHour) {
+          let isActiveNow = false;
+
+          // Prüfung für Specials, die über Mitternacht gehen (z.B. 22 bis 5 Uhr)
+          if (startHour > endHour) {
+            if (currentHour >= startHour || currentHour < endHour) {
+              isActiveNow = true;
+            }
+          } else {
+            // Prüfung für Specials am gleichen Tag (z.B. 18 bis 22 Uhr)
+            if (currentHour >= startHour && currentHour < endHour) {
+              isActiveNow = true;
+            }
+          }
+          
+          // Klasse vergeben, falls aktiv
+          if (isActiveNow) {
             const wasAlreadyActive = card.dataset.isActive === "true";
             card.classList.add('active');
             card.dataset.isActive = "true";
