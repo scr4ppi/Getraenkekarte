@@ -973,21 +973,25 @@
 
 // --- PROMO POPUP LOGIK ---
     
-    // HIER SCHALTER UMLEGEN: 
-    // true  = Popup ist aktiv
+    // HAUPTSCHALTER: 
+    // true  = Popup ist generell aktiv
     // false = Popup ist komplett ausgeschaltet
     const enablePromoPopup = true; 
+
+    // TEST-SCHALTER:
+    // true  = Ignoriert den Speicher. Das Popup ploppt bei JEDEM Neuladen auf (nur für dich zum Testen).
+    // false = Normaler Live-Modus. Gäste sehen es exakt 1x und dann nie wieder.
+    const testModusPopup = true; 
 
     if (enablePromoPopup) {
       const promoPopup = document.getElementById("promoPopup");
       const promoClose = document.getElementById("promoClose");
 
-      // NEUER KEY ("promoSeen_ACAB"): 
-      // Zwingt das Popup, auch bei Stammgästen aufzuploppen, die das alte Pride-Popup schon kannten.
+      // Die Speicherlogik bleibt komplett unangetastet
       const hasSeenPromo = localStorage.getItem("promoSeen_ACAB");
 
-      // Nur anzeigen, wenn es noch nicht gesehen wurde
-      if (!hasSeenPromo) {
+      // Zeigt das Popup an, wenn es noch nicht gesehen wurde ODER wenn dein Testschalter an ist
+      if (!hasSeenPromo || testModusPopup) {
         setTimeout(() => {
           promoPopup.classList.add("show");
           promoPopup.setAttribute("aria-hidden", "false");
@@ -999,7 +1003,7 @@
         promoPopup.classList.remove("show");
         promoPopup.setAttribute("aria-hidden", "true");
         
-        // Speichert dauerhaft im Browser, dass das Popup erledigt ist
+        // Speichert es dauerhaft (wird im Testmodus überschrieben, blockiert im Live-Modus aber zuverlässig)
         localStorage.setItem("promoSeen_ACAB", "true");
       }
 
