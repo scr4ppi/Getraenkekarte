@@ -706,15 +706,15 @@
     </div>
   </div>
 
-  <div class="promo-popup-overlay" id="promoPopup" aria-hidden="true">
+<div class="promo-popup-overlay" id="promoPopup" aria-hidden="true">
     <div class="promo-popup-wrapper">
       <button class="promo-close-btn" id="promoClose" aria-label="Schließen">×</button>
       
       <div class="promo-popup-shape">
-        <h2 class="promo-title">Shot Alert!</h2>
-        <p class="promo-text">PRIDE MONTH.<br>Im Special, Pride Shot</p>
+        <h2 class="promo-title">A.C.A.B</h2>
+        <p class="promo-text">Be the Change!</p>
         
-        <img class="promo-shot-img" src="pride.webp" alt="Shot des Tages" />
+        <img class="promo-shot-img" src="acab.webp" alt="A.C.A.B Shot" />
       </div>
     </div>
   </div>
@@ -971,19 +971,20 @@
     let currentCategory = "ALL";
     let selectedRandomShot = null;
 
-    // --- PROMO POPUP LOGIK ---
+// --- PROMO POPUP LOGIK ---
     
     // HIER SCHALTER UMLEGEN: 
     // true  = Popup ist aktiv
     // false = Popup ist komplett ausgeschaltet
-    const enablePromoPopup = false; 
+    const enablePromoPopup = true; 
 
     if (enablePromoPopup) {
       const promoPopup = document.getElementById("promoPopup");
       const promoClose = document.getElementById("promoClose");
 
-      // Prüft im Browser-Speicher, ob das Popup schon mal geschlossen wurde
-      const hasSeenPromo = localStorage.getItem("promoSeen_v1");
+      // NEUER KEY ("promoSeen_ACAB"): 
+      // Zwingt das Popup, auch bei Stammgästen aufzuploppen, die das alte Pride-Popup schon kannten.
+      const hasSeenPromo = localStorage.getItem("promoSeen_ACAB");
 
       // Nur anzeigen, wenn es noch nicht gesehen wurde
       if (!hasSeenPromo) {
@@ -999,7 +1000,7 @@
         promoPopup.setAttribute("aria-hidden", "true");
         
         // Speichert dauerhaft im Browser, dass das Popup erledigt ist
-        localStorage.setItem("promoSeen_v1", "true");
+        localStorage.setItem("promoSeen_ACAB", "true");
       }
 
       // Beim Klick auf das X schließen
