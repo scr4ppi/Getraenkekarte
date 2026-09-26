@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Roonburg Flaschen</title>
-
+  <title>Roonburg Friday Special</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
   <style>
     * {
       box-sizing: border-box;
@@ -14,13 +15,14 @@
 
     :root {
       --bg: #050505;
-      --card: rgba(0, 0, 0, 0.64);
+      --card: rgba(0, 0, 0, 0.68);
       --border: rgba(255, 255, 255, 0.14);
       --text: #ffffff;
-      --muted: rgba(255, 255, 255, 0.68);
+      --muted: rgba(255, 255, 255, 0.72);
       --accent: #ff3333;
-      --radius-xl: 22px;
-      --shadow: 0 16px 38px rgba(0, 0, 0, 0.46);
+      --accent-soft: rgba(255, 51, 51, 0.15);
+      --radius-xl: 24px;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.48);
     }
 
     html,
@@ -29,58 +31,86 @@
       padding: 0;
       min-height: 100%;
       font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at 20% 8%, rgba(255, 51, 51, 0.16), transparent 28%),
-        radial-gradient(circle at 82% 12%, rgba(255, 190, 80, 0.1), transparent 26%),
-        linear-gradient(180deg, #080808, #030303 72%);
       color: var(--text);
+      background-color: var(--bg);
     }
 
     body {
+      position: relative;
       overflow-x: hidden;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(
+          rgba(0, 0, 0, 0.4),
+          rgba(0, 0, 0, 0.6)
+        ),
+        url("Clubhochkant.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 51, 51, 0.18), transparent 28%),
+        radial-gradient(circle at 85% 8%, rgba(255, 180, 80, 0.14), transparent 26%),
+        radial-gradient(circle at 50% 95%, rgba(255, 51, 120, 0.14), transparent 34%);
+      z-index: -2;
+      pointer-events: none;
+    }
+
     .page {
-      width: min(100%, 760px);
+      width: 100%;
+      max-width: 480px;
+      min-height: 100svh;
       margin: 0 auto;
-      padding: 22px 14px 34px;
+      padding: 14px 14px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-nav {
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
     }
 
     .hero {
       text-align: center;
-      padding-top: 10px;
-      margin-bottom: 18px;
-    }
-
-    .logo-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-
-    .logo-mark {
-      width: 112px;
-      height: 112px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: rgba(0, 0, 0, 0.72);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      padding: 12px;
-      backdrop-filter: blur(10px);
-    }
-
-    .logo-mark img {
-      width: 100%;
-      height: auto;
-      display: block;
+      margin-bottom: 24px;
     }
 
     .kicker {
       margin: 0 0 7px;
-      font-size: 0.75rem;
-      letter-spacing: 0.22em;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent);
       font-weight: 800;
@@ -88,312 +118,282 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(2.35rem, 13vw, 4rem);
-      line-height: 0.9;
+      font-size: clamp(2rem, 10vw, 2.8rem);
+      line-height: 1;
       text-transform: uppercase;
-      letter-spacing: -0.07em;
+      letter-spacing: -0.05em;
     }
 
     .intro {
-      max-width: 460px;
       margin: 12px auto 0;
+      max-width: 320px;
       color: var(--muted);
       font-size: 0.95rem;
-      line-height: 1.45;
+      line-height: 1.4;
     }
 
-    .top-actions {
-      margin: 18px 0 14px;
-    }
-
-    .back-btn {
-      display: block;
-      width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 999px;
-      padding: 14px 18px;
-      background: rgba(0, 0, 0, 0.58);
-      color: #fff;
-      font-size: 0.92rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      text-decoration: none;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-
-    .filters {
+    .timeline {
       display: flex;
-      gap: 9px;
-      overflow-x: auto;
-      padding: 4px 0 14px;
-      margin-bottom: 6px;
-      scrollbar-width: none;
-    }
-
-    .filters::-webkit-scrollbar {
-      display: none;
-    }
-
-    .filter-btn {
-      flex: 0 0 auto;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 10px 14px;
-      background: rgba(0, 0, 0, 0.56);
-      color: var(--text);
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      cursor: pointer;
-    }
-
-    .filter-btn.active {
-      background: var(--accent);
-      border-color: rgba(255, 255, 255, 0.25);
-    }
-
-    .list {
-      display: grid;
+      flex-direction: column;
       gap: 12px;
     }
 
-    .bottle-card {
-      display: flex;
-      align-items: stretch;
-      gap: 14px;
-      min-height: 132px;
-      border-radius: var(--radius-xl);
+    .special-card {
+      position: relative;
       background: var(--card);
       border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 20px;
       box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+      transition: 0.3s ease;
       overflow: hidden;
     }
 
-    .bottle-image {
-      width: 104px;
-      flex: 0 0 104px;
-      min-height: 132px;
-      background: rgba(255,255,255,0.05);
-      display: block;
-      object-fit: cover;
+    @keyframes card-pulse {
+      0% {
+        box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
+        border-color: rgba(255, 51, 51, 0.6);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(255, 51, 51, 0.7);
+        border-color: rgba(255, 51, 51, 1);
+      }
+      100% {
+        box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
+        border-color: rgba(255, 51, 51, 0.6);
+      }
     }
 
-    .bottle-body {
-      flex: 1;
-      min-width: 0;
-      padding: 16px 14px 14px 0;
-      display: grid;
-      align-content: center;
-      gap: 10px;
+    .special-card.active {
+      background: rgba(40, 10, 10, 0.85) !important;
+      transform: scale(1.03);
+      animation: card-pulse 2.5s infinite;
+      z-index: 10;
     }
 
-    .bottle-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
+    .special-card.active::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: var(--accent);
     }
 
-    .bottle-name {
-      margin: 0;
-      min-width: 0;
-      font-size: 1.08rem;
-      line-height: 1.08;
-      text-transform: uppercase;
-      letter-spacing: -0.035em;
-      overflow-wrap: anywhere;
-    }
-
-    .bottle-price {
-      flex: 0 0 auto;
-      font-weight: 900;
+    .time-badge {
+      flex: 0 0 65px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.9rem;
       color: var(--accent);
-      font-size: 1rem;
-      white-space: nowrap;
+      background: rgba(255, 51, 51, 0.1);
+      padding: 8px 0;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 51, 51, 0.3);
+      margin-top: 2px;
     }
 
-    .bottle-meta {
+    .special-card.active .time-badge {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(255,51,51,0.5);
+    }
+
+    .special-content {
+      flex: 1;
+    }
+
+    .special-title {
+      margin: 0 0 4px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #fff;
+    }
+
+    .special-desc {
+      margin: 0 0 10px 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    
+    .drinks-list {
+      margin: 0 0 12px 16px;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.5;
+      font-weight: bold;
+    }
+
+    .drinks-list li {
+      margin-bottom: 4px;
+    }
+
+    .tags-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 7px;
-      color: var(--muted);
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 800;
+      gap: 8px;
     }
 
-    .pill {
-      border: 1px solid rgba(255,255,255,0.11);
-      border-radius: 999px;
-      padding: 6px 9px;
-      background: rgba(255,255,255,0.055);
+    .price-tag {
+      display: inline-block;
+      font-weight: bold;
+      color: #fff;
+      background: var(--accent);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
     }
 
-    @media (max-width: 430px) {
-      .logo-mark {
-        width: 104px;
-        height: 104px;
-      }
-
-      .bottle-image {
-        width: 88px;
-        flex-basis: 88px;
-      }
-
-      .bottle-body {
-        padding-right: 12px;
-      }
-
-      .bottle-name {
-        font-size: 1rem;
-      }
-    }
-
-    @media (min-width: 720px) {
-      .list {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .footer-note {
+      margin: 30px 0 0;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 0.75rem;
+      line-height: 1.35;
     }
   </style>
 </head>
-
 <body>
   <main class="page">
+    <nav class="header-nav">
+      <a href="index.html" class="back-btn">← Zurück</a>
+    </nav>
+
     <section class="hero">
-      <div class="logo-wrap">
-        <div class="logo-mark">
-          <img
-            src="https://roonburg.de/media/default/assets/config/roonburg/images/roonburg-logo.png"
-            alt="Roonburg Logo"
-          />
+      <p class="kicker" id="heroKicker">Gönn dir Freitag</p>
+      <h1 id="heroHeadline">Weekend<br>Special</h1>
+      <p class="intro" id="heroIntro">
+        Das absolute Highlight für deinen Start ins Wochenende.
+      </p>
+    </section>
+
+    <section class="timeline" id="specialTimeline">
+      
+      <!-- Erstes Special: 18 bis 22 Uhr -->
+      <div class="special-card" data-start="18" data-end="22">
+        <div class="time-badge">18-22<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Drinks Special</h2>
+          <p class="special-desc">Alle Longdrinks & Cocktails für 6,00€!<br><br>
+          <span style="font-size: 0.8rem; color: #ff8888;"><strong>Wichtig:</strong> Folgende 6 Klassiker bekommst du <strong>auch an der Shotbar</strong>:</span></p>
+          
+          <ul class="drinks-list">
+            <li>Sex on the beach</li>
+            <li>Touchdown</li>
+            <li>Cuba Libre</li>
+            <li>Tequila Sunrise</li>
+            <li>Blue Lagoon</li>
+            <li>Solero</li>
+          </ul>
+
+          <p class="special-desc" style="margin-bottom: 15px;">
+            <span style="font-size: 0.8rem; color: #ffb450;"><strong>Lillet & Aperol</strong> gibt es zudem <strong>auch an der Haupttheke</strong>.<br>Alle anderen Drinks gibt es exklusiv an der Cocktailbar.</span>
+          </p>
+
+          <div class="tags-container">
+            <span class="price-tag">Jeder Drink 6,00€</span>
+          </div>
         </div>
       </div>
 
-      <p class="kicker">Roonburg</p>
-      <h1>Flaschen</h1>
-      <p class="intro">Flaschen, Fässchen, Champagner und Softdrinks im gleichen Stil wie deine Longdrink-Seite — jeweils mit eigenem Bild.</p>
     </section>
 
-    <div class="top-actions">
-      <a class="back-btn" href="index.html">Zurück zur Auswahl</a>
-    </div>
-
-    <nav class="filters" aria-label="Flaschen Kategorien">
-      <button class="filter-btn active" type="button" data-category="ALL">Alle</button>
-      <button class="filter-btn" type="button" data-category="VODKA">Vodka</button>
-      <button class="filter-btn" type="button" data-category="RUM">Rum</button>
-      <button class="filter-btn" type="button" data-category="TEQUILA">Tequila</button>
-      <button class="filter-btn" type="button" data-category="GIN">Gin</button>
-      <button class="filter-btn" type="button" data-category="WHISKY">Whisky</button>
-      <button class="filter-btn" type="button" data-category="LIKÖR">Likör</button>
-      <button class="filter-btn" type="button" data-category="CHAMPAGNER">Champagner</button>
-      <button class="filter-btn" type="button" data-category="FASS">Fass</button>
-      <button class="filter-btn" type="button" data-category="SOFTDRINKS">Softdrinks</button>
-    </nav>
-
-    <section class="list" id="bottleList" aria-label="Flaschenliste"></section>
+    <p class="footer-note">
+      Roonburg Köln · Bitte verantwortungsvoll genießen<br>
+      Aktionen gültig diesen Freitag.
+    </p>
   </main>
 
-  <script>
-    const bottles = [
-      {
-            "id": "9-mile-vodka-07",
-            "name": "9 Mile Vodka*",
-            "category": "VODKA",
-            "liter": "0,7",
-            "price": "90 €",
-            "img": "bottles/9mile.webp"
-  },
-      {
-            "id": "9-mile-vodka-30",
-            "name": "9 Mile Vodka*",
-            "category": "VODKA",
-            "liter": "3,0",
-            "price": "390 €",
-            "img": "bottles/9mile.webp"      
-      },
-      {
-            "id": "bacardi-rum",
-            "name": "Bacardi Rum*",
-            "category": "RUM",
-            "liter": "0,7",
-            "price": "80 €",
-            "img": "bottles/bacardi.webp"      },
-      {
-            "id": "bacardi-razz",
-            "name": "Bacardi Razz*",
-            "category": "RUM",
-            "liter": "0,7",
-            "price": "80 €",
-            "img": "bottles/bacardirazz.webp"      },
-      {
-            "id": "bacardi-spiced-rum",
-            "name": "Bacardi Spiced Rum*",
-            "category": "RUM",
-            "liter": "1,0",
-            "price": "100 €",
-            "img": "bottles/bacardispiced.webp"      },
-      {
-            "id": "cuervo-tequila",
-            "name": "Cuervo Tequila",
-            "category": "TEQUILA",
-            "liter": "1,0",
-            "price": "100 €",
-            "img": "bottles/tequilla.webp"      },
-      {
-            "id": "flimm-waldmeister",
-            "name": "Flimm Waldmeister",
-            "category": "LIKÖR",
-            "liter": "0,7",
-            "price": "60 €",
-            "img": "bottles/flimm.webp"      },
-      {
-            "id": "grey-goose-vodka",
-            "name": "Grey Goose Vodka*",
-            "category": "VODKA",
-            "liter": "0,7",
-            "price": "130 €",
-            "img": "bottles/Greygoose.webp"      },
-      {
-            "id": "gin-de-cologne",
-            "name": "Gin de Cologne*",
-            "category": "GIN",
-            "liter": "0,5",
-            "price": "60 €",
-            "img": "bottles/Gincologne.webp"      },
-      {
-            "id": "jaegermeister",
-            "name": "Jägermeister*",
-            "category": "LIKÖR",
-            "liter": "1,0",
-            "price": "100 €",
-            "img": "bottles/Jaegermeister.webp"      },
-      {
-            "id": "jack-daniels",
-            "name": "Jack Daniels Whisky*",
-            "category": "WHISKY",
-            "liter": "1,0",
-            "price": "120 €",
-            "img": "bottles/jacky.webp"      },
-      {
-            "id": "jim-beam",
-            "name": "Jim Beam Whisky*",
-            "category": "WHISKY",
-            "liter": "1,0",
-            "price": "100 €",
-             "img": "bottles/Jimbeam.webp"      },
-      {
-            "id": "antica-sambuca",
-            "name": "Antica Sambuca",
-            "category": "LIKÖR",
-            "liter": "0,7",
-            "price": "90 €",
-             "img": "bottles/Sambuca.webp"      },
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const automatikAktiv = true; 
+
+    function updateActiveSpecial() {
+      if (!automatikAktiv) return;
+
+      const testDate = new Date(); 
+      const formatter = new Intl.DateTimeFormat("de-DE", {
+        timeZone: "Europe/Berlin",
+        hour: "numeric",
+        weekday: "short",
+        hour12: false
+      });
+
+      const parts = formatter.formatToParts(testDate);
+      let currentHour = 0;
+      let currentWeekday = "";
+
+      parts.forEach(part => {
+        if (part.type === "hour") {
+          currentHour = parseInt(part.value, 10);
+        }
+        if (part.type === "weekday") {
+          currentWeekday = part.value.replace(".", "").trim(); 
+        }
+      });
+
+      // Wir definieren "Freitagnacht" als Zeitraum zwischen Fr 18:00 und Sa 04:59
+      let isFridayNight = false;
+      if (currentWeekday === "Fr" && currentHour >= 18) isFridayNight = true;
+      if (currentWeekday === "Sa" && currentHour < 5) isFridayNight = true;
+
+      const cards = document.querySelectorAll('.special-card');
+      
+      // Erstmal bei allen Karten die aktive Klasse entfernen
+      cards.forEach(card => card.classList.remove('active'));
+
+      if (isFridayNight) {
+        cards.forEach(card => {
+          const startHour = parseInt(card.getAttribute('data-start'), 10);
+          const endHour = parseInt(card.getAttribute('data-end'), 10);
+          
+          let isActiveNow = false;
+
+          // Prüfung für Specials, die über Mitternacht gehen (z.B. 22 bis 5 Uhr)
+          if (startHour > endHour) {
+            if (currentHour >= startHour || currentHour < endHour) {
+              isActiveNow = true;
+            }
+          } else {
+            // Prüfung für Specials am gleichen Tag (z.B. 18 bis 22 Uhr)
+            if (currentHour >= startHour && currentHour < endHour) {
+              isActiveNow = true;
+            }
+          }
+          
+          // Klasse vergeben, falls aktiv
+          if (isActiveNow) {
+            const wasAlreadyActive = card.dataset.isActive === "true";
+            card.classList.add('active');
+            card.dataset.isActive = "true";
+            
+            if (!wasAlreadyActive) {
+              setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }, 300);
+            }
+          } else {
+            card.dataset.isActive = "false";
+          }
+        });
+      }
+    }
+
+    updateActiveSpecial();
+    setInterval(updateActiveSpecial, 60000);
+  });
+</script>
+</body>
+</html>s/Sambuca.webp"      },
       {
             "id": "sourz",
             "name": "Sourz (Blackcurrant / Apple)",
