@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Roonburg Friday Special</title>
+  <title>Roonburg Specials</title>
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
   <style>
@@ -291,150 +291,24 @@
     </nav>
 
     <section class="hero">
-      <p class="kicker" id="heroKicker">Gönn dir Freitag</p>
-      <h1 id="heroHeadline">Weekend<br>Special</h1>
+      <p class="kicker" id="heroKicker">Roonburg</p>
+      <h1 id="heroHeadline">Specials</h1>
       <p class="intro" id="heroIntro">
-        Das absolute Highlight für deinen Start ins Wochenende.
+        Aktuell stehen hier keine Specials an. Schau bald wieder vorbei!
       </p>
     </section>
 
     <section class="timeline" id="specialTimeline">
-      
-      <!-- Erstes Special: 18 bis 22 Uhr -->
-      <div class="special-card" data-start="18" data-end="22">
-        <div class="time-badge">18-22<br>Uhr</div>
-        <div class="special-content">
-          <h2 class="special-title">Drinks Special</h2>
-          <p class="special-desc">Alle Longdrinks & Cocktails für 6,00€!<br><br>
-          <span style="font-size: 0.8rem; color: #ff8888;"><strong>Wichtig:</strong> Folgende 6 Klassiker bekommst du <strong>auch an der Shotbar</strong>:</span></p>
-          
-          <ul class="drinks-list">
-            <li>Sex on the beach</li>
-            <li>Touchdown</li>
-            <li>Cuba Libre</li>
-            <li>Tequila Sunrise</li>
-            <li>Blue Lagoon</li>
-            <li>Solero</li>
-          </ul>
-
-          <p class="special-desc" style="margin-bottom: 15px;">
-            <span style="font-size: 0.8rem; color: #ffb450;"><strong>Lillet & Aperol</strong> gibt es zudem <strong>auch an der Haupttheke</strong>.<br>Alle anderen Drinks gibt es exklusiv an der Cocktailbar.</span>
-          </p>
-
-          <div class="tags-container">
-            <span class="price-tag">Jeder Drink 6,00€</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Zweites Special: 22 bis 5 Uhr morgens -->
-      <div class="special-card" data-start="22" data-end="5">
-        <div class="time-badge">Ab 22<br>Uhr</div>
-        <div class="special-content">
-          <h2 class="special-title">Late Night Spritz</h2>
-          <p class="special-desc" style="margin-bottom: 12px;">Das exklusive Angebot für den Rest der Nacht. Gilt an der Haupttheke und der Cocktailbar.</p>
-          
-          <ul class="drinks-list">
-            <li>Aperol Spritz</li>
-            <li>Wildberry Lillet</li>
-            <li>Sarti Lemon Spritz</li>
-            
-          </ul>
-
-          <div class="tags-container">
-            <span class="price-tag">Jeder Spritz 6,00€</span>
-          </div>
-
-          <a href="https://www.roonburg-cocktails.de/" class="cocktail-btn" target="_blank">🍸 Zur gesamten Cocktailkarte</a>
-        </div>
-      </div>
-
+      <!-- Platzhalter für zukünftige Specials -->
     </section>
 
     <p class="footer-note">
-      Roonburg Köln · Bitte verantwortungsvoll genießen<br>
-      Aktionen gültig diesen Freitag.
+      Roonburg Köln · Bitte verantwortungsvoll genießen
     </p>
   </main>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const automatikAktiv = true; 
-
-    function updateActiveSpecial() {
-      if (!automatikAktiv) return;
-
-      const testDate = new Date(); 
-      const formatter = new Intl.DateTimeFormat("de-DE", {
-        timeZone: "Europe/Berlin",
-        hour: "numeric",
-        weekday: "short",
-        hour12: false
-      });
-
-      const parts = formatter.formatToParts(testDate);
-      let currentHour = 0;
-      let currentWeekday = "";
-
-      parts.forEach(part => {
-        if (part.type === "hour") {
-          currentHour = parseInt(part.value, 10);
-        }
-        if (part.type === "weekday") {
-          currentWeekday = part.value.replace(".", "").trim(); 
-        }
-      });
-
-      // Wir definieren "Freitagnacht" als Zeitraum zwischen Fr 18:00 und Sa 04:59
-      let isFridayNight = false;
-      if (currentWeekday === "Fr" && currentHour >= 18) isFridayNight = true;
-      if (currentWeekday === "Sa" && currentHour < 5) isFridayNight = true;
-
-      const cards = document.querySelectorAll('.special-card');
-      
-      // Erstmal bei allen Karten die aktive Klasse entfernen
-      cards.forEach(card => card.classList.remove('active'));
-
-      if (isFridayNight) {
-        cards.forEach(card => {
-          const startHour = parseInt(card.getAttribute('data-start'), 10);
-          const endHour = parseInt(card.getAttribute('data-end'), 10);
-          
-          let isActiveNow = false;
-
-          // Prüfung für Specials, die über Mitternacht gehen (z.B. 22 bis 5 Uhr)
-          if (startHour > endHour) {
-            if (currentHour >= startHour || currentHour < endHour) {
-              isActiveNow = true;
-            }
-          } else {
-            // Prüfung für Specials am gleichen Tag (z.B. 18 bis 22 Uhr)
-            if (currentHour >= startHour && currentHour < endHour) {
-              isActiveNow = true;
-            }
-          }
-          
-          // Klasse vergeben, falls aktiv
-          if (isActiveNow) {
-            const wasAlreadyActive = card.dataset.isActive === "true";
-            card.classList.add('active');
-            card.dataset.isActive = "true";
-            
-            if (!wasAlreadyActive) {
-              setTimeout(() => {
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }, 300);
-            }
-          } else {
-            card.dataset.isActive = "false";
-          }
-        });
-      }
-    }
-
-    updateActiveSpecial();
-    setInterval(updateActiveSpecial, 60000);
-  });
+  // Script-Logik entfernt, bis wieder dynamische Specials benötigt werden.
 </script>
 </body>
 </html>
