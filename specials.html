@@ -319,12 +319,24 @@
         </div>
       </div>
 
-      <!-- SAMSTAGS SPECIAL -->
-      <div class="special-card" id="card-saturday">
-        <div class="time-badge">Jeden<br>Samstag</div>
+      <!-- SAMSTAGS SPECIAL 1: HAPPY HOUR (20-21 UHR) -->
+      <div class="special-card" id="card-saturday-hh">
+        <div class="time-badge">20-21<br>Uhr</div>
+        <div class="special-content">
+          <h2 class="special-title">Happy Hour 2 für 1</h2>
+          <p class="special-desc">1 bestellen, 2 bekommen! Gilt für ausgewählte Cocktails auf unserer Karte.</p>
+          
+          <a href="https://www.roonburg-cocktails.de/" class="cocktail-btn" target="_blank">🍸 Ausgewählte Drinks ansehen</a>
+        </div>
+      </div>
+
+      <!-- SAMSTAGS SPECIAL 2: COCKTAIL DES ABENDS -->
+      <div class="special-card" id="card-saturday-cocktail">
+        <div class="time-badge">Ab 23<br>Uhr</div>
         <div class="special-content">
           <h2 class="special-title">Cocktail des Abends</h2>
-          <p class="special-desc">Jede Woche ein neues Highlight aus unserer Cocktail-Karte zum absoluten Spezialpreis.</p>
+          <p class="special-desc">Jede Woche ein neues Highlight aus unserer Cocktail-Karte zum absoluten Spezialpreis.<br><br>
+          <span style="font-size: 0.85rem; color: #ffb450;"><strong>Hinweis:</strong> Dieses Angebot gilt erst ab 23:00 Uhr.</span></p>
           
           <div class="tags-container">
             <span class="price-tag">Nur 6,00€</span>
@@ -366,15 +378,19 @@
         }
       });
 
-      // Freitagnacht ist von Freitag ab 00:00 bis Samstagmorgen 4:59 (sofern die Aktion den ganzen Freitag gilt, sonst abends einstellen)
-      // Um es logisch für den Clubabend zu machen: Freitag ab 18 Uhr bis Samstag 5 Uhr.
+      // Freitagnacht ist von Freitag ab 18:00 bis Samstagmorgen 4:59 
       let isFridayNight = (currentWeekday === "Fr" && currentHour >= 18) || (currentWeekday === "Sa" && currentHour < 5);
       
-      // Samstagnacht ist von Samstag 18 Uhr bis Sonntagmorgen 5 Uhr.
+      // Samstagnacht ist von Samstag 18:00 bis Sonntagmorgen 4:59
       let isSaturdayNight = (currentWeekday === "Sa" && currentHour >= 18) || (currentWeekday === "So" && currentHour < 5);
+      
+      // Specials check
+      let isHappyHourActive = (currentWeekday === "Sa" && currentHour === 20);
+      let isCocktailActive = (currentWeekday === "Sa" && currentHour >= 23) || (currentWeekday === "So" && currentHour < 5);
 
       const cardFr = document.getElementById("card-friday");
-      const cardSa = document.getElementById("card-saturday");
+      const cardSaHH = document.getElementById("card-saturday-hh");
+      const cardSaCocktail = document.getElementById("card-saturday-cocktail");
       
       const kickerEl = document.getElementById("heroKicker");
       const headlineEl = document.getElementById("heroHeadline");
@@ -383,32 +399,48 @@
       if (isFridayNight) {
         // Freitag Live-Modus
         cardFr.style.display = "flex";
-        cardSa.style.display = "none";
+        cardSaHH.style.display = "none";
+        cardSaCocktail.style.display = "none";
         
         cardFr.classList.add("active");
         
         kickerEl.innerText = "Gönn dir Freitag";
         headlineEl.innerHTML = "Friday<br>Special";
-        introEl.innerText = "Das absolute Highlight für deinen Start ins Wochenende.";
+        introEl.innerText = "Dein prickelnder Start ins Wochenende.";
       } 
       else if (isSaturdayNight) {
         // Samstag Live-Modus
         cardFr.style.display = "none";
-        cardSa.style.display = "flex";
+        cardSaHH.style.display = "flex";
+        cardSaCocktail.style.display = "flex";
         
-        cardSa.classList.add("active");
+        // Happy Hour pulsiert nur von 20 bis 21 Uhr
+        if (isHappyHourActive) {
+          cardSaHH.classList.add("active");
+        } else {
+          cardSaHH.classList.remove("active");
+        }
+
+        // Cocktail des Abends pulsiert erst ab 23 Uhr
+        if (isCocktailActive) {
+          cardSaCocktail.classList.add("active");
+        } else {
+          cardSaCocktail.classList.remove("active");
+        }
         
         kickerEl.innerText = "Shake it Samstag";
         headlineEl.innerHTML = "Saturday<br>Special";
         introEl.innerText = "Dein exklusives Roonburg Special für die Samstagnacht.";
       } 
       else {
-        // Unter der Woche: Beide Karten als stumme Info anzeigen
+        // Unter der Woche: Alle Karten als stumme Info anzeigen
         cardFr.style.display = "flex";
-        cardSa.style.display = "flex";
+        cardSaHH.style.display = "flex";
+        cardSaCocktail.style.display = "flex";
         
         cardFr.classList.remove("active");
-        cardSa.classList.remove("active");
+        cardSaHH.classList.remove("active");
+        cardSaCocktail.classList.remove("active");
         
         kickerEl.innerText = "Roonburg";
         headlineEl.innerHTML = "Weekend<br>Specials";
