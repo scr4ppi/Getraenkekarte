@@ -38,7 +38,108 @@
 
     body {
       overflow-x: hidden;
+      position: relative;
     }
+
+    /* =========================================
+       HALLOWEEN MODE CSS - DIE VERFLUCHUNG
+       ========================================= */
+
+    @keyframes blood-pulse {
+      0% { filter: brightness(1) contrast(1); }
+      100% { filter: brightness(0.7) contrast(1.4); }
+    }
+
+    /* Überschreibt den Standard-Hintergrund mit etwas sehr Düsterem */
+    body.halloween-mode {
+      background:
+        radial-gradient(circle at 20% 8%, rgba(255, 0, 0, 0.3), transparent 35%),
+        radial-gradient(circle at 82% 12%, rgba(138, 3, 3, 0.2), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(200, 0, 0, 0.15), transparent 45%),
+        linear-gradient(180deg, #0a0000, #000000 80%);
+      animation: blood-pulse 4s infinite alternate;
+    }
+
+    /* Blitzeffekt (Gewitter) */
+    .lightning-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: #fff;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    
+    @keyframes storm-flash {
+      0%, 92%, 96%, 100% { opacity: 0; }
+      93% { opacity: 0.7; }
+      94% { opacity: 0; }
+      97% { opacity: 0.4; }
+    }
+
+    body.halloween-mode .lightning-overlay {
+      display: block;
+      animation: storm-flash 7s infinite;
+    }
+
+    /* Flackernder, kaputter Text-Effekt für die H1 */
+    @keyframes cursed-flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 8px #ff0000, 0 0 20px #ff0000, 0 0 40px #8a0303;
+        transform: scale(1) rotate(0deg);
+      }
+      20%, 24%, 55% {
+        opacity: 0.3;
+        text-shadow: none;
+        transform: scale(0.98) rotate(-2deg);
+      }
+      85% {
+        transform: scale(1.02) rotate(1deg);
+      }
+    }
+
+    body.halloween-mode h1 {
+      color: #ff3333;
+      animation: cursed-flicker 4.5s infinite;
+      font-family: "Courier New", Courier, monospace;
+      letter-spacing: 0.05em;
+    }
+
+    /* Blutige Kicker-Texte */
+    body.halloween-mode .kicker {
+      color: #8a0303;
+      text-shadow: 0 0 10px red;
+    }
+    body.halloween-mode h2 {
+        color: #ff6600;
+        text-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+    }
+
+    /* Verfluchte Drink-Reihen */
+    body.halloween-mode .drink-row {
+      background: rgba(15, 0, 0, 0.75);
+      border-color: rgba(255, 0, 0, 0.3);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    body.halloween-mode .drink-row:hover,
+    body.halloween-mode .drink-row:active {
+      background: rgba(40, 0, 0, 0.9);
+      border-color: #ff0000;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+      transform: scale(1.02);
+    }
+
+    body.halloween-mode .drink-price {
+      color: #ff1111;
+      text-shadow: 0 0 8px rgba(255, 17, 17, 0.6);
+    }
+
+    /* =========================================
+       ENDE HALLOWEEN MODE CSS
+       ========================================= */
 
     .page {
       width: min(100%, 760px);
@@ -84,6 +185,7 @@
       text-transform: uppercase;
       color: var(--accent);
       font-weight: 800;
+      transition: color 0.3s ease;
     }
 
     h1 {
@@ -92,6 +194,12 @@
       line-height: 0.9;
       text-transform: uppercase;
       letter-spacing: -0.07em;
+    }
+
+    h2 {
+        margin: 5px 0 0 0;
+        font-size: 1rem;
+        color: var(--muted);
     }
 
     .top-actions {
@@ -167,6 +275,9 @@
 </head>
 
 <body>
+  <!-- Gewitter-Overlay für den Halloween Modus -->
+  <div class="lightning-overlay"></div>
+
   <main class="page">
     <section class="hero">
       <div class="logo-wrap">
@@ -178,9 +289,9 @@
         </div>
       </div>
 
-      <p class="kicker">2 CL</p>
-      <h1>Shots</h1>
-      <h2>(an jeder Theke)</h2>
+      <p class="kicker" id="mainKicker">2 CL</p>
+      <h1 id="mainHeadline">Shots</h1>
+      <h2 id="subHeadline">(an jeder Theke)</h2>
     </section>
 
     <div class="top-actions">
@@ -224,8 +335,28 @@
       });
     }
 
-    // Direkt ausführen, da keine Filter mehr nötig sind
-    renderDrinks();
+    document.addEventListener("DOMContentLoaded", () => {
+      // Shots laden
+      renderDrinks();
+
+      // --- HALLOWEEN WEICHE ---
+      const testDate = new Date(); 
+      // getMonth() ist 0-basiert (9 = Oktober). getDate() ist der Tag (30 oder 31)
+      const isHalloween = testDate.getMonth() === 9 && (testDate.getDate() === 30 || testDate.getDate() === 31);
+      
+      if (isHalloween) {
+        document.body.classList.add("halloween-mode");
+        
+        // Texte etwas gruseliger machen
+        const kickerEl = document.getElementById("mainKicker");
+        const headlineEl = document.getElementById("mainHeadline");
+        const subEl = document.getElementById("subHeadline");
+        
+        if (kickerEl) kickerEl.innerText = "Giftiges";
+        if (headlineEl) headlineEl.innerHTML = "Blut-<br>Shots";
+        if (subEl) subEl.innerHTML = "(Auf eigene Gefahr)";
+      }
+    });
   </script>
 </body>
 </html>
