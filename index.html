@@ -67,6 +67,108 @@
       pointer-events: none;
     }
 
+    /* =========================================
+       HALLOWEEN MODE CSS - DIE VERFLUCHUNG
+       ========================================= */
+    
+    @keyframes bg-pulse {
+      0% { filter: brightness(1) contrast(1.2); }
+      100% { filter: brightness(0.6) contrast(1.5); }
+    }
+
+    body.halloween-mode::before {
+      background:
+        linear-gradient(
+          rgba(20, 0, 0, 0.8),
+          rgba(0, 0, 0, 0.95)
+        ),
+        url("Halloween.png"), url("Clubhochkant.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      animation: bg-pulse 4s infinite alternate;
+    }
+
+    body.halloween-mode::after {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 0, 0, 0.25), transparent 35%),
+        radial-gradient(circle at 85% 8%, rgba(138, 3, 3, 0.2), transparent 30%),
+        radial-gradient(circle at 50% 95%, rgba(255, 60, 0, 0.15), transparent 40%);
+    }
+
+    /* Blitzeffekt (Gewitter) */
+    .lightning-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: #fff;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    
+    @keyframes storm-flash {
+      0%, 92%, 96%, 100% { opacity: 0; }
+      93% { opacity: 0.7; }
+      94% { opacity: 0; }
+      97% { opacity: 0.4; }
+    }
+
+    body.halloween-mode .lightning-overlay {
+      display: block;
+      animation: storm-flash 7s infinite;
+    }
+
+    /* Flackernder, kaputter Text-Effekt */
+    @keyframes cursed-flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 8px #ff0000, 0 0 20px #ff0000, 0 0 40px #8a0303;
+        transform: scale(1) rotate(0deg);
+      }
+      20%, 24%, 55% {
+        opacity: 0.3;
+        text-shadow: none;
+        transform: scale(0.98) rotate(-2deg);
+      }
+      85% {
+        transform: scale(1.02) rotate(1deg);
+      }
+    }
+
+    body.halloween-mode h1 {
+      color: #ff3333;
+      animation: cursed-flicker 4.5s infinite;
+      font-family: "Courier New", Courier, monospace; /* Gruseliger Schreibmaschinen-Look */
+      letter-spacing: 0.05em;
+    }
+
+    /* Unheimliches Schweben für den Text darunter */
+    @keyframes eerie-float {
+      0%, 100% { transform: translateY(0); color: #ff6600; text-shadow: 0 0 10px rgba(255, 102, 0, 0.5); }
+      50% { transform: translateY(-5px); color: #ff1111; text-shadow: 0 0 25px rgba(255, 17, 17, 0.9); }
+    }
+
+    body.halloween-mode .intro {
+      animation: eerie-float 3s infinite ease-in-out;
+      font-weight: bold;
+    }
+
+    body.halloween-mode .kicker {
+      color: #8a0303;
+      text-shadow: 0 0 10px red;
+    }
+
+    /* Düstere Karten-Hover-Effekte */
+    body.halloween-mode .menu-card:active,
+    body.halloween-mode .menu-card.open {
+      border-color: #ff0000;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+    }
+    
+    /* =========================================
+       ENDE HALLOWEEN MODE CSS
+       ========================================= */
+
     .page {
       width: 100%;
       max-width: 480px;
@@ -115,6 +217,7 @@
       text-transform: uppercase;
       color: var(--accent);
       font-weight: 800;
+      transition: color 0.3s ease;
     }
 
     h1 {
@@ -154,6 +257,7 @@
       isolation: isolate;
       touch-action: manipulation;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .menu-card:active {
@@ -370,6 +474,9 @@
 </head>
 
 <body>
+  <!-- Gewitter-Overlay für den Halloween Modus -->
+  <div class="lightning-overlay"></div>
+
   <main class="page">
     <section class="hero">
       <div class="logo-wrap">
@@ -381,9 +488,9 @@
         </div>
       </div>
 
-      <p class="kicker">Roonburg</p>
-      <h1>Getränke<br>karte</h1>
-      <p class="intro">
+      <p class="kicker" id="mainKicker">Roonburg</p>
+      <h1 id="mainHeadline">Getränke<br>karte</h1>
+      <p class="intro" id="mainIntro">
         Wähle deine Kategorie und finde den passenden Drink für den Abend.
       </p>
     </section>
@@ -486,10 +593,28 @@
   </main>
 
   <script>
-    // JS Logik für das Wein & Sekt Dropdown
     document.addEventListener("DOMContentLoaded", () => {
-      const weinSektBtn = document.getElementById("weinSektToggle");
       
+      // --- HALLOWEEN WEICHE ---
+      const testDate = new Date(); 
+      // getMonth() ist 0-basiert (9 = Oktober). getDate() ist der Tag (30 oder 31)
+      const isHalloween = testDate.getMonth() === 9 && (testDate.getDate() === 30 || testDate.getDate() === 31);
+      
+      if (isHalloween) {
+        document.body.classList.add("halloween-mode");
+        
+        // Texte etwas gruseliger machen
+        const kickerEl = document.getElementById("mainKicker");
+        const headlineEl = document.getElementById("mainHeadline");
+        const introEl = document.getElementById("mainIntro");
+        
+        if (kickerEl) kickerEl.innerText = "Happy Halloween";
+        if (headlineEl) headlineEl.innerHTML = "Blut &<br>Getränke";
+        if (introEl) introEl.innerHTML = "Wähle dein Gift für diese verfluchte Nacht...";
+      }
+
+      // --- NORMALE LOGIK FÜR DAS DROPDOWN (Unverändert!) ---
+      const weinSektBtn = document.getElementById("weinSektToggle");
       if(weinSektBtn) {
         weinSektBtn.addEventListener("click", () => {
           weinSektBtn.classList.toggle("open");
