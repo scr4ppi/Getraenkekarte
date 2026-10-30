@@ -139,23 +139,15 @@
     body.halloween-mode #heroHeadline {
       color: #ff3333;
       animation: cursed-flicker 4.5s infinite;
-      font-family: "Courier New", Courier, monospace; /* Gruseliger Schreibmaschinen-Look */
+      font-family: "Courier New", Courier, monospace;
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     /* Unheimliches Schweben für den Text darunter */
     @keyframes eerie-float {
-      0%, 100% { 
-        transform: translateY(0); 
-        color: #ff6600; 
-        text-shadow: 0 0 10px rgba(255, 102, 0, 0.5); 
-      }
-      50% { 
-        transform: translateY(-5px); 
-        color: #ff1111; 
-        text-shadow: 0 0 25px rgba(255, 17, 17, 0.9); 
-      }
+      0%, 100% { transform: translateY(0); color: #ff6600; text-shadow: 0 0 10px rgba(255, 102, 0, 0.5); }
+      50% { transform: translateY(-5px); color: #ff1111; text-shadow: 0 0 25px rgba(255, 17, 17, 0.9); }
     }
 
     body.halloween-mode #heroIntro {
@@ -167,7 +159,71 @@
       color: #8a0303;
       text-shadow: 0 0 10px red;
     }
-    
+
+    /* --- HALLOWEEN SPECIALS KARTEN STYLING --- */
+    .halloween-section-title {
+      font-size: 1.15rem;
+      text-align: center;
+      color: #ff3333;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 10px 0 15px 0;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+      animation: cursed-flicker 4s infinite;
+    }
+
+    .halloween-drink-card {
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .halloween-shooters-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .h-img-large {
+      width: 75px;
+      height: 95px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 0, 0, 0.4);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    }
+
+    .h-shooters-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+
+    .h-shot {
+      text-align: center;
+    }
+
+    .h-shot img {
+      width: 100%;
+      aspect-ratio: 1; /* Macht die Bilder automatisch zu perfekten Quadraten */
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 0, 0, 0.4);
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+      margin-bottom: 6px;
+    }
+
+    .h-shot span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #ffb450;
+      text-transform: uppercase;
+    }
+
+    .bloody-tag {
+      background: #8a0303 !important;
+      box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    }
     /* =========================================
        ENDE HALLOWEEN MODE CSS
        ========================================= */
@@ -406,8 +462,8 @@
       </p>
     </section>
 
+    <!-- NORMALE SPECIALS -->
     <section class="timeline" id="specialTimeline">
-      
       <!-- FREITAGS SPECIAL -->
       <div class="special-card" id="card-friday">
         <div class="time-badge">Jeden<br>Freitag</div>
@@ -453,7 +509,49 @@
           <a href="https://www.roonburg-cocktails.de/" class="cocktail-btn" target="_blank">🍸 Zur Cocktailkarte</a>
         </div>
       </div>
+    </section>
 
+    <!-- HALLOWEEN SPECIALS (Versteckt bis zur Halloween-Nacht) -->
+    <section id="halloween-specials" style="display: none; margin-top: 10px;">
+      <h2 class="halloween-section-title">Probiert unsere schaurigen Misshandlungen</h2>
+
+      <!-- Aperol Spritze Card -->
+      <div class="special-card active halloween-drink-card">
+        <img src="Shots/Aperolspritze.webp" alt="Aperol Spritze" class="h-img-large" />
+        <div class="special-content">
+          <h2 class="special-title">Aperol Spritze</h2>
+          <p class="special-desc">Die schaurige Version eines echten Klassikers.</p>
+          <div class="tags-container">
+            <span class="price-tag bloody-tag">Exklusiv an der Cocktailbar</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Halloween Shooters Card -->
+      <div class="special-card active halloween-shooters-card">
+        <div class="special-content" style="width: 100%; margin-bottom: 16px;">
+          <h2 class="special-title">Halloween Shooters</h2>
+          <p class="special-desc">Gönnt euch die ultimativen Grusel-Shots der Nacht.</p>
+          <div class="tags-container">
+            <span class="price-tag bloody-tag">Nur an der Shotbar (Shooterbar)</span>
+          </div>
+        </div>
+        
+        <div class="h-shooters-grid">
+          <div class="h-shot">
+            <img src="Shots/VAmpirekiss.webp" alt="Vampire Kiss" />
+            <span>Vampire<br>Kiss</span>
+          </div>
+          <div class="h-shot">
+            <img src="Shots/Zombiebrain.webp" alt="Zombie Brain" />
+            <span>Zombie<br>Brain</span>
+          </div>
+          <div class="h-shot">
+            <img src="Shots/Alienbrain.webp" alt="Alien Brain" />
+            <span>Alien<br>Brain</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <p class="footer-note">
@@ -466,40 +564,50 @@
     
     function updateActiveSpecial() {
       const testDate = new Date(); 
+      const month = testDate.getMonth(); // 9 = Oktober, 10 = November
+      const day = testDate.getDate();
+      const hour = testDate.getHours();
       
       // --- HALLOWEEN WEICHE ---
-      // getMonth() ist 0-basiert (9 = Oktober). getDate() ist der Tag (30 oder 31)
-      const isHalloween = testDate.getMonth() === 9 && (testDate.getDate() === 30 || testDate.getDate() === 31);
+      // Gilt am 30. und 31. Oktober den ganzen Tag ODER am 1. November bis 5:59 Uhr morgens
+      const isHalloween = (month === 9 && (day === 30 || day === 31)) || (month === 10 && day === 1 && hour < 6);
       
       const cardFr = document.getElementById("card-friday");
       const cardSaHH = document.getElementById("card-saturday-hh");
       const cardSaCocktail = document.getElementById("card-saturday-cocktail");
+      const hwSpecials = document.getElementById("halloween-specials");
       
       const kickerEl = document.getElementById("heroKicker");
       const headlineEl = document.getElementById("heroHeadline");
       const introEl = document.getElementById("heroIntro");
 
-      // Wenn Halloween ist, überschreiben wir alles und beenden die Funktion!
+      // Wenn Halloween-Zeitraum ist, überschreiben wir alles und beenden die Funktion!
       if (isHalloween) {
         document.body.classList.add("halloween-mode");
         
+        // Verstecke die normalen Karten
         if (cardFr) cardFr.style.display = "none";
         if (cardSaHH) cardSaHH.style.display = "none";
         if (cardSaCocktail) cardSaCocktail.style.display = "none";
         
+        // Zeige den Halloween Container
+        if (hwSpecials) hwSpecials.style.display = "block";
+        
+        // Texte anpassen
         if (kickerEl) kickerEl.innerText = "Happy Halloween";
         if (headlineEl) headlineEl.innerHTML = "Specials<br>Verflucht";
         if (introEl) introEl.innerHTML = "Heute sind die Specials verflucht... 🎃👻<br><br>Wir sehen uns auf der Tanzfläche!";
         
-        return; // Bricht hier ab, die normale Logik wird erst am 1. Nov wieder ausgeführt
+        return; // Bricht hier ab, die normale Logik wird erst am 1. Nov um 6 Uhr wieder ausgeführt
       } else {
-        // Falls wir nach Halloween sind, entfernen wir den Modus sicherheitshalber
+        // Falls wir nach Halloween sind, entfernen wir den Modus und verstecken die Halloween-Karte
         document.body.classList.remove("halloween-mode");
+        if (hwSpecials) hwSpecials.style.display = "none";
       }
       // --- ENDE HALLOWEEN WEICHE ---
 
 
-      // --- NORMALE LOGIK (greift wieder ab 01.11.) ---
+      // --- NORMALE LOGIK (greift wieder ab 01.11. um 06:00 Uhr) ---
       const formatter = new Intl.DateTimeFormat("de-DE", {
         timeZone: "Europe/Berlin",
         hour: "numeric",
