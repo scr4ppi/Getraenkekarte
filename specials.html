@@ -68,6 +68,110 @@
       pointer-events: none;
     }
 
+    /* =========================================
+       HALLOWEEN MODE CSS - DIE VERFLUCHUNG
+       ========================================= */
+    
+    @keyframes bg-pulse {
+      0% { filter: brightness(1) contrast(1.2); }
+      100% { filter: brightness(0.6) contrast(1.5); }
+    }
+
+    body.halloween-mode::before {
+      background:
+        linear-gradient(
+          rgba(20, 0, 0, 0.8),
+          rgba(0, 0, 0, 0.95)
+        ),
+        url("Halloween.png"), url("Clubhochkant.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      animation: bg-pulse 4s infinite alternate;
+    }
+
+    body.halloween-mode::after {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 0, 0, 0.25), transparent 35%),
+        radial-gradient(circle at 85% 8%, rgba(138, 3, 3, 0.2), transparent 30%),
+        radial-gradient(circle at 50% 95%, rgba(255, 60, 0, 0.15), transparent 40%);
+    }
+
+    /* Blitzeffekt (Gewitter) */
+    .lightning-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: #fff;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    
+    @keyframes storm-flash {
+      0%, 92%, 96%, 100% { opacity: 0; }
+      93% { opacity: 0.7; }
+      94% { opacity: 0; }
+      97% { opacity: 0.4; }
+    }
+
+    body.halloween-mode .lightning-overlay {
+      display: block;
+      animation: storm-flash 7s infinite;
+    }
+
+    /* Flackernder, kaputter Text-Effekt */
+    @keyframes cursed-flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 8px #ff0000, 0 0 20px #ff0000, 0 0 40px #8a0303;
+        transform: scale(1) rotate(0deg);
+      }
+      20%, 24%, 55% {
+        opacity: 0.3;
+        text-shadow: none;
+        transform: scale(0.98) rotate(-2deg);
+      }
+      85% {
+        transform: scale(1.02) rotate(1deg);
+      }
+    }
+
+    body.halloween-mode #heroHeadline {
+      color: #ff3333;
+      animation: cursed-flicker 4.5s infinite;
+      font-family: "Courier New", Courier, monospace; /* Gruseliger Schreibmaschinen-Look */
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Unheimliches Schweben für den Text darunter */
+    @keyframes eerie-float {
+      0%, 100% { 
+        transform: translateY(0); 
+        color: #ff6600; 
+        text-shadow: 0 0 10px rgba(255, 102, 0, 0.5); 
+      }
+      50% { 
+        transform: translateY(-5px); 
+        color: #ff1111; 
+        text-shadow: 0 0 25px rgba(255, 17, 17, 0.9); 
+      }
+    }
+
+    body.halloween-mode #heroIntro {
+      animation: eerie-float 3s infinite ease-in-out;
+      font-weight: bold;
+    }
+
+    body.halloween-mode .kicker {
+      color: #8a0303;
+      text-shadow: 0 0 10px red;
+    }
+    
+    /* =========================================
+       ENDE HALLOWEEN MODE CSS
+       ========================================= */
+
     .page {
       width: 100%;
       max-width: 480px;
@@ -114,6 +218,7 @@
       text-transform: uppercase;
       color: var(--accent);
       font-weight: 800;
+      transition: color 0.3s ease;
     }
 
     h1 {
@@ -285,6 +390,9 @@
   </style>
 </head>
 <body>
+  <!-- Gewitter-Overlay für den Halloween Modus -->
+  <div class="lightning-overlay"></div>
+
   <main class="page">
     <nav class="header-nav">
       <a href="index.html" class="back-btn">← Zurück</a>
@@ -358,6 +466,40 @@
     
     function updateActiveSpecial() {
       const testDate = new Date(); 
+      
+      // --- HALLOWEEN WEICHE ---
+      // getMonth() ist 0-basiert (9 = Oktober). getDate() ist der Tag (30 oder 31)
+      const isHalloween = testDate.getMonth() === 9 && (testDate.getDate() === 30 || testDate.getDate() === 31);
+      
+      const cardFr = document.getElementById("card-friday");
+      const cardSaHH = document.getElementById("card-saturday-hh");
+      const cardSaCocktail = document.getElementById("card-saturday-cocktail");
+      
+      const kickerEl = document.getElementById("heroKicker");
+      const headlineEl = document.getElementById("heroHeadline");
+      const introEl = document.getElementById("heroIntro");
+
+      // Wenn Halloween ist, überschreiben wir alles und beenden die Funktion!
+      if (isHalloween) {
+        document.body.classList.add("halloween-mode");
+        
+        if (cardFr) cardFr.style.display = "none";
+        if (cardSaHH) cardSaHH.style.display = "none";
+        if (cardSaCocktail) cardSaCocktail.style.display = "none";
+        
+        if (kickerEl) kickerEl.innerText = "Happy Halloween";
+        if (headlineEl) headlineEl.innerHTML = "Specials<br>Verflucht";
+        if (introEl) introEl.innerHTML = "Heute sind die Specials verflucht... 🎃👻<br><br>Wir sehen uns auf der Tanzfläche!";
+        
+        return; // Bricht hier ab, die normale Logik wird erst am 1. Nov wieder ausgeführt
+      } else {
+        // Falls wir nach Halloween sind, entfernen wir den Modus sicherheitshalber
+        document.body.classList.remove("halloween-mode");
+      }
+      // --- ENDE HALLOWEEN WEICHE ---
+
+
+      // --- NORMALE LOGIK (greift wieder ab 01.11.) ---
       const formatter = new Intl.DateTimeFormat("de-DE", {
         timeZone: "Europe/Berlin",
         hour: "numeric",
@@ -388,16 +530,7 @@
       let isHappyHourActive = (currentWeekday === "Sa" && currentHour === 20);
       let isCocktailActive = (currentWeekday === "Sa" && currentHour >= 23) || (currentWeekday === "So" && currentHour < 5);
 
-      const cardFr = document.getElementById("card-friday");
-      const cardSaHH = document.getElementById("card-saturday-hh");
-      const cardSaCocktail = document.getElementById("card-saturday-cocktail");
-      
-      const kickerEl = document.getElementById("heroKicker");
-      const headlineEl = document.getElementById("heroHeadline");
-      const introEl = document.getElementById("heroIntro");
-
       if (isFridayNight) {
-        // Freitag Live-Modus
         cardFr.style.display = "flex";
         cardSaHH.style.display = "none";
         cardSaCocktail.style.display = "none";
@@ -409,19 +542,16 @@
         introEl.innerText = "Dein prickelnder Start ins Wochenende.";
       } 
       else if (isSaturdayNight) {
-        // Samstag Live-Modus
         cardFr.style.display = "none";
         cardSaHH.style.display = "flex";
         cardSaCocktail.style.display = "flex";
         
-        // Happy Hour pulsiert nur von 20 bis 21 Uhr
         if (isHappyHourActive) {
           cardSaHH.classList.add("active");
         } else {
           cardSaHH.classList.remove("active");
         }
 
-        // Cocktail des Abends pulsiert erst ab 23 Uhr
         if (isCocktailActive) {
           cardSaCocktail.classList.add("active");
         } else {
@@ -433,7 +563,6 @@
         introEl.innerText = "Dein exklusives Roonburg Special für die Samstagnacht.";
       } 
       else {
-        // Unter der Woche: Alle Karten als stumme Info anzeigen
         cardFr.style.display = "flex";
         cardSaHH.style.display = "flex";
         cardSaCocktail.style.display = "flex";
@@ -449,7 +578,6 @@
     }
 
     updateActiveSpecial();
-    // Prüft einmal pro Minute ob sich der Tag/die Zeit geändert hat
     setInterval(updateActiveSpecial, 60000);
   });
 </script>
