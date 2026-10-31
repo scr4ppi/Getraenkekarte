@@ -172,23 +172,29 @@
       animation: cursed-flicker 4s infinite;
     }
 
-    .halloween-drink-card {
+   .halloween-drink-card {
+      flex-direction: column;
       align-items: center;
+      text-align: center;
       margin-bottom: 15px;
+      padding: 24px 20px;
     }
 
-    .halloween-shooters-card {
+    .halloween-drink-card .special-content {
+      width: 100%;
+      display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
     }
 
     .h-img-large {
-      width: 75px;
-      height: 95px;
+      width: 100%;
+      height: 260px;
       object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 0, 0, 0.4);
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+      border-radius: 16px;
+      border: 2px solid rgba(255, 0, 0, 0.5);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+      margin-bottom: 10px;
     }
 
     .h-shooters-grid {
