@@ -159,21 +159,44 @@
       box-shadow: var(--shadow); display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; transition: 0.3s ease; overflow: hidden;
     }
 
-    /* PRIDE FLAGGE FÜR DIE ZEIT-BADGES (von oben nach unten) */
+    /* PRIDE-FARBEN AUF DIE EINZELNEN KÄSTCHEN VERTEILT */
     .time-badge {
-      flex: 0 0 76px;
+      flex: 0 0 88px;
       text-align: center;
       font-weight: 800;
-      font-size: 0.82rem;
-      line-height: 1.25;
+      font-size: 0.8rem;
+      line-height: 1.3;
       color: #fff;
-      background: linear-gradient(to bottom, #E40303 0%, #FF8C00 20%, #FFED00 40%, #008026 60%, #24408E 80%, #732982 100%);
-      padding: 10px 4px;
+      padding: 10px 6px;
       border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
       margin-top: 2px;
+    }
+
+    /* 1. Kästchen (Montag): Rot */
+    #card-monday .time-badge {
+      background: linear-gradient(135deg, #E40303, #b80000);
+    }
+    /* 2. Kästchen (Dienstag): Gelb / Orange */
+    #card-tuesday .time-badge {
+      background: linear-gradient(135deg, #FF8C00, #FFED00);
+      color: #111;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+      border-color: rgba(255, 237, 0, 0.6);
+    }
+    /* 3. Kästchen (Freitag): Grün */
+    #card-friday .time-badge {
+      background: linear-gradient(135deg, #008026, #00b336);
+    }
+    /* 4. Kästchen (Samstag Happy Hour): Blau */
+    #card-saturday-hh .time-badge {
+      background: linear-gradient(135deg, #24408E, #3b60c4);
+    }
+    /* 5. Kästchen (Samstag Cocktail): Violett */
+    #card-saturday-cocktail .time-badge {
+      background: linear-gradient(135deg, #732982, #9c3ab0);
     }
 
     /* AKTIVES SPECIAL HERVORHEBUNG */
@@ -259,9 +282,9 @@
     <!-- NORMALE SPECIALS -->
     <section class="timeline" id="specialTimeline">
       
-      <!-- MONTAGS SPECIAL -->
+      <!-- 1. MONTAGS SPECIAL (Rot) -->
       <div class="special-card" id="card-monday">
-        <div class="time-badge">Jeden<br>Montag</div>
+        <div class="time-badge" id="badge-mo">Jeden<br>Montag</div>
         <div class="special-content">
           <h2 class="special-title">Half Price Monday</h2>
           <p class="special-desc">Alles zum halben Preis! All Night Long.</p>
@@ -271,26 +294,28 @@
         </div>
       </div>
 
-      <!-- DIENSTAGS SPECIAL -->
+      <!-- 2. DIENSTAGS SPECIAL (Gelb/Orange) -->
       <div class="special-card" id="card-tuesday">
-        <div class="time-badge">Jeden<br>Dienstag</div>
+        <div class="time-badge" id="badge-tu">Jeden<br>Dienstag</div>
         <div class="special-content">
           <h2 class="special-title">Studenten Deals</h2>
-          <p class="special-desc">Günstige Drinks für die beste Partynacht der Woche. All Night Long!</p>
+          <p class="special-desc">Günstige Drinks für die beste Partynacht der Woche.</p>
           <ul class="drinks-list">
-            <li>Longdrinks</li>
-            <li>Kölsch</li>
+            <li>Freibier <br><span style="color:var(--muted); font-size:0.8rem; font-weight:normal;">(21:00 bis 23:00 Uhr)</span></li>
+            <li>Kölsch <br><span style="color:var(--muted); font-size:0.8rem; font-weight:normal;">(ab 23:00 Uhr)</span></li>
+            <li>Longdrinks <br><span style="color:var(--muted); font-size:0.8rem; font-weight:normal;">(All Night Long)</span></li>
           </ul>
           <div class="tags-container">
-            <span class="price-tag">Longdrinks 4,50€</span>
+            <span class="price-tag">Freibier (21-23 Uhr)</span>
             <span class="price-tag">Kölsch 1,50€</span>
+            <span class="price-tag">Longdrinks 4,50€</span>
           </div>
         </div>
       </div>
 
-      <!-- FREITAGS SPECIAL -->
+      <!-- 3. FREITAGS SPECIAL (Grün) -->
       <div class="special-card" id="card-friday">
-        <div class="time-badge">Jeden<br>Freitag</div>
+        <div class="time-badge" id="badge-fr">Jeden<br>Freitag</div>
         <div class="special-content">
           <h2 class="special-title">Spritz Night & Red Bull</h2>
           <p class="special-desc">Dein prickelnder Start ins Wochenende.</p>
@@ -305,9 +330,9 @@
         </div>
       </div>
 
-      <!-- SAMSTAGS SPECIAL 1: HAPPY HOUR (21-22:30 UHR) mit Shooters-Link -->
+      <!-- 4. SAMSTAGS SPECIAL 1: HAPPY HOUR (Blau) -->
       <div class="special-card" id="card-saturday-hh">
-        <div class="time-badge">21:00-<br>22:30</div>
+        <div class="time-badge" id="badge-sa-hh">Samstag<br>21:00–22:30</div>
         <div class="special-content">
           <h2 class="special-title">Happy Hour -50%</h2>
           <p class="special-desc">Alle Cocktails und Shooters zum halben Preis.</p>
@@ -318,9 +343,9 @@
         </div>
       </div>
 
-      <!-- SAMSTAGS SPECIAL 2: COCKTAIL DES ABENDS -->
+      <!-- 5. SAMSTAGS SPECIAL 2: COCKTAIL DES ABENDS (Violett) -->
       <div class="special-card" id="card-saturday-cocktail">
-        <div class="time-badge">Ab 23<br>Uhr</div>
+        <div class="time-badge" id="badge-sa-cot">Samstag<br>Ab 23 Uhr</div>
         <div class="special-content">
           <h2 class="special-title">Cocktail des Abends</h2>
           <p class="special-desc">Jede Woche ein neues Highlight aus unserer Cocktail-Karte zum absoluten Spezialpreis.<br><br>
@@ -392,6 +417,13 @@
       const cardFr = document.getElementById("card-friday");
       const cardSaHH = document.getElementById("card-saturday-hh");
       const cardSaCocktail = document.getElementById("card-saturday-cocktail");
+      
+      const badgeMo = document.getElementById("badge-mo");
+      const badgeTu = document.getElementById("badge-tu");
+      const badgeFr = document.getElementById("badge-fr");
+      const badgeSaHH = document.getElementById("badge-sa-hh");
+      const badgeSaCot = document.getElementById("badge-sa-cot");
+
       const hwSpecials = document.getElementById("halloween-specials");
       const kickerEl = document.getElementById("heroKicker");
       const headlineEl = document.getElementById("heroHeadline");
@@ -450,6 +482,12 @@
             card.classList.remove("active");
           }
         });
+        if (badgeMo) badgeMo.innerHTML = "Jeden<br>Montag";
+        if (badgeTu) badgeTu.innerHTML = "Jeden<br>Dienstag";
+        if (badgeFr) badgeFr.innerHTML = "Jeden<br>Freitag";
+        if (badgeSaHH) badgeSaHH.innerHTML = "Samstag<br>21:00–22:30";
+        if (badgeSaCot) badgeSaCot.innerHTML = "Samstag<br>Ab 23 Uhr";
+
         kickerEl.innerText = "Roonburg";
         headlineEl.innerHTML = "Weekly<br>Specials";
         introEl.innerText = "Unsere aktuellen Specials im Überblick.";
@@ -460,6 +498,7 @@
       if (isMondayNight) {
         cardTu.style.display = "none"; cardFr.style.display = "none"; cardSaHH.style.display = "none"; cardSaCocktail.style.display = "none";
         cardMo.classList.add("active");
+        if (badgeMo) badgeMo.innerHTML = "Heute<br>Montag";
         kickerEl.innerText = "Start your week right";
         headlineEl.innerHTML = "Monday<br>Special";
         introEl.innerText = "Der perfekte Wochenstart mit 50% Rabatt.";
@@ -467,13 +506,21 @@
       else if (isTuesdayNight) {
         cardMo.style.display = "none"; cardFr.style.display = "none"; cardSaHH.style.display = "none"; cardSaCocktail.style.display = "none";
         cardTu.classList.add("active");
+        if (badgeTu) badgeTu.innerHTML = "Heute<br>Dienstag";
         kickerEl.innerText = "Studenten Deal";
         headlineEl.innerHTML = "Tuesday<br>Special";
-        introEl.innerText = "Günstige Drinks für die beste Partynacht der Woche.";
+        
+        // Dynamischer Text je nachdem ob gerade Freibier-Zeit ist
+        if (currentHour >= 21 && currentHour < 23) {
+          introEl.innerText = "Es ist Freibier-Zeit! Die beste Partynacht der Woche läuft.";
+        } else {
+          introEl.innerText = "Günstige Drinks für die beste Partynacht der Woche.";
+        }
       }
       else if (isFridayNight) {
         cardMo.style.display = "none"; cardTu.style.display = "none"; cardSaHH.style.display = "none"; cardSaCocktail.style.display = "none";
         cardFr.classList.add("active");
+        if (badgeFr) badgeFr.innerHTML = "Heute<br>Freitag";
         kickerEl.innerText = "Gönn dir Freitag";
         headlineEl.innerHTML = "Friday<br>Special";
         introEl.innerText = "Dein prickelnder Start ins Wochenende.";
@@ -481,6 +528,9 @@
       else if (isSaturdayNight) {
         cardMo.style.display = "none"; cardTu.style.display = "none"; cardFr.style.display = "none";
         
+        if (badgeSaHH) badgeSaHH.innerHTML = "Heute<br>21:00–22:30";
+        if (badgeSaCot) badgeSaCot.innerHTML = "Heute<br>Ab 23 Uhr";
+
         const isBeforeHalfPastTen = (currentWeekday === "Sa" && (currentHour < 22 || (currentHour === 22 && currentMinute < 30)));
         
         if (isBeforeHalfPastTen) {
