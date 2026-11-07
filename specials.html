@@ -342,6 +342,7 @@
       const day = testDate.getDate();
       const hour = testDate.getHours();
       
+      // HALLOWEEN-WEICHE
       const isHalloween = (month === 9 && (day === 30 || day === 31)) || (month === 10 && day === 1 && hour < 6);
       
       const cardMo = document.getElementById("card-monday");
@@ -390,36 +391,20 @@
         if (part.type === "weekday") currentWeekday = part.value.replace(".", "").trim(); 
       });
 
-      const timeInMinutes = currentHour * 60 + currentMinute;
-
-      // Define logical nights (18:00 to 05:59 next day)
+      // Definiert die Party-Nächte (jeweils 18:00 Uhr bis 05:59 Uhr am Folgetag)
       let isMondayNight = (currentWeekday === "Mo" && currentHour >= 18) || (currentWeekday === "Di" && currentHour < 6);
       let isTuesdayNight = (currentWeekday === "Di" && currentHour >= 18) || (currentWeekday === "Mi" && currentHour < 6);
       let isFridayNight = (currentWeekday === "Fr" && currentHour >= 18) || (currentWeekday === "Sa" && currentHour < 6);
       let isSaturdayNight = (currentWeekday === "Sa" && currentHour >= 18) || (currentWeekday === "So" && currentHour < 6);
-      
-      // Saturday specific times
-      // Happy Hour: 21:00 to 22:30
-      let isHappyHourActive = currentWeekday === "Sa" && (timeInMinutes >= 21 * 60 && timeInMinutes < 22 * 60 + 30);
-      // Cocktail des Abends: 23:00 to 06:00 (Sunday morning)
-      let isCocktailActive = (currentWeekday === "Sa" && currentHour >= 23) || (currentWeekday === "So" && currentHour < 6);
 
-      // Default state: show all, no active highlighting
-      const resetCards = () => {
-        [cardMo, cardTu, cardFr, cardSaHH, cardSaCocktail].forEach(card => {
-          if (card) {
-            card.style.display = "flex";
-            card.classList.remove("active");
-          }
-        });
-        kickerEl.innerText = "Roonburg";
-        headlineEl.innerHTML = "Weekly<br>Specials";
-        introEl.innerText = "Unsere aktuellen Specials im Überblick.";
-      };
+      // Grundzustand: Alles als Vorschau einblenden und entfärben
+      [cardMo, cardTu, cardFr, cardSaHH, cardSaCocktail].forEach(card => {
+        if (card) {
+          card.style.display = "flex";
+          card.classList.remove("active");
+        }
+      });
 
-      resetCards();
-
-      // Apply logic based on current night
       if (isMondayNight) {
         cardTu.style.display = "none"; cardFr.style.display = "none"; cardSaHH.style.display = "none"; cardSaCocktail.style.display = "none";
         cardMo.classList.add("active");
@@ -444,26 +429,37 @@
       else if (isSaturdayNight) {
         cardMo.style.display = "none"; cardTu.style.display = "none"; cardFr.style.display = "none";
         
-        // Show both cards if neither is active or if both are somehow active
-        // Hide HH if Cocktail is active, Hide Cocktail if HH is active
-        if (isHappyHourActive) {
+        // Samstags-Prüfung: Vor 22:30 Uhr werden beide Specials angezeigt, danach fällt die Happy Hour weg
+        const isBeforeHalfPastTen = (currentWeekday === "Sa" && (currentHour < 22 || (currentHour === 22 && currentMinute < 30)));
+        
+        if (isBeforeHalfPastTen) {
           cardSaHH.style.display = "flex";
-          cardSaHH.classList.add("active");
-          cardSaCocktail.style.display = "none"; // Hide cocktail during HH
-        } else if (isCocktailActive) {
           cardSaCocktail.style.display = "flex";
-          cardSaCocktail.classList.add("active");
-          cardSaHH.style.display = "none"; // Hide HH during Cocktail time
+          
+          // Happy Hour glüht nur exakt zwischen 21:00 und 22:29 Uhr
+          if (currentHour === 21 || (currentHour === 22 && currentMinute < 30)) {
+            cardSaHH.classList.add("active");
+          }
         } else {
-          // If it's Saturday night but neither special is currently active (e.g. 18:00 - 20:59, or 22:30 - 22:59)
-          // Show both so user knows what's coming
-          cardSaHH.style.display = "flex";
+          // Ab 22:30 Uhr und Sonntagmorgen bis 6 Uhr: Nur noch der Cocktail des Abends ist sichtbar
+          cardSaHH.style.display = "none";
           cardSaCocktail.style.display = "flex";
+          
+          // Leuchtet ab 23:00 Uhr und am Sonntagmorgen
+          if (currentHour >= 23 || currentWeekday === "So") {
+            cardSaCocktail.classList.add("active");
+          }
         }
         
         kickerEl.innerText = "Shake it Samstag";
         headlineEl.innerHTML = "Saturday<br>Special";
         introEl.innerText = "Dein exklusives Roonburg Special für die Samstagnacht.";
+      } 
+      else {
+        // Tag ohne Event (z.B. Mittwoch, Donnerstag, Sonntagnachmittag)
+        kickerEl.innerText = "Roonburg";
+        headlineEl.innerHTML = "Weekly<br>Specials";
+        introEl.innerText = "Unsere aktuellen Specials im Überblick.";
       }
     }
 
