@@ -595,4 +595,674 @@
 
     .promo-popup-wrapper {
       position: relative;
-      width: min
+      width: min(95%, 440px); 
+      transform: scale(0.7);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 0 25px rgba(255, 0, 60, 0.8));
+    }
+
+    .promo-popup-overlay.show .promo-popup-wrapper {
+      transform: scale(1);
+    }
+
+    .promo-popup-shape {
+      background: linear-gradient(135deg, var(--neon-rot), #ff7300);
+      padding: 75px 50px; 
+      text-align: center;
+      clip-path: polygon(
+        50% 2%, 61% 14%, 80% 8%, 82% 25%, 98% 30%, 86% 45%,
+        98% 60%, 84% 68%, 82% 86%, 65% 78%, 50% 95%, 35% 78%,
+        18% 86%, 16% 68%, 2% 60%, 14% 45%, 2% 30%, 18% 25%,
+        20% 8%, 39% 14%
+      );
+    }
+
+    .promo-kicker {
+      margin: 0 0 8px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-shadow: 1px 1px 0px #000;
+    }
+
+    .promo-title {
+      font-size: 2.4rem; 
+      margin: 0 0 10px;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 900;
+      text-shadow: 3px 3px 0px #000;
+      line-height: 1;
+    }
+
+    .promo-text {
+      font-size: 1.15rem; 
+      color: #fff;
+      font-weight: 700;
+      margin: 0 0 18px; 
+      text-shadow: 1px 1px 0px #000;
+      line-height: 1.4;
+    }
+
+    .promo-shot-img {
+      width: 130px; 
+      height: 160px; 
+      object-fit: cover;
+      border-radius: 14px;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    .promo-close-btn {
+      position: absolute;
+      top: -15px;
+      right: -10px;
+      width: 50px;
+      height: 50px;
+      background: #000;
+      border: 2px solid #fff;
+      color: #fff;
+      font-size: 2rem;
+      line-height: 1;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+      transition: transform 0.2s;
+    }
+
+    .promo-close-btn:active {
+      transform: scale(0.9);
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="logo-wrap">
+        <div class="logo-mark">
+          <img
+            src="https://roonburg.de/media/default/assets/config/roonburg/images/roonburg-logo.png"
+            alt="Roonburg Logo"
+          />
+        </div>
+      </div>
+
+      <h1>Shooters</h1>
+      <p class="intro">
+        Sweet, Candy oder voll auf Alpha? Triff deine Wahl und starte die nächste Eskalation.
+      </p>
+    </section>
+
+    <div class="top-actions">
+      <button class="random-btn" id="randomShotBtn" type="button">Zufalls-Shot</button>
+      <a class="back-btn" href="index.html">Zurück zur Auswahl</a>
+    </div>
+
+    <nav class="filters" aria-label="Shot Kategorien">
+      <button class="filter-btn active" type="button" data-category="ALL">Alle</button>
+      <button class="filter-btn" type="button" data-category="Sweet/Bitchy">Sweet&Bitchy</button>
+      <button class="filter-btn" type="button" data-category="Candy">Candy</button>
+      <button class="filter-btn" type="button" data-category="Alpha">Alpha</button>
+    </nav>
+
+    <section class="list" id="shotList" aria-label="Shotliste"></section>
+  </main>
+
+  <div class="modal" id="shotModal" aria-hidden="true">
+    <div class="modal-card">
+      <p class="modal-kicker">Barkeeper's Choice</p>
+      
+      <div class="roulette-wrapper" id="rouletteWrapper" style="display: none;">
+        <div class="roulette-selector"></div>
+        <div class="roulette-track" id="rouletteTrack"></div>
+      </div>
+
+      <h2 class="modal-title" id="modalTitle" style="display: none;">Shot</h2>
+      
+      <div class="modal-actions" id="modalActions" style="display: none;">
+        <button class="modal-btn primary" id="modalOpenShot" type="button">Shot anzeigen</button>
+        <button class="modal-btn secondary" id="modalClose" type="button">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="promo-popup-overlay" id="promoPopup" aria-hidden="true">
+    <div class="promo-popup-wrapper">
+      <button class="promo-close-btn" id="promoClose" aria-label="Schließen">×</button>
+      
+      <div class="promo-popup-shape">
+        <p class="promo-kicker">Special- Shot</p>
+        <h2 class="promo-title">A.C.A.B</h2>
+        <p class="promo-text">Be the Change!</p>
+        
+        <img class="promo-shot-img" src="Shots/h2o.webp" alt="A.C.A.B Shot" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const shots = [
+      // ==========================
+      // SWEET/BITCHY SHOTS
+      // ==========================
+      {
+        id: "Pink-Diva",
+        name: "Pink Diva",
+        category: "Sweet/Bitchy",
+        price: "3,50 €",
+        image: "Shots/PinkDiva.webp",
+        ingredients: ["Vodka", "Melonenlikör", "Zitronensaft", "Zuckersirup"],
+        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
+      },
+      {
+        id: "Red-Devil",
+        name: "Red Devil",
+        category: "Sweet/Bitchy",
+        price: "3,50 €",
+        image: "Shots/RedDevil.webp",
+        ingredients: ["Baileys", "Amaretto", "Grenadine"],
+        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)", "Milch/Laktose"]
+      },
+      {
+        id: "TropicalD",
+        name: "Tropical D",
+        category: "Sweet/Bitchy",
+        price: "3,50 €",
+        image: "Shots/TropicalD.webp",
+        ingredients: ["Feigling Mango", "Limettensaft", "Malibu"],
+        contents: ["alkoholhaltig", "Säurungsmittel"]
+      },
+      {
+        id: "PartyintheUSA",
+        name: "Party in the USA",
+        category: "Sweet/Bitchy",
+        price: "3,50 €",
+        image: "Shots/PartyintheUSA.webp",
+        ingredients: ["Malibu", "Ananassaft"],
+        contents: ["alkoholhaltig"]
+      },
+      {
+        id: "VanillaGoddess",
+        name: "Vanilla Goddess",
+        category: "Sweet/Bitchy",
+        price: "3,50 €",
+        image: "Shots/VanillaGodess.webp",
+        ingredients: ["Likör 43", "Maracujasaft"],
+        contents: ["alkoholhaltig"]
+      },
+      {
+        id: "Maskuliner-Mann",
+        name: "Maskuliner Mann",
+        category: "Sweet/Bitchy",
+        price: "3,50 €",
+        image: "Shots/MaskulinerMann.webp",
+        ingredients: ["Erdbeerlimes", "Sourz Pink Berry"],
+        contents: ["alkoholhaltig", "Farbstoff(e)"]
+      },
+      {
+        id: "67",
+        name: "6-7",
+        category: "Sweet/Bitchy",
+        price: "3,50 €",
+        image: "Shots/67.webp",
+        ingredients: ["Blue Curacao", "Zitronensaft"],
+        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
+      },
+      // ==========================
+      // CANDY SHOTS
+      // ==========================
+      {
+        id: "Bananasplit",
+        name: "Banana Split",
+        category: "Candy",
+        price: "3,50 €",
+        image: "Shots/Bananensplit.webp",
+        ingredients: ["Bananenlikör", "Amaretto", "Baileys"],
+        contents: ["alkoholhaltig", "Milch/Laktose"]
+      },
+      {
+        id: "Booltys-Call",
+        name: "Booty Call",
+        category: "Candy",
+        price: "3,50 €",
+        image: "Shots/BootyCall.webp",
+        ingredients: ["Bananenlikör", "Amaretto", "Peachlikör"],
+        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
+      },
+      {
+        id: "Uups-i-did-it-again",
+        name: "Uups I did it again ...",
+        category: "Candy",
+        price: "3,50 €",
+        image: "Shots/Ididitagain.webp",
+        ingredients: ["Feigling Mango", "Pfeffi", "Limettensaft"],
+        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
+      },
+      {
+        id: "Center-Shock",
+        name: "Center Shock",
+        category: "Candy",
+        price: "3,50 €",
+        image: "Shots/centershock.webp",
+        ingredients: ["Sourz Apfel", "Zitronensaft"],
+        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
+      },
+      {
+        id: "Bubble-Gum",
+        name: "Bubble Gum",
+        category: "Candy",
+        price: "3,50 €",
+        image: "Shots/BubbleGum.webp",
+        ingredients: ["Blue Curacao", "Baileys", "Bananenlikör"],
+        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
+      },
+      {
+        id: "Gummibaerchen",
+        name: "Gummibärchen",
+        category: "Candy",
+        price: "3,50 €",
+        image: "Shots/gummibaer.webp",
+        ingredients: ["Kirschlikör", "Bananenlikör", "Zitronensaft"],
+        contents: ["alkoholhaltig", "Säurungsmittel"]
+      },
+      {
+        id: "Nutella-Shot",
+        name: "Nutella Shot",
+        category: "Candy",
+        price: "3,50 €",
+        image: "Shots/nutella.webp",
+        ingredients: ["Haselnusslikör", "Cacaolikör", "Sahne"],
+        contents: ["alkoholhaltig", "Milch/Laktose"]
+      },
+      {
+        id: "Apfelstrudel",
+        name: "Apfelstrudel",
+        category: "Candy",
+        price: "3,50 €",
+        image: "Shots/apfelstrudel1.webp",
+        ingredients: ["Vodka", "Malibu", "Zitrone", "Zuckersirup", "Apfelsaft"],
+        contents: ["alkoholhaltig", "Säurungsmittel"]
+      },
+      {
+        id: "Omas-Liebling",
+        name: "Oma's Liebling",
+        category: "Candy",
+        price: "3,50 €",
+        image: "Shots/OmasLiebling.webp",
+        ingredients: ["Pfeffi", "Cacaolikör", "Sahne"],
+        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
+      },
+      // ==========================
+      // ALPHA SHOTS
+      // ==========================
+      {
+        id: "Wrong-Hole",
+        name: "Wrong Hole",
+        category: "Alpha",
+        price: "3,50 €",
+        image: "Shots/wronghole.webp",
+        ingredients: ["Cacaolikör", "Baileys", "Grenadine"],
+        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
+      },
+      {
+        id: "Nonchalant",
+        name: "Nonchalant",
+        category: "Alpha",
+        price: "3,50 €",
+        image: "Shots/nonchalant.webp",
+        ingredients: ["Vodka", "Peachlikör", "Limettensaft"],
+        contents: ["alkoholhaltig", "Säurungsmittel"]
+      },
+      {
+        id: "H2O-Ploetzlich-Meerjungfrau",
+        name: "H2O Plötzlich Meerjungfrau",
+        category: "Alpha",
+        price: "3,50 €",
+        image: "Shots/h2o.webp",
+        ingredients: ["Blue Curacao", "Vodka", "Sambuca", "Baileys"],
+        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
+      },
+      {
+        id: "Im-blue",
+        name: "I'm blue",
+        category: "Alpha",
+        price: "3,50 €",
+        image: "Shots/Imblue.webp",
+        ingredients: ["Vodka", "Peachlikör", "Blue Curacao"],
+        contents: ["alkoholhaltig", "Farbstoff(e)"]
+      },
+      {
+        id: "Wild-River",
+        name: "Wild River",
+        category: "Alpha",
+        price: "3,50 €",
+        image: "Shots/wildriver.webp",
+        ingredients: ["Melonenlikör", "Baileys", "Bacardi Spice"],
+        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
+      },
+      {
+        id: "Der-Zerstoerer",
+        name: "Der Zerstörer",
+        category: "Alpha",
+        price: "3,50 €",
+        image: "Shots/zerstoerer.webp",
+        ingredients: ["Vodka", "Jägermeister", "Energy"],
+        contents: ["alkoholhaltig", "Koffein", "Farbstoff(e)"]
+      },
+      {
+        id: "99-Luftballons",
+        name: "99 Luftballons",
+        category: "Alpha",
+        price: "3,50 €",
+        image: "Shots/99luftballons.webp",
+        ingredients: ["Vodka", "Pfeffi"],
+        contents: ["alkoholhaltig", "Farbstoff(e)"]
+      },
+      {
+        id: "E-mc2",
+        name: "E=mc2",
+        category: "Alpha",
+        price: "3,50 €",
+        image: "Shots/Emc2.webp",
+        ingredients: ["Vodka", "Blue Curacao", "Zitronensaft"],
+        contents: ["alkoholhaltig", "Farbstoff(e)", "Säurungsmittel"]
+      },
+      {
+        id: "Anzeige",
+        name: "Anzeige ist raus!",
+        category: "Alpha",
+        price: "3,50 €",
+        image: "Shots/anzeige ist raus.webp",
+        ingredients: ["Vodka", "Blue Curacao", "Zitronensaft"],
+        contents: ["alkoholhaltig", "Farbstoff(e)", "Säurungsmittel"]
+      }
+    ];
+
+    const list = document.getElementById("shotList");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const randomBtn = document.getElementById("randomShotBtn");
+    const modal = document.getElementById("shotModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalActions = document.getElementById("modalActions");
+    const modalClose = document.getElementById("modalClose");
+    const modalOpenShot = document.getElementById("modalOpenShot");
+    const rouletteTrack = document.getElementById("rouletteTrack");
+    const rouletteWrapper = document.getElementById("rouletteWrapper");
+
+    let currentCategory = "ALL";
+    let selectedRandomShot = null;
+
+    // --- AUTOMATISCHE HAPPY HOUR LOGIK (SAMSTAG 21:00 - 22:30 UHR) ---
+    // Setze testModusHappyHour auf true, wenn du das 50%-Design sofort testen möchtest
+    const testModusHappyHour = false;
+
+    function isSaturdayHappyHour() {
+      if (testModusHappyHour) return true;
+
+      const formatter = new Intl.DateTimeFormat("de-DE", {
+        timeZone: "Europe/Berlin",
+        weekday: "short",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false
+      });
+
+      const parts = formatter.formatToParts(new Date());
+      let weekday = "";
+      let hour = 0;
+      let minute = 0;
+
+      parts.forEach(part => {
+        if (part.type === "weekday") weekday = part.value.replace(".", "").trim();
+        if (part.type === "hour") hour = parseInt(part.value, 10);
+        if (part.type === "minute") minute = parseInt(part.value, 10);
+      });
+
+      const timeInMinutes = hour * 60 + minute;
+      // Samstag zwischen 21:00 (1260 Min) und 22:29 (1349 Min)
+      return weekday === "Sa" && timeInMinutes >= 21 * 60 && timeInMinutes < (22 * 60 + 30);
+    }
+
+    function getShotPriceHTML(originalPrice) {
+      if (!isSaturdayHappyHour()) {
+        return `<div class="price">${originalPrice}</div>`;
+      }
+
+      const numericPrice = parseFloat(originalPrice.replace("€", "").replace(",", ".").trim());
+      if (isNaN(numericPrice)) {
+        return `<div class="price">${originalPrice}</div>`;
+      }
+
+      const discounted = (numericPrice * 0.5).toFixed(2).replace(".", ",");
+      return `<div class="price discounted">${discounted} € <span class="discount-badge">(-50%)</span></div>`;
+    }
+
+    // --- PROMO POPUP LOGIK ---
+    const enablePromoPopup = false; 
+    const testModusPopup = false; 
+
+    if (enablePromoPopup) {
+      const promoPopup = document.getElementById("promoPopup");
+      const promoClose = document.getElementById("promoClose");
+      const hasSeenPromo = localStorage.getItem("promoSeen_ACAB");
+
+      if (!hasSeenPromo || testModusPopup) {
+        setTimeout(() => {
+          promoPopup.classList.add("show");
+          promoPopup.setAttribute("aria-hidden", "false");
+        }, 1500);
+      }
+
+      function closePromo() {
+        promoPopup.classList.remove("show");
+        promoPopup.setAttribute("aria-hidden", "true");
+        localStorage.setItem("promoSeen_ACAB", "true");
+      }
+
+      promoClose.addEventListener("click", closePromo);
+
+      promoPopup.addEventListener("click", (event) => {
+        if (event.target === promoPopup) {
+          closePromo();
+        }
+      });
+    }
+
+    function renderShots() {
+      // Merkt sich geöffnete Karten, falls der 60-Sekunden-Timer neu rendert
+      const openCardIds = Array.from(document.querySelectorAll(".card.open")).map(c => c.dataset.id);
+
+      list.innerHTML = "";
+
+      const visibleShots = currentCategory === "ALL"
+        ? shots
+        : shots.filter(shot => shot.category === currentCategory);
+
+      const happyHourActive = isSaturdayHappyHour();
+
+      visibleShots.forEach(shot => {
+        const card = document.createElement("article");
+        card.className = "card" + (happyHourActive ? " happy-hour-card" : "");
+        if (openCardIds.includes(shot.id)) {
+          card.classList.add("open");
+        }
+        card.dataset.id = shot.id;
+        card.dataset.category = shot.category;
+
+        const isExpanded = openCardIds.includes(shot.id) ? "true" : "false";
+
+        card.innerHTML = `
+          <button class="card-toggle" type="button" aria-expanded="${isExpanded}">
+            <img class="shot-image" src="${shot.image}" alt="${shot.name}" loading="lazy" />
+
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 class="card-title">${shot.name}</h3>
+                ${getShotPriceHTML(shot.price)}
+              </div>
+            </div>
+          </button>
+
+          <div class="card-panel">
+            <div class="panel-box">
+              <h4>Inhalt</h4>
+              <ul class="ingredients">
+                ${shot.ingredients.map(item => `<li>${item}</li>`).join("")}
+              </ul>
+              
+              <div class="chips">
+                ${shot.contents.map(item => `<span class="chip">${item}</span>`).join("")}
+              </div>
+            </div>
+          </div>
+        `;
+
+        const toggle = card.querySelector(".card-toggle");
+
+        toggle.addEventListener("click", () => {
+          const isOpen = card.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
+
+        list.appendChild(card);
+      });
+    }
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        currentCategory = button.dataset.category;
+        renderShots();
+      });
+    });
+
+    randomBtn.addEventListener("click", () => {
+      const pool = currentCategory === "ALL"
+        ? shots
+        : shots.filter(shot => shot.category === currentCategory);
+
+      if (pool.length === 0) return;
+
+      modalTitle.style.display = "none";
+      modalActions.style.display = "none";
+      rouletteWrapper.style.display = "block";
+      
+      rouletteTrack.style.transition = "none";
+      rouletteTrack.style.webkitTransition = "none";
+      rouletteTrack.style.transform = "translateX(0px)";
+      rouletteTrack.style.webkitTransform = "translateX(0px)";
+      rouletteTrack.innerHTML = "";
+
+      selectedRandomShot = pool[Math.floor(Math.random() * pool.length)];
+
+      const totalItems = 40;
+      const winnerIndex = 34;
+
+      for (let i = 0; i < totalItems; i++) {
+        let shotForSlot = (i === winnerIndex) 
+          ? selectedRandomShot 
+          : pool[Math.floor(Math.random() * pool.length)];
+
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "roulette-item";
+        itemDiv.innerHTML = `
+          <img src="${shotForSlot.image}" alt="shot" loading="lazy" />
+          <span>${shotForSlot.name}</span>
+        `;
+        rouletteTrack.appendChild(itemDiv);
+      }
+
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+
+      setTimeout(() => {
+        void rouletteTrack.offsetWidth;
+
+        const containerCenter = rouletteWrapper.offsetWidth / 2;
+        const firstItem = rouletteTrack.querySelector('.roulette-item');
+        const itemWidth = firstItem.offsetWidth; 
+        
+        const itemOffset = (winnerIndex * itemWidth) + (itemWidth / 2);
+        const randomFuzz = Math.floor(Math.random() * (itemWidth * 0.4)) - (itemWidth * 0.2); 
+        const finalPosition = -(itemOffset - containerCenter) + randomFuzz;
+
+        const transitionStyle = "transform 4.5s cubic-bezier(0.1, 0.7, 0.1, 1)";
+        rouletteTrack.style.webkitTransition = transitionStyle;
+        rouletteTrack.style.transition = transitionStyle;
+        
+        rouletteTrack.style.webkitTransform = `translateX(${finalPosition}px)`;
+        rouletteTrack.style.transform = `translateX(${finalPosition}px)`;
+
+        setTimeout(() => {
+          modalTitle.textContent = selectedRandomShot.name;
+          modalTitle.style.display = "block";
+          modalActions.style.display = "grid";
+          
+          if(rouletteTrack.children[winnerIndex]) {
+            rouletteTrack.children[winnerIndex].classList.add("winner");
+          }
+        }, 4600);
+
+      }, 100);
+    });
+
+    modalClose.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+
+    modalOpenShot.addEventListener("click", () => {
+      if (!selectedRandomShot) return;
+
+      closeModal();
+
+      currentCategory = "ALL";
+      filterButtons.forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.category === "ALL");
+      });
+
+      renderShots();
+
+      setTimeout(() => {
+        const card = document.querySelector(`[data-id="${selectedRandomShot.id}"]`);
+        if (!card) return;
+
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
+        card.classList.add("open");
+
+        const toggle = card.querySelector(".card-toggle");
+        if (toggle) {
+          toggle.setAttribute("aria-expanded", "true");
+        }
+      }, 50);
+    });
+
+    function closeModal() {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      
+      setTimeout(() => {
+        rouletteTrack.innerHTML = "";
+        modalTitle.style.display = "none";
+        modalActions.style.display = "none";
+      }, 300);
+    }
+
+    renderShots();
+
+    // Prüft jede Minute automatisch, ob die Happy Hour gestartet oder abgelaufen ist
+    setInterval(renderShots, 60000);
+  </script>
+</body>
+</html>
