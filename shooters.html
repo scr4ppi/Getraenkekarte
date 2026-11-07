@@ -36,7 +36,6 @@
       padding: 0;
       min-height: 100%;
       font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      /* Die schwarze Wand ist hier entfernt */
       background: transparent;
       color: var(--text);
     }
@@ -227,7 +226,7 @@
     .list {
       display: grid;
       gap: 14px;
-      align-items: start; /* Verhindert das leere Mitwachsen der Nachbarkarte */
+      align-items: start;
     }
 
     .card {
@@ -238,7 +237,13 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      transition: background 0.3s ease, transform 0.2s ease;
+      transition: background 0.3s ease, transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* HAPPY HOUR STYLING FÜR DIE KARTEN */
+    .card.happy-hour-card {
+      border-color: rgba(255, 0, 60, 0.65);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px rgba(255, 0, 60, 0.25);
     }
 
     .card:active {
@@ -266,38 +271,37 @@
       border-right: 1px solid var(--border);
     }
 
-   .card-body {
+    .card-body {
       flex: 1;
       min-width: 0;
-      /* 95px unsichtbarer Puffer rechts, damit Text nicht unter den Preis rutscht */
-      padding: 16px 95px 16px 20px; 
+      padding: 16px 105px 16px 20px; 
       display: flex;
       flex-direction: column;
       justify-content: center;
-      position: relative; /* WICHTIG: Erlaubt uns, den Preis relativ zu dieser Box zu platzieren */
+      position: relative;
     }
 
     .card-title-row {
-      display: block; /* Flexbox deaktiviert, Text fließt natürlich nach unten */
+      display: block;
       width: 100%;
     }
 
     .card-title {
       margin: 0;
-      font-size: 1.3rem; /* Minimal verkleinert, damit "MASKULINER MANN" geschmeidiger passt */
+      font-size: 1.3rem;
       font-weight: 800;
       line-height: 1.15;
       text-transform: uppercase;
       letter-spacing: -0.02em;
-      overflow-wrap: break-word; /* Erzwingt Zeilenumbruch bei Monsternamen */
+      overflow-wrap: break-word;
       hyphens: auto;
     }
 
     .price {
       position: absolute;
-      right: 16px; /* Immer 16px vom rechten Rand */
+      right: 16px;
       top: 50%;
-      transform: translateY(-50%); /* Nagelt den Preis exakt vertikal mittig an die Box */
+      transform: translateY(-50%);
       font-weight: 900;
       color: #fff;
       font-size: 1.1rem;
@@ -305,7 +309,25 @@
       padding: 6px 12px;
       border-radius: 12px;
       margin: 0;
-      white-space: nowrap; /* Preis bleibt 100% einzeilig */
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    /* HAPPY HOUR PREIS-BADGE */
+    .price.discounted {
+      background: rgba(255, 0, 60, 0.25);
+      border: 1px solid var(--neon-rot);
+      box-shadow: 0 0 12px rgba(255, 0, 60, 0.4);
+      padding: 5px 10px;
+    }
+
+    .discount-badge {
+      display: block;
+      font-size: 0.68rem;
+      color: #ff6688;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      margin-top: 2px;
     }
 
     .card-panel {
@@ -372,7 +394,7 @@
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
       z-index: 50;
-      overflow-y: auto; /* Erlaubt scrollen auf kleinen Displays */
+      overflow-y: auto;
     }
 
     .modal.show {
@@ -384,7 +406,7 @@
     .modal-card {
       width: 100%;
       max-width: 420px;
-      margin: auto; /* Zentriert es sicher im Flex-Container */
+      margin: auto;
       border-radius: 32px;
       padding: 30px 20px;
       background: var(--card-strong);
@@ -463,7 +485,7 @@
     }
 
     .roulette-item {
-      width: 95px; /* Etwas breiter, damit Text reinpasst */
+      width: 95px;
       height: 100%;
       flex-shrink: 0;
       display: flex;
@@ -521,7 +543,7 @@
         max-width: 200px;
       }
       .card-panel {
-        padding: 0 16px 16px 16px; /* Text auf Handy unter das Bild rutschen lassen */
+        padding: 0 16px 16px 16px;
       }
       .shot-image {
         width: 90px;
@@ -534,7 +556,7 @@
         padding-bottom: 12px;
       }
       .roulette-item {
-        width: 85px; /* Etwas kompakter auf dem Handy */
+        width: 85px;
       }
     }
 
@@ -549,6 +571,7 @@
         min-height: 142px;
       }
     }
+
     /* PROMO POPUP STYLING */
     .promo-popup-overlay {
       position: fixed;
@@ -570,652 +593,6 @@
       visibility: visible;
     }
 
-    /* Der Wrapper ist wichtig für den Schatten, da clip-path den Schatten abschneiden würde */
-   .promo-popup-wrapper {
+    .promo-popup-wrapper {
       position: relative;
-      /* Max-Breite von 360px auf 440px erhöht */
-      width: min(95%, 440px); 
-      transform: scale(0.7);
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      filter: drop-shadow(0 0 25px rgba(255, 0, 60, 0.8));
-    }
-
-    .promo-popup-overlay.show .promo-popup-wrapper {
-      transform: scale(1);
-    }
-
-    .promo-popup-shape {
-      background: linear-gradient(135deg, var(--neon-rot), #ff7300);
-      /* Padding vergrößert, damit der Action-Stern zum größeren Inhalt passt */
-      padding: 75px 50px; 
-      text-align: center;
-      clip-path: polygon(
-        50% 2%, 61% 14%, 80% 8%, 82% 25%, 98% 30%, 86% 45%,
-        98% 60%, 84% 68%, 82% 86%, 65% 78%, 50% 95%, 35% 78%,
-        18% 86%, 16% 68%, 2% 60%, 14% 45%, 2% 30%, 18% 25%,
-        20% 8%, 39% 14%
-      );
-    }
-.promo-kicker {
-      margin: 0 0 8px;
-      color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-size: 0.9rem;
-      font-weight: 800;
-      text-shadow: 1px 1px 0px #000;
-    }
-    .promo-title {
-      /* Schriftgröße von 1.8rem auf 2.4rem erhöht */
-      font-size: 2.4rem; 
-      margin: 0 0 10px;
-      color: #fff;
-      text-transform: uppercase;
-      font-weight: 900;
-      text-shadow: 3px 3px 0px #000;
-      line-height: 1;
-    }
-
-    .promo-text {
-      /* Text von 0.95rem auf 1.15rem vergrößert */
-      font-size: 1.15rem; 
-      color: #fff;
-      font-weight: 700;
-      /* Abstand nach unten zum Bild hinzugefügt */
-      margin: 0 0 18px; 
-      text-shadow: 1px 1px 0px #000;
-      line-height: 1.4;
-    }
-
-    .promo-shot-img {
-      /* Bild deutlich größer gemacht (vorher 90x110) */
-      width: 130px; 
-      height: 160px; 
-      object-fit: cover;
-      border-radius: 14px;
-      border: 3px solid #fff;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-    }
-
-    .promo-close-btn {
-      position: absolute;
-      top: -15px;
-      right: -10px;
-      width: 50px; /* Minimal größer gemacht */
-      height: 50px;
-      background: #000;
-      border: 2px solid #fff;
-      color: #fff;
-      font-size: 2rem;
-      line-height: 1;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 10;
-      display: grid;
-      place-items: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-      transition: transform 0.2s;
-    }
-
-    .promo-close-btn:active {
-      transform: scale(0.9);
-    }
-  </style>
-</head>
-
-<body>
-  <main class="page">
-    <section class="hero">
-      <div class="logo-wrap">
-        <div class="logo-mark">
-          <img
-            src="https://roonburg.de/media/default/assets/config/roonburg/images/roonburg-logo.png"
-            alt="Roonburg Logo"
-          />
-        </div>
-      </div>
-
-      <h1>Shooters</h1>
-      <p class="intro">
-        Sweet, Candy oder voll auf Alpha? Triff deine Wahl und starte die nächste Eskalation.
-      </p>
-    </section>
-
-    <div class="top-actions">
-      <button class="random-btn" id="randomShotBtn" type="button">Zufalls-Shot</button>
-      <a class="back-btn" href="index.html">Zurück zur Auswahl</a>
-    </div>
-
-    <nav class="filters" aria-label="Shot Kategorien">
-      <button class="filter-btn active" type="button" data-category="ALL">Alle</button>
-      <button class="filter-btn" type="button" data-category="Sweet/Bitchy">Sweet&Bitchy</button>
-      <button class="filter-btn" type="button" data-category="Candy">Candy</button>
-      <button class="filter-btn" type="button" data-category="Alpha">Alpha</button>
-    </nav>
-
-    <section class="list" id="shotList" aria-label="Shotliste"></section>
-  </main>
-
-  <div class="modal" id="shotModal" aria-hidden="true">
-    <div class="modal-card">
-      <p class="modal-kicker">Barkeeper's Choice</p>
-      
-      <div class="roulette-wrapper" id="rouletteWrapper" style="display: none;">
-        <div class="roulette-selector"></div>
-        <div class="roulette-track" id="rouletteTrack"></div>
-      </div>
-
-      <h2 class="modal-title" id="modalTitle" style="display: none;">Shot</h2>
-      
-      <div class="modal-actions" id="modalActions" style="display: none;">
-        <button class="modal-btn primary" id="modalOpenShot" type="button">Shot anzeigen</button>
-        <button class="modal-btn secondary" id="modalClose" type="button">Schließen</button>
-      </div>
-    </div>
-  </div>
-
-<div class="promo-popup-overlay" id="promoPopup" aria-hidden="true">
-    <div class="promo-popup-wrapper">
-      <button class="promo-close-btn" id="promoClose" aria-label="Schließen">×</button>
-      
-      <div class="promo-popup-shape">
-        <p class="promo-kicker">Special- Shot</p>
-        <h2 class="promo-title">A.C.A.B</h2>
-        <p class="promo-text">Be the Change!</p>
-        
-        <img class="promo-shot-img" src="Shots/h2o.webp" alt="A.C.A.B Shot" />
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const shots = [
-      // ==========================
-      // SWEET/BITCHY SHOTS
-      // ==========================
-      {
-        id: "Pink-Diva",
-        name: "Pink Diva",
-        category: "Sweet/Bitchy",
-        price: "3,50 €",
-        image: "Shots/PinkDiva.webp",
-        ingredients: ["Vodka", "Melonenlikör", "Zitronensaft", "Zuckersirup"],
-        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
-      },
-      {
-        id: "Red-Devil",
-        name: "Red Devil",
-        category: "Sweet/Bitchy",
-        price: "3,50 €",
-        image: "Shots/RedDevil.webp",
-        ingredients: ["Baileys", "Amaretto", "Grenadine"],
-        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)", "Milch/Laktose"]
-      },
-      {
-        id: "TropicalD",
-        name: "Tropical D",
-        category: "Sweet/Bitchy",
-        price: "3,50 €",
-        image: "Shots/TropicalD.webp",
-        ingredients: ["Feigling Mango", "Limettensaft", "Malibu"],
-        contents: ["alkoholhaltig", "Säurungsmittel"]
-      },
-      {
-        id: "PartyintheUSA",
-        name: "Party in the USA",
-        category: "Sweet/Bitchy",
-        price: "3,50 €",
-        image: "Shots/PartyintheUSA.webp",
-        ingredients: ["Malibu", "Ananassaft"],
-        contents: ["alkoholhaltig"]
-      },
-      {
-        id: "VanillaGoddess",
-        name: "Vanilla Goddess",
-        category: "Sweet/Bitchy",
-        price: "3,50 €",
-        image: "Shots/VanillaGodess.webp",
-        ingredients: ["Likör 43", "Maracujasaft"],
-        contents: ["alkoholhaltig"]
-      },
-      {
-        id: "Maskuliner-Mann",
-        name: "Maskuliner Mann",
-        category: "Sweet/Bitchy",
-        price: "3,50 €",
-        image: "Shots/MaskulinerMann.webp",
-        ingredients: ["Erdbeerlimes", "Sourz Pink Berry"],
-        contents: ["alkoholhaltig", "Farbstoff(e)"]
-      },
-      {
-        id: "67",
-        name: "6-7",
-        category: "Sweet/Bitchy",
-        price: "3,50 €",
-        image: "Shots/67.webp",
-        ingredients: ["Blue Curacao", "Zitronensaft"],
-        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
-      },
-      // ==========================
-      // CANDY SHOTS
-      // ==========================
-      {
-        id: "Bananasplit",
-        name: "Banana Split",
-        category: "Candy",
-        price: "3,50 €",
-        image: "Shots/Bananensplit.webp",
-        ingredients: ["Bananenlikör", "Amaretto", "Baileys"],
-        contents: ["alkoholhaltig", "Milch/Laktose"]
-      },
-      {
-        id: "Booltys-Call",
-        name: "Booty Call",
-        category: "Candy",
-        price: "3,50 €",
-        image: "Shots/BootyCall.webp",
-        ingredients: ["Bananenlikör", "Amaretto", "Peachlikör"],
-        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
-      },
-      {
-        id: "Uups-i-did-it-again",
-        name: "Uups I did it again ...",
-        category: "Candy",
-        price: "3,50 €",
-        image: "Shots/Ididitagain.webp",
-        ingredients: ["Feigling Mango", "Pfeffi", "Limettensaft"],
-        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
-      },
-      {
-        id: "Center-Shock",
-        name: "Center Shock",
-        category: "Candy",
-        price: "3,50 €",
-        image: "Shots/centershock.webp",
-        ingredients: ["Sourz Apfel", "Zitronensaft"],
-        contents: ["alkoholhaltig", "Säurungsmittel", "Farbstoff(e)"]
-      },
-      {
-        id: "Bubble-Gum",
-        name: "Bubble Gum",
-        category: "Candy",
-        price: "3,50 €",
-        image: "Shots/BubbleGum.webp",
-        ingredients: ["Blue Curacao", "Baileys", "Bananenlikör"],
-        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
-      },
-      {
-        id: "Gummibaerchen",
-        name: "Gummibärchen",
-        category: "Candy",
-        price: "3,50 €",
-        image: "Shots/gummibaer.webp",
-        ingredients: ["Kirschlikör", "Bananenlikör", "Zitronensaft"],
-        contents: ["alkoholhaltig", "Säurungsmittel"]
-      },
-      {
-        id: "Nutella-Shot",
-        name: "Nutella Shot",
-        category: "Candy",
-        price: "3,50 €",
-        image: "Shots/nutella.webp",
-        ingredients: ["Haselnusslikör", "Cacaolikör", "Sahne"],
-        contents: ["alkoholhaltig", "Milch/Laktose"]
-      },
-      {
-        id: "Apfelstrudel",
-        name: "Apfelstrudel",
-        category: "Candy",
-        price: "3,50 €",
-        image: "Shots/apfelstrudel1.webp",
-        ingredients: ["Vodka", "Malibu", "Zitrone", "Zuckersirup", "Apfelsaft"],
-        contents: ["alkoholhaltig", "Säurungsmittel"]
-      },
-      {
-        id: "Omas-Liebling",
-        name: "Oma's Liebling",
-        category: "Candy",
-        price: "3,50 €",
-        image: "Shots/OmasLiebling.webp",
-        ingredients: ["Pfeffi", "Cacaolikör", "Sahne"],
-        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
-      },
-      // ==========================
-      // ALPHA SHOTS
-      // ==========================
-      {
-        id: "Wrong-Hole",
-        name: "Wrong Hole",
-        category: "Alpha",
-        price: "3,50 €",
-        image: "Shots/wronghole.webp",
-        ingredients: ["Cacaolikör", "Baileys", "Grenadine"],
-        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
-      },
-      {
-        id: "Nonchalant",
-        name: "Nonchalant",
-        category: "Alpha",
-        price: "3,50 €",
-        image: "Shots/nonchalant.webp",
-        ingredients: ["Vodka", "Peachlikör", "Limettensaft"],
-        contents: ["alkoholhaltig", "Säurungsmittel"]
-      },
-      {
-        id: "H2O-Ploetzlich-Meerjungfrau",
-        name: "H2O Plötzlich Meerjungfrau",
-        category: "Alpha",
-        price: "3,50 €",
-        image: "Shots/h2o.webp",
-        ingredients: ["Blue Curacao", "Vodka", "Sambuca", "Baileys"],
-        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
-      },
-      {
-        id: "Im-blue",
-        name: "I'm blue",
-        category: "Alpha",
-        price: "3,50 €",
-        image: "Shots/Imblue.webp",
-        ingredients: ["Vodka", "Peachlikör", "Blue Curacao"],
-        contents: ["alkoholhaltig", "Farbstoff(e)"]
-      },
-      {
-        id: "Wild-River",
-        name: "Wild River",
-        category: "Alpha",
-        price: "3,50 €",
-        image: "Shots/wildriver.webp",
-        ingredients: ["Melonenlikör", "Baileys", "Bacardi Spice"],
-        contents: ["alkoholhaltig", "Farbstoff(e)", "Milch/Laktose"]
-      },
-      {
-        id: "Der-Zerstoerer",
-        name: "Der Zerstörer",
-        category: "Alpha",
-        price: "3,50 €",
-        image: "Shots/zerstoerer.webp",
-        ingredients: ["Vodka", "Jägermeister", "Energy"],
-        contents: ["alkoholhaltig", "Koffein", "Farbstoff(e)"]
-      },
-      {
-        id: "99-Luftballons",
-        name: "99 Luftballons",
-        category: "Alpha",
-        price: "3,50 €",
-        image: "Shots/99luftballons.webp",
-        ingredients: ["Vodka", "Pfeffi"],
-        contents: ["alkoholhaltig", "Farbstoff(e)"]
-      },
-      {
-        id: "E-mc2",
-        name: "E=mc2",
-        category: "Alpha",
-        price: "3,50 €",
-        image: "Shots/Emc2.webp",
-        ingredients: ["Vodka", "Blue Curacao", "Zitronensaft"],
-        contents: ["alkoholhaltig", "Farbstoff(e)", "Säurungsmittel"]
-      },
-      {
-        id: "Anzeige",
-        name: "Anzeige ist raus!",
-        category: "Alpha",
-        price: "3,50 €",
-        image: "Shots/anzeige ist raus.webp",
-        ingredients: ["Vodka", "Blue Curacao", "Zitronensaft"],
-        contents: ["alkoholhaltig", "Farbstoff(e)", "Säurungsmittel"]
-      }
-    ];
-
-    const list = document.getElementById("shotList");
-    const filterButtons = document.querySelectorAll(".filter-btn");
-    const randomBtn = document.getElementById("randomShotBtn");
-    const modal = document.getElementById("shotModal");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalActions = document.getElementById("modalActions");
-    const modalClose = document.getElementById("modalClose");
-    const modalOpenShot = document.getElementById("modalOpenShot");
-    const rouletteTrack = document.getElementById("rouletteTrack");
-    const rouletteWrapper = document.getElementById("rouletteWrapper");
-
-    let currentCategory = "ALL";
-    let selectedRandomShot = null;
-
-// --- PROMO POPUP LOGIK ---
-    
-    // HAUPTSCHALTER: 
-    // true  = Popup ist generell aktiv
-    // false = Popup ist komplett ausgeschaltet
-    const enablePromoPopup = false; 
-
-    // TEST-SCHALTER:
-    // true  = Ignoriert den Speicher. Das Popup ploppt bei JEDEM Neuladen auf (nur für dich zum Testen).
-    // false = Normaler Live-Modus. Gäste sehen es exakt 1x und dann nie wieder.
-    const testModusPopup = false; 
-
-    if (enablePromoPopup) {
-      const promoPopup = document.getElementById("promoPopup");
-      const promoClose = document.getElementById("promoClose");
-
-      // Die Speicherlogik bleibt komplett unangetastet
-      const hasSeenPromo = localStorage.getItem("promoSeen_ACAB");
-
-      // Zeigt das Popup an, wenn es noch nicht gesehen wurde ODER wenn dein Testschalter an ist
-      if (!hasSeenPromo || testModusPopup) {
-        setTimeout(() => {
-          promoPopup.classList.add("show");
-          promoPopup.setAttribute("aria-hidden", "false");
-        }, 1500);
-      }
-
-      // Funktion zum Schließen und Speichern
-      function closePromo() {
-        promoPopup.classList.remove("show");
-        promoPopup.setAttribute("aria-hidden", "true");
-        
-        // Speichert es dauerhaft (wird im Testmodus überschrieben, blockiert im Live-Modus aber zuverlässig)
-        localStorage.setItem("promoSeen_ACAB", "true");
-      }
-
-      // Beim Klick auf das X schließen
-      promoClose.addEventListener("click", closePromo);
-
-      // Beim Klick auf den dunklen Hintergrund schließen
-      promoPopup.addEventListener("click", (event) => {
-        if (event.target === promoPopup) {
-          closePromo();
-        }
-      });
-    }
-
-    function renderShots() {
-      list.innerHTML = "";
-
-      const visibleShots = currentCategory === "ALL"
-        ? shots
-        : shots.filter(shot => shot.category === currentCategory);
-
-      visibleShots.forEach(shot => {
-        const card = document.createElement("article");
-        card.className = "card";
-        card.dataset.id = shot.id;
-        card.dataset.category = shot.category;
-
-        card.innerHTML = `
-          <button class="card-toggle" type="button" aria-expanded="false">
-            <img class="shot-image" src="${shot.image}" alt="${shot.name}" loading="lazy" />
-
-            <div class="card-body">
-              <div class="card-title-row">
-                <h3 class="card-title">${shot.name}</h3>
-                <div class="price">${shot.price}</div>
-              </div>
-            </div>
-          </button>
-
-          <div class="card-panel">
-            <div class="panel-box">
-              <h4>Inhalt</h4>
-              <ul class="ingredients">
-                ${shot.ingredients.map(item => `<li>${item}</li>`).join("")}
-              </ul>
-              
-              <div class="chips">
-                ${shot.contents.map(item => `<span class="chip">${item}</span>`).join("")}
-              </div>
-            </div>
-          </div>
-        `;
-
-        const toggle = card.querySelector(".card-toggle");
-
-        toggle.addEventListener("click", () => {
-          const isOpen = card.classList.toggle("open");
-          toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        });
-
-        list.appendChild(card);
-      });
-    }
-
-    filterButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        filterButtons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-
-        currentCategory = button.dataset.category;
-        renderShots();
-      });
-    });
-
-    randomBtn.addEventListener("click", () => {
-      const pool = currentCategory === "ALL"
-        ? shots
-        : shots.filter(shot => shot.category === currentCategory);
-
-      if (pool.length === 0) return;
-
-      // 1. Modal anzeigen, Setup vorbereiten
-      modalTitle.style.display = "none";
-      modalActions.style.display = "none";
-      rouletteWrapper.style.display = "block";
-      
-      // Track zurücksetzen (sofort ohne Transition)
-      rouletteTrack.style.transition = "none";
-      rouletteTrack.style.webkitTransition = "none";
-      rouletteTrack.style.transform = "translateX(0px)";
-      rouletteTrack.style.webkitTransform = "translateX(0px)";
-      rouletteTrack.innerHTML = "";
-
-      // 2. Den echten Gewinner auslosen
-      selectedRandomShot = pool[Math.floor(Math.random() * pool.length)];
-
-      // 3. Track mit 40 Elementen füllen
-      const totalItems = 40;
-      const winnerIndex = 34; // Position des Gewinners
-
-      for (let i = 0; i < totalItems; i++) {
-        let shotForSlot = (i === winnerIndex) 
-          ? selectedRandomShot 
-          : pool[Math.floor(Math.random() * pool.length)];
-
-        const itemDiv = document.createElement("div");
-        itemDiv.className = "roulette-item";
-        itemDiv.innerHTML = `
-          <img src="${shotForSlot.image}" alt="shot" loading="lazy" />
-          <span>${shotForSlot.name}</span>
-        `;
-        rouletteTrack.appendChild(itemDiv);
-      }
-
-      modal.classList.add("show");
-      modal.setAttribute("aria-hidden", "false");
-
-      // 4. Kurze Pause warten bis Modal im DOM gerendert ist (wichtig für Breiten-Berechnung auf Handys)
-      setTimeout(() => {
-        // Zwingt den Browser zum Rendern (Reflow)
-        void rouletteTrack.offsetWidth;
-
-        // Dynamische Breitenberechnung
-        const containerCenter = rouletteWrapper.offsetWidth / 2;
-        const firstItem = rouletteTrack.querySelector('.roulette-item');
-        const itemWidth = firstItem.offsetWidth; 
-        
-        // Offset berechnen
-        const itemOffset = (winnerIndex * itemWidth) + (itemWidth / 2);
-        const randomFuzz = Math.floor(Math.random() * (itemWidth * 0.4)) - (itemWidth * 0.2); 
-        const finalPosition = -(itemOffset - containerCenter) + randomFuzz;
-
-        // CS-Style Abbrems-Kurve starten
-        const transitionStyle = "transform 4.5s cubic-bezier(0.1, 0.7, 0.1, 1)";
-        rouletteTrack.style.webkitTransition = transitionStyle;
-        rouletteTrack.style.transition = transitionStyle;
-        
-        rouletteTrack.style.webkitTransform = `translateX(${finalPosition}px)`;
-        rouletteTrack.style.transform = `translateX(${finalPosition}px)`;
-
-        // 5. Nach Ablauf der Animation Buttons einblenden
-        setTimeout(() => {
-          modalTitle.textContent = selectedRandomShot.name;
-          modalTitle.style.display = "block";
-          modalActions.style.display = "grid";
-          
-          if(rouletteTrack.children[winnerIndex]) {
-            rouletteTrack.children[winnerIndex].classList.add("winner");
-          }
-        }, 4600);
-
-      }, 100);
-    });
-
-    modalClose.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", event => {
-      if (event.target === modal) {
-        closeModal();
-      }
-    });
-
-    modalOpenShot.addEventListener("click", () => {
-      if (!selectedRandomShot) return;
-
-      closeModal();
-
-      currentCategory = "ALL";
-      filterButtons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.category === "ALL");
-      });
-
-      renderShots();
-
-      setTimeout(() => {
-        const card = document.querySelector(`[data-id="${selectedRandomShot.id}"]`);
-        if (!card) return;
-
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
-        card.classList.add("open");
-
-        const toggle = card.querySelector(".card-toggle");
-        if (toggle) {
-          toggle.setAttribute("aria-expanded", "true");
-        }
-      }, 50);
-    });
-
-    function closeModal() {
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden", "true");
-      
-      // Cleanup für den nächsten Klick
-      setTimeout(() => {
-        rouletteTrack.innerHTML = "";
-        modalTitle.style.display = "none";
-        modalActions.style.display = "none";
-      }, 300);
-    }
-
-    renderShots();
-
-    
-  </script>
-</body>
-</html>
+      width: min
