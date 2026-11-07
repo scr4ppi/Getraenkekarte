@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Roonburg Specials</title>
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
@@ -12,7 +11,6 @@
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
-
     :root {
       --bg: #050505;
       --card: rgba(0, 0, 0, 0.68);
@@ -24,9 +22,7 @@
       --radius-xl: 24px;
       --shadow: 0 14px 34px rgba(0, 0, 0, 0.48);
     }
-
-    html,
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       min-height: 100%;
@@ -34,70 +30,47 @@
       color: var(--text);
       background-color: var(--bg);
     }
-
     body {
       position: relative;
       overflow-x: hidden;
     }
-
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background:
-        linear-gradient(
-          rgba(0, 0, 0, 0.4),
-          rgba(0, 0, 0, 0.6)
-        ),
-        url("Clubhochkant.png");
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url("Clubhochkant.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       z-index: -3;
     }
-
     body::after {
       content: "";
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(circle at 18% 18%, rgba(255, 51, 51, 0.18), transparent 28%),
-        radial-gradient(circle at 85% 8%, rgba(255, 180, 80, 0.14), transparent 26%),
-        radial-gradient(circle at 50% 95%, rgba(255, 51, 120, 0.14), transparent 34%);
+      background: radial-gradient(circle at 18% 18%, rgba(255, 51, 51, 0.18), transparent 28%),
+                  radial-gradient(circle at 85% 8%, rgba(255, 180, 80, 0.14), transparent 26%),
+                  radial-gradient(circle at 50% 95%, rgba(255, 51, 120, 0.14), transparent 34%);
       z-index: -2;
       pointer-events: none;
     }
-
-    /* =========================================
-       HALLOWEEN MODE CSS - DIE VERFLUCHUNG
-       ========================================= */
-    
+    /* HALLOWEEN MODE CSS */
     @keyframes bg-pulse {
       0% { filter: brightness(1) contrast(1.2); }
       100% { filter: brightness(0.6) contrast(1.5); }
     }
-
     body.halloween-mode::before {
-      background:
-        linear-gradient(
-          rgba(20, 0, 0, 0.8),
-          rgba(0, 0, 0, 0.95)
-        ),
-        url("Halloween.png"), url("Clubhochkant.png");
+      background: linear-gradient(rgba(20, 0, 0, 0.8), rgba(0, 0, 0, 0.95)), url("Halloween.png"), url("Clubhochkant.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       animation: bg-pulse 4s infinite alternate;
     }
-
     body.halloween-mode::after {
-      background:
-        radial-gradient(circle at 18% 18%, rgba(255, 0, 0, 0.25), transparent 35%),
-        radial-gradient(circle at 85% 8%, rgba(138, 3, 3, 0.2), transparent 30%),
-        radial-gradient(circle at 50% 95%, rgba(255, 60, 0, 0.15), transparent 40%);
+      background: radial-gradient(circle at 18% 18%, rgba(255, 0, 0, 0.25), transparent 35%),
+                  radial-gradient(circle at 85% 8%, rgba(138, 3, 3, 0.2), transparent 30%),
+                  radial-gradient(circle at 50% 95%, rgba(255, 60, 0, 0.15), transparent 40%);
     }
-
-    /* Blitzeffekt (Gewitter) */
     .lightning-overlay {
       display: none;
       position: fixed;
@@ -106,36 +79,25 @@
       z-index: 9999;
       pointer-events: none;
     }
-    
     @keyframes storm-flash {
       0%, 92%, 96%, 100% { opacity: 0; }
       93% { opacity: 0.7; }
       94% { opacity: 0; }
       97% { opacity: 0.4; }
     }
-
     body.halloween-mode .lightning-overlay {
       display: block;
       animation: storm-flash 7s infinite;
     }
-
-    /* Flackernder, kaputter Text-Effekt */
     @keyframes cursed-flicker {
       0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        opacity: 1;
-        text-shadow: 0 0 8px #ff0000, 0 0 20px #ff0000, 0 0 40px #8a0303;
-        transform: scale(1) rotate(0deg);
+        opacity: 1; text-shadow: 0 0 8px #ff0000, 0 0 20px #ff0000, 0 0 40px #8a0303; transform: scale(1) rotate(0deg);
       }
       20%, 24%, 55% {
-        opacity: 0.3;
-        text-shadow: none;
-        transform: scale(0.98) rotate(-2deg);
+        opacity: 0.3; text-shadow: none; transform: scale(0.98) rotate(-2deg);
       }
-      85% {
-        transform: scale(1.02) rotate(1deg);
-      }
+      85% { transform: scale(1.02) rotate(1deg); }
     }
-
     body.halloween-mode #heroHeadline {
       color: #ff3333;
       animation: cursed-flicker 4.5s infinite;
@@ -143,24 +105,18 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
-
-    /* Unheimliches Schweben für den Text darunter */
     @keyframes eerie-float {
       0%, 100% { transform: translateY(0); color: #ff6600; text-shadow: 0 0 10px rgba(255, 102, 0, 0.5); }
       50% { transform: translateY(-5px); color: #ff1111; text-shadow: 0 0 25px rgba(255, 17, 17, 0.9); }
     }
-
     body.halloween-mode #heroIntro {
       animation: eerie-float 3s infinite ease-in-out;
       font-weight: bold;
     }
-
     body.halloween-mode .kicker {
       color: #8a0303;
       text-shadow: 0 0 10px red;
     }
-
-    /* --- HALLOWEEN SPECIALS KARTEN STYLING --- */
     .halloween-section-title {
       font-size: 1.15rem;
       text-align: center;
@@ -171,69 +127,22 @@
       text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
       animation: cursed-flicker 4s infinite;
     }
-
-   .halloween-drink-card {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      margin-bottom: 15px;
-      padding: 24px 20px;
-    }
-
-    .halloween-drink-card .special-content {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
+    .halloween-drink-card { align-items: center; margin-bottom: 15px; }
+    .halloween-shooters-card { flex-direction: column; align-items: flex-start; }
     .h-img-large {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      border-radius: 16px;
-      border: 2px solid rgba(255, 0, 0, 0.5);
-      box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
-      margin-bottom: 10px;
+      width: 75px; height: 95px; object-fit: cover; border-radius: 12px;
+      border: 1px solid rgba(255, 0, 0, 0.4); box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
     }
-
-    .h-shooters-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      width: 100%;
-    }
-
-    .h-shot {
-      text-align: center;
-    }
-
+    .h-shooters-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+    .h-shot { text-align: center; }
     .h-shot img {
-      width: 100%;
-      aspect-ratio: 1; /* Macht die Bilder automatisch zu perfekten Quadraten */
-      object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 0, 0, 0.4);
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-      margin-bottom: 6px;
+      width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px;
+      border: 1px solid rgba(255, 0, 0, 0.4); box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); margin-bottom: 6px;
     }
-
-    .h-shot span {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: #ffb450;
-      text-transform: uppercase;
-    }
-
-    .bloody-tag {
-      background: #8a0303 !important;
-      box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
-    }
-    /* =========================================
-       ENDE HALLOWEEN MODE CSS
-       ========================================= */
-
+    .h-shot span { display: block; font-size: 0.75rem; font-weight: bold; color: #ffb450; text-transform: uppercase; }
+    .bloody-tag { background: #8a0303 !important; box-shadow: 0 0 8px rgba(255, 0, 0, 0.4); }
+    
+    /* Layout */
     .page {
       width: 100%;
       max-width: 480px;
@@ -243,212 +152,51 @@
       display: flex;
       flex-direction: column;
     }
-
-    .header-nav {
-      margin-bottom: 20px;
-    }
-
+    .header-nav { margin-bottom: 20px; }
     .back-btn {
-      display: inline-flex;
-      align-items: center;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      background: rgba(255,255,255,0.1);
-      padding: 8px 16px;
-      border-radius: 999px;
+      display: inline-flex; align-items: center; color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: bold;
+      text-transform: uppercase; letter-spacing: 0.1em; background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 999px;
       border: 1px solid var(--border);
     }
-
-    .back-btn:hover {
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
+    .back-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .hero { text-align: center; margin-bottom: 24px; }
     .kicker {
-      margin: 0 0 7px;
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 800;
-      transition: color 0.3s ease;
+      margin: 0 0 7px; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-weight: 800; transition: color 0.3s ease;
     }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2rem, 10vw, 2.8rem);
-      line-height: 1;
-      text-transform: uppercase;
-      letter-spacing: -0.05em;
-    }
-
-    .intro {
-      margin: 12px auto 0;
-      max-width: 320px;
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.4;
-    }
-
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
+    h1 { margin: 0; font-size: clamp(2rem, 10vw, 2.8rem); line-height: 1; text-transform: uppercase; letter-spacing: -0.05em; }
+    .intro { margin: 12px auto 0; max-width: 320px; color: var(--muted); font-size: 0.95rem; line-height: 1.4; }
+    .timeline { display: flex; flex-direction: column; gap: 12px; }
+    
     .special-card {
-      position: relative;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 15px;
-      transition: 0.3s ease;
-      overflow: hidden;
+      position: relative; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 20px;
+      box-shadow: var(--shadow); display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; transition: 0.3s ease; overflow: hidden;
     }
-
     @keyframes card-pulse {
-      0% {
-        box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
-        border-color: rgba(255, 51, 51, 0.6);
-      }
-      50% {
-        box-shadow: 0 0 30px rgba(255, 51, 51, 0.7);
-        border-color: rgba(255, 51, 51, 1);
-      }
-      100% {
-        box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
-        border-color: rgba(255, 51, 51, 0.6);
-      }
+      0% { box-shadow: 0 0 15px rgba(255, 51, 51, 0.2); border-color: rgba(255, 51, 51, 0.6); }
+      50% { box-shadow: 0 0 30px rgba(255, 51, 51, 0.7); border-color: rgba(255, 51, 51, 1); }
+      100% { box-shadow: 0 0 15px rgba(255, 51, 51, 0.2); border-color: rgba(255, 51, 51, 0.6); }
     }
-
-    .special-card.active {
-      background: rgba(40, 10, 10, 0.85) !important;
-      transform: scale(1.03);
-      animation: card-pulse 2.5s infinite;
-      z-index: 10;
-    }
-
-    .special-card.active::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 6px;
-      background: var(--accent);
-    }
-
+    .special-card.active { background: rgba(40, 10, 10, 0.85) !important; transform: scale(1.03); animation: card-pulse 2.5s infinite; z-index: 10; }
+    .special-card.active::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--accent); }
     .time-badge {
-      flex: 0 0 65px;
-      text-align: center;
-      font-weight: 800;
-      font-size: 0.9rem;
-      color: var(--accent);
-      background: rgba(255, 51, 51, 0.1);
-      padding: 8px 0;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 51, 51, 0.3);
-      margin-top: 2px;
+      flex: 0 0 65px; text-align: center; font-weight: 800; font-size: 0.9rem; color: var(--accent); background: rgba(255, 51, 51, 0.1); padding: 8px 0;
+      border-radius: 12px; border: 1px solid rgba(255, 51, 51, 0.3); margin-top: 2px;
     }
-
-    .special-card.active .time-badge {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 0 10px rgba(255,51,51,0.5);
-    }
-
-    .special-content {
-      flex: 1;
-    }
-
-    .special-title {
-      margin: 0 0 4px;
-      font-size: 1.2rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #fff;
-    }
-
-    .special-desc {
-      margin: 0 0 10px 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-    
-    .drinks-list {
-      margin: 0 0 12px 16px;
-      padding: 0;
-      font-size: 0.85rem;
-      color: var(--text);
-      line-height: 1.5;
-      font-weight: bold;
-    }
-
-    .drinks-list li {
-      margin-bottom: 4px;
-    }
-
-    .tags-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .price-tag {
-      display: inline-block;
-      font-weight: bold;
-      color: #fff;
-      background: var(--accent);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-    }
-    
+    .special-card.active .time-badge { background: var(--accent); color: #fff; box-shadow: 0 0 10px rgba(255,51,51,0.5); }
+    .special-content { flex: 1; }
+    .special-title { margin: 0 0 4px; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #fff; }
+    .special-desc { margin: 0 0 10px 0; font-size: 0.9rem; color: var(--muted); line-height: 1.4; }
+    .drinks-list { margin: 0 0 12px 16px; padding: 0; font-size: 0.85rem; color: var(--text); line-height: 1.5; font-weight: bold; }
+    .drinks-list li { margin-bottom: 4px; }
+    .tags-container { display: flex; flex-wrap: wrap; gap: 8px; }
+    .price-tag { display: inline-block; font-weight: bold; color: #fff; background: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; }
     .cocktail-btn {
-      display: block;
-      margin-top: 18px;
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      text-align: center;
-      transition: 0.3s ease;
+      display: block; margin-top: 18px; padding: 10px 14px; background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;
+      text-align: center; transition: 0.3s ease;
     }
-    
-    .cocktail-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: #fff;
-    }
-
-    .footer-note {
-      margin: 30px 0 0;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.46);
-      font-size: 0.75rem;
-      line-height: 1.35;
-    }
+    .cocktail-btn:hover { background: rgba(255, 255, 255, 0.15); border-color: #fff; }
+    .footer-note { margin: 30px 0 0; text-align: center; color: rgba(255, 255, 255, 0.46); font-size: 0.75rem; line-height: 1.35; }
   </style>
 </head>
 <body>
@@ -462,41 +210,68 @@
 
     <section class="hero">
       <p class="kicker" id="heroKicker">Roonburg</p>
-      <h1 id="heroHeadline">Weekend<br>Specials</h1>
+      <h1 id="heroHeadline">Weekly<br>Specials</h1>
       <p class="intro" id="heroIntro">
-        Unsere Angebote für das Wochenende im Überblick.
+        Unsere aktuellen Specials im Überblick.
       </p>
     </section>
 
     <!-- NORMALE SPECIALS -->
     <section class="timeline" id="specialTimeline">
-      <!-- FREITAGS SPECIAL -->
-      <div class="special-card" id="card-friday">
-        <div class="time-badge">Jeden<br>Freitag</div>
+      
+      <!-- MONTAGS SPECIAL -->
+      <div class="special-card" id="card-monday">
+        <div class="time-badge">Jeden<br>Montag</div>
         <div class="special-content">
-          <h2 class="special-title">Spritz Night</h2>
-          <p class="special-desc">Dein prickelnder Start ins Wochenende. Gilt die ganze Nacht!</p>
-          
-          <ul class="drinks-list">
-            <li>Lillet Wildberry</li>
-            <li>Sarti Lemon Spritz</li>
-            <li>Aperol Spritz</li>
-          </ul>
-
+          <h2 class="special-title">Half Price Monday</h2>
+          <p class="special-desc">Alles zum halben Preis! All Night Long.</p>
           <div class="tags-container">
-            <span class="price-tag">Nur 6,00€</span>
+            <span class="price-tag">-50% auf alles</span>
           </div>
         </div>
       </div>
 
-      <!-- SAMSTAGS SPECIAL 1: HAPPY HOUR (20-21 UHR) -->
-      <div class="special-card" id="card-saturday-hh">
-        <div class="time-badge">20-21<br>Uhr</div>
+      <!-- DIENSTAGS SPECIAL -->
+      <div class="special-card" id="card-tuesday">
+        <div class="time-badge">Jeden<br>Dienstag</div>
         <div class="special-content">
-          <h2 class="special-title">Happy Hour 2 für 1</h2>
-          <p class="special-desc">1 bestellen, 2 bekommen! Gilt für ausgewählte Cocktails auf unserer Karte.</p>
-          
-          <a href="https://www.roonburg-cocktails.de/" class="cocktail-btn" target="_blank">🍸 Ausgewählte Drinks ansehen</a>
+          <h2 class="special-title">Studenten Deals</h2>
+          <p class="special-desc">Günstige Drinks für die beste Partynacht der Woche. All Night Long!</p>
+          <ul class="drinks-list">
+            <li>Longdrinks</li>
+            <li>Kölsch</li>
+          </ul>
+          <div class="tags-container">
+            <span class="price-tag">Longdrinks 4,50€</span>
+            <span class="price-tag">Kölsch 1,50€</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FREITAGS SPECIAL -->
+      <div class="special-card" id="card-friday">
+        <div class="time-badge">Jeden<br>Freitag</div>
+        <div class="special-content">
+          <h2 class="special-title">Spritz Night & Red Bull</h2>
+          <p class="special-desc">Dein prickelnder Start ins Wochenende.</p>
+          <ul class="drinks-list">
+            <li>Aperol Spritz, Lillet Wildberry, Sarti Lemon Spritz <br><span style="color:var(--muted); font-size:0.8rem; font-weight:normal;">(All Night Long)</span></li>
+            <li>Red Bull Longdrinks <br><span style="color:var(--muted); font-size:0.8rem; font-weight:normal;">(Nur bis 23 Uhr)</span></li>
+          </ul>
+          <div class="tags-container">
+            <span class="price-tag">Spritz 5,00€</span>
+            <span class="price-tag">Red Bull Longdrinks 5,00€</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAMSTAGS SPECIAL 1: HAPPY HOUR (21-22:30 UHR) -->
+      <div class="special-card" id="card-saturday-hh">
+        <div class="time-badge">21:00-<br>22:30</div>
+        <div class="special-content">
+          <h2 class="special-title">Happy Hour -50%</h2>
+          <p class="special-desc">Alle Cocktails und Shooters zum halben Preis.</p>
+          <a href="https://www.roonburg-cocktails.de/" class="cocktail-btn" target="_blank">🍸 Cocktailkarte ansehen</a>
         </div>
       </div>
 
@@ -506,22 +281,18 @@
         <div class="special-content">
           <h2 class="special-title">Cocktail des Abends</h2>
           <p class="special-desc">Jede Woche ein neues Highlight aus unserer Cocktail-Karte zum absoluten Spezialpreis.<br><br>
-          <span style="font-size: 0.85rem; color: #ffb450;"><strong>Hinweis:</strong> Dieses Angebot gilt erst ab 23:00 Uhr.</span></p>
-          
+          <span style="font-size: 0.85rem; color: #ffb450;"><strong>Hinweis:</strong> Dieses Angebot gilt von 23:00 Uhr bis 06:00 Uhr morgens.</span></p>
           <div class="tags-container">
             <span class="price-tag">Nur 6,00€</span>
           </div>
-
           <a href="https://www.roonburg-cocktails.de/" class="cocktail-btn" target="_blank">🍸 Zur Cocktailkarte</a>
         </div>
       </div>
     </section>
 
-    <!-- HALLOWEEN SPECIALS (Versteckt bis zur Halloween-Nacht) -->
+    <!-- HALLOWEEN SPECIALS (Versteckt) -->
     <section id="halloween-specials" style="display: none; margin-top: 10px;">
       <h2 class="halloween-section-title">Probiert unsere schaurigen Misshandlungen</h2>
-
-      <!-- Aperol Spritze Card -->
       <div class="special-card active halloween-drink-card">
         <img src="Shots/Aperolspritze.webp" alt="Aperol Spritze" class="h-img-large" />
         <div class="special-content">
@@ -532,8 +303,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Halloween Shooters Card -->
       <div class="special-card active halloween-shooters-card">
         <div class="special-content" style="width: 100%; margin-bottom: 16px;">
           <h2 class="special-title">Halloween Shooters</h2>
@@ -542,7 +311,6 @@
             <span class="price-tag bloody-tag">Nur an der Shotbar (Shooterbar)</span>
           </div>
         </div>
-        
         <div class="h-shooters-grid">
           <div class="h-shot">
             <img src="Shots/Vampirekiss.webp" alt="Vampire Kiss" />
@@ -570,124 +338,132 @@
     
     function updateActiveSpecial() {
       const testDate = new Date(); 
-      const month = testDate.getMonth(); // 9 = Oktober, 10 = November
+      const month = testDate.getMonth(); 
       const day = testDate.getDate();
       const hour = testDate.getHours();
       
-      // --- HALLOWEEN WEICHE ---
-      // Gilt am 30. und 31. Oktober den ganzen Tag ODER am 1. November bis 5:59 Uhr morgens
       const isHalloween = (month === 9 && (day === 30 || day === 31)) || (month === 10 && day === 1 && hour < 6);
       
+      const cardMo = document.getElementById("card-monday");
+      const cardTu = document.getElementById("card-tuesday");
       const cardFr = document.getElementById("card-friday");
       const cardSaHH = document.getElementById("card-saturday-hh");
       const cardSaCocktail = document.getElementById("card-saturday-cocktail");
       const hwSpecials = document.getElementById("halloween-specials");
-      
       const kickerEl = document.getElementById("heroKicker");
       const headlineEl = document.getElementById("heroHeadline");
       const introEl = document.getElementById("heroIntro");
 
-      // Wenn Halloween-Zeitraum ist, überschreiben wir alles und beenden die Funktion!
       if (isHalloween) {
         document.body.classList.add("halloween-mode");
-        
-        // Verstecke die normalen Karten
+        if (cardMo) cardMo.style.display = "none";
+        if (cardTu) cardTu.style.display = "none";
         if (cardFr) cardFr.style.display = "none";
         if (cardSaHH) cardSaHH.style.display = "none";
         if (cardSaCocktail) cardSaCocktail.style.display = "none";
-        
-        // Zeige den Halloween Container
         if (hwSpecials) hwSpecials.style.display = "block";
-        
-        // Texte anpassen
         if (kickerEl) kickerEl.innerText = "Happy Halloween";
         if (headlineEl) headlineEl.innerHTML = "Specials<br>Verflucht";
         if (introEl) introEl.innerHTML = "Heute sind die Specials verflucht... 🎃👻<br><br>Wir sehen uns auf der Tanzfläche!";
-        
-        return; // Bricht hier ab, die normale Logik wird erst am 1. Nov um 6 Uhr wieder ausgeführt
+        return; 
       } else {
-        // Falls wir nach Halloween sind, entfernen wir den Modus und verstecken die Halloween-Karte
         document.body.classList.remove("halloween-mode");
         if (hwSpecials) hwSpecials.style.display = "none";
       }
-      // --- ENDE HALLOWEEN WEICHE ---
 
-
-      // --- NORMALE LOGIK (greift wieder ab 01.11. um 06:00 Uhr) ---
       const formatter = new Intl.DateTimeFormat("de-DE", {
         timeZone: "Europe/Berlin",
         hour: "numeric",
+        minute: "numeric",
         weekday: "short",
         hour12: false
       });
 
       const parts = formatter.formatToParts(testDate);
       let currentHour = 0;
+      let currentMinute = 0;
       let currentWeekday = "";
 
       parts.forEach(part => {
-        if (part.type === "hour") {
-          currentHour = parseInt(part.value, 10);
-        }
-        if (part.type === "weekday") {
-          currentWeekday = part.value.replace(".", "").trim(); 
-        }
+        if (part.type === "hour") currentHour = parseInt(part.value, 10);
+        if (part.type === "minute") currentMinute = parseInt(part.value, 10);
+        if (part.type === "weekday") currentWeekday = part.value.replace(".", "").trim(); 
       });
 
-      // Freitagnacht ist von Freitag ab 18:00 bis Samstagmorgen 4:59 
-      let isFridayNight = (currentWeekday === "Fr" && currentHour >= 18) || (currentWeekday === "Sa" && currentHour < 5);
-      
-      // Samstagnacht ist von Samstag 18:00 bis Sonntagmorgen 4:59
-      let isSaturdayNight = (currentWeekday === "Sa" && currentHour >= 18) || (currentWeekday === "So" && currentHour < 5);
-      
-      // Specials check
-      let isHappyHourActive = (currentWeekday === "Sa" && currentHour === 20);
-      let isCocktailActive = (currentWeekday === "Sa" && currentHour >= 23) || (currentWeekday === "So" && currentHour < 5);
+      const timeInMinutes = currentHour * 60 + currentMinute;
 
-      if (isFridayNight) {
-        cardFr.style.display = "flex";
-        cardSaHH.style.display = "none";
-        cardSaCocktail.style.display = "none";
-        
+      // Define logical nights (18:00 to 05:59 next day)
+      let isMondayNight = (currentWeekday === "Mo" && currentHour >= 18) || (currentWeekday === "Di" && currentHour < 6);
+      let isTuesdayNight = (currentWeekday === "Di" && currentHour >= 18) || (currentWeekday === "Mi" && currentHour < 6);
+      let isFridayNight = (currentWeekday === "Fr" && currentHour >= 18) || (currentWeekday === "Sa" && currentHour < 6);
+      let isSaturdayNight = (currentWeekday === "Sa" && currentHour >= 18) || (currentWeekday === "So" && currentHour < 6);
+      
+      // Saturday specific times
+      // Happy Hour: 21:00 to 22:30
+      let isHappyHourActive = currentWeekday === "Sa" && (timeInMinutes >= 21 * 60 && timeInMinutes < 22 * 60 + 30);
+      // Cocktail des Abends: 23:00 to 06:00 (Sunday morning)
+      let isCocktailActive = (currentWeekday === "Sa" && currentHour >= 23) || (currentWeekday === "So" && currentHour < 6);
+
+      // Default state: show all, no active highlighting
+      const resetCards = () => {
+        [cardMo, cardTu, cardFr, cardSaHH, cardSaCocktail].forEach(card => {
+          if (card) {
+            card.style.display = "flex";
+            card.classList.remove("active");
+          }
+        });
+        kickerEl.innerText = "Roonburg";
+        headlineEl.innerHTML = "Weekly<br>Specials";
+        introEl.innerText = "Unsere aktuellen Specials im Überblick.";
+      };
+
+      resetCards();
+
+      // Apply logic based on current night
+      if (isMondayNight) {
+        cardTu.style.display = "none"; cardFr.style.display = "none"; cardSaHH.style.display = "none"; cardSaCocktail.style.display = "none";
+        cardMo.classList.add("active");
+        kickerEl.innerText = "Start your week right";
+        headlineEl.innerHTML = "Monday<br>Special";
+        introEl.innerText = "Der perfekte Wochenstart mit 50% Rabatt.";
+      } 
+      else if (isTuesdayNight) {
+        cardMo.style.display = "none"; cardFr.style.display = "none"; cardSaHH.style.display = "none"; cardSaCocktail.style.display = "none";
+        cardTu.classList.add("active");
+        kickerEl.innerText = "Studenten Deal";
+        headlineEl.innerHTML = "Tuesday<br>Special";
+        introEl.innerText = "Günstige Drinks für die beste Partynacht der Woche.";
+      }
+      else if (isFridayNight) {
+        cardMo.style.display = "none"; cardTu.style.display = "none"; cardSaHH.style.display = "none"; cardSaCocktail.style.display = "none";
         cardFr.classList.add("active");
-        
         kickerEl.innerText = "Gönn dir Freitag";
         headlineEl.innerHTML = "Friday<br>Special";
         introEl.innerText = "Dein prickelnder Start ins Wochenende.";
       } 
       else if (isSaturdayNight) {
-        cardFr.style.display = "none";
-        cardSaHH.style.display = "flex";
-        cardSaCocktail.style.display = "flex";
+        cardMo.style.display = "none"; cardTu.style.display = "none"; cardFr.style.display = "none";
         
+        // Show both cards if neither is active or if both are somehow active
+        // Hide HH if Cocktail is active, Hide Cocktail if HH is active
         if (isHappyHourActive) {
+          cardSaHH.style.display = "flex";
           cardSaHH.classList.add("active");
-        } else {
-          cardSaHH.classList.remove("active");
-        }
-
-        if (isCocktailActive) {
+          cardSaCocktail.style.display = "none"; // Hide cocktail during HH
+        } else if (isCocktailActive) {
+          cardSaCocktail.style.display = "flex";
           cardSaCocktail.classList.add("active");
+          cardSaHH.style.display = "none"; // Hide HH during Cocktail time
         } else {
-          cardSaCocktail.classList.remove("active");
+          // If it's Saturday night but neither special is currently active (e.g. 18:00 - 20:59, or 22:30 - 22:59)
+          // Show both so user knows what's coming
+          cardSaHH.style.display = "flex";
+          cardSaCocktail.style.display = "flex";
         }
         
         kickerEl.innerText = "Shake it Samstag";
         headlineEl.innerHTML = "Saturday<br>Special";
         introEl.innerText = "Dein exklusives Roonburg Special für die Samstagnacht.";
-      } 
-      else {
-        cardFr.style.display = "flex";
-        cardSaHH.style.display = "flex";
-        cardSaCocktail.style.display = "flex";
-        
-        cardFr.classList.remove("active");
-        cardSaHH.classList.remove("active");
-        cardSaCocktail.classList.remove("active");
-        
-        kickerEl.innerText = "Roonburg";
-        headlineEl.innerHTML = "Weekend<br>Specials";
-        introEl.innerText = "Unsere Angebote für das kommende Wochenende im Überblick.";
       }
     }
 
