@@ -96,7 +96,6 @@
         radial-gradient(circle at 50% 95%, rgba(255, 60, 0, 0.15), transparent 40%);
     }
 
-    /* Blitzeffekt (Gewitter) */
     .lightning-overlay {
       display: none;
       position: fixed;
@@ -118,7 +117,6 @@
       animation: storm-flash 7s infinite;
     }
 
-    /* Flackernder, kaputter Text-Effekt */
     @keyframes cursed-flicker {
       0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
         opacity: 1;
@@ -138,11 +136,10 @@
     body.halloween-mode h1 {
       color: #ff3333;
       animation: cursed-flicker 4.5s infinite;
-      font-family: "Courier New", Courier, monospace; /* Gruseliger Schreibmaschinen-Look */
+      font-family: "Courier New", Courier, monospace;
       letter-spacing: 0.05em;
     }
 
-    /* Unheimliches Schweben für den Text darunter */
     @keyframes eerie-float {
       0%, 100% { transform: translateY(0); color: #ff6600; text-shadow: 0 0 10px rgba(255, 102, 0, 0.5); }
       50% { transform: translateY(-5px); color: #ff1111; text-shadow: 0 0 25px rgba(255, 17, 17, 0.9); }
@@ -158,7 +155,6 @@
       text-shadow: 0 0 10px red;
     }
 
-    /* Düstere Karten-Hover-Effekte */
     body.halloween-mode .menu-card:active,
     body.halloween-mode .menu-card.open {
       border-color: #ff0000;
@@ -166,7 +162,73 @@
     }
     
     /* =========================================
-       ENDE HALLOWEEN MODE CSS
+       KARNEVAL MODE CSS - DIE 5. JAHRESZEIT
+       ========================================= */
+
+    body.karneval-mode::before {
+      background:
+        linear-gradient(
+          rgba(0, 0, 0, 0.15),
+          rgba(0, 0, 0, 0.55)
+        ),
+        url("Karneval.webp");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    @keyframes carnival-colors {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    body.karneval-mode::after {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 0, 0, 0.35), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(255, 234, 0, 0.35), transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(51, 153, 255, 0.35), transparent 50%);
+      animation: carnival-colors 8s infinite linear;
+      z-index: -2;
+    }
+
+    @keyframes jeck-bounce {
+      0%, 100% { transform: translateY(0) rotate(-2deg); color: #ff3333; }
+      33% { transform: translateY(-4px) rotate(2deg); color: #ffea00; }
+      66% { transform: translateY(0) rotate(-1deg); color: #ffffff; }
+    }
+
+    body.karneval-mode h1 {
+      animation: jeck-bounce 2s infinite ease-in-out;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    body.karneval-mode .kicker {
+      color: #ffea00;
+      font-size: 0.85rem;
+      text-shadow: 0 0 8px rgba(255, 234, 0, 0.7);
+    }
+    
+    body.karneval-mode .intro {
+      color: #ffffff;
+      font-weight: bold;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Bunte Karten-Hover-Effekte */
+    @keyframes carnival-border {
+      0% { border-color: #ff3333; box-shadow: 0 0 15px rgba(255,51,51,0.6); }
+      33% { border-color: #ffea00; box-shadow: 0 0 15px rgba(255,234,0,0.6); }
+      66% { border-color: #3399ff; box-shadow: 0 0 15px rgba(51,153,255,0.6); }
+      100% { border-color: #ff3333; box-shadow: 0 0 15px rgba(255,51,51,0.6); }
+    }
+
+    body.karneval-mode .menu-card:active,
+    body.karneval-mode .menu-card.open {
+      animation: carnival-border 1.5s infinite;
+    }
+
+    /* =========================================
+       ENDE KARNEVAL MODE CSS
        ========================================= */
 
     .page {
@@ -595,25 +657,35 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       
-      // --- HALLOWEEN WEICHE ---
+      // --- EVENT WEICHEN (Halloween & Karneval) ---
       const testDate = new Date(); 
-      // getMonth() ist 0-basiert (9 = Oktober). getDate() ist der Tag (30 oder 31)
-      const isHalloween = testDate.getMonth() === 9 && (testDate.getDate() === 30 || testDate.getDate() === 31);
+      const month = testDate.getMonth(); // 0-basiert: 9 = Okt, 10 = Nov
+      const day = testDate.getDate();
       
-      if (isHalloween) {
-        document.body.classList.add("halloween-mode");
+      const isHalloween = month === 9 && (day === 30 || day === 31);
+      // Karneval greift im November (10) bis einschließlich 12.11.
+      const isKarneval = month === 10 && day <= 12; 
+      
+      const kickerEl = document.getElementById("mainKicker");
+      const headlineEl = document.getElementById("mainHeadline");
+      const introEl = document.getElementById("mainIntro");
+
+      if (isKarneval) {
+        document.body.classList.add("karneval-mode");
         
-        // Texte etwas gruseliger machen
-        const kickerEl = document.getElementById("mainKicker");
-        const headlineEl = document.getElementById("mainHeadline");
-        const introEl = document.getElementById("mainIntro");
+        if (kickerEl) kickerEl.innerText = "Kölle Alaaf!";
+        if (headlineEl) headlineEl.innerHTML = "Karnevals<br>karte";
+        if (introEl) introEl.innerHTML = "Feiert mit uns die fünfte Jahreszeit! Bunt, laut und lecker.";
+        
+      } else if (isHalloween) {
+        document.body.classList.add("halloween-mode");
         
         if (kickerEl) kickerEl.innerText = "Happy Halloween";
         if (headlineEl) headlineEl.innerHTML = "Blut &<br>Getränke";
         if (introEl) introEl.innerHTML = "Wähle dein Gift für diese verfluchte Nacht...";
       }
 
-      // --- NORMALE LOGIK FÜR DAS DROPDOWN (Unverändert!) ---
+      // --- NORMALE LOGIK FÜR DAS DROPDOWN ---
       const weinSektBtn = document.getElementById("weinSektToggle");
       if(weinSektBtn) {
         weinSektBtn.addEventListener("click", () => {
