@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roonburg Specials</title>
+
+  <title>Roonburg Getränkekarte</title>
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
   <style>
@@ -11,67 +12,90 @@
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
+
     :root {
-      --bg-start: #1c1c1c;
-      --bg-mid: #0a0a0a;
-      --bg-end: #141414;
-      --card: rgba(18, 18, 18, 0.78);
+      --bg: #050505;
+      --card: rgba(0, 0, 0, 0.68);
       --border: rgba(255, 255, 255, 0.14);
       --text: #ffffff;
       --muted: rgba(255, 255, 255, 0.72);
       --accent: #ff3333;
-      --accent-soft: rgba(255, 51, 51, 0.15);
+      --accent-soft: rgba(255, 51, 51, 0.28);
       --radius-xl: 24px;
       --shadow: 0 14px 34px rgba(0, 0, 0, 0.48);
     }
-    html, body {
+
+    html,
+    body {
       margin: 0;
       padding: 0;
       min-height: 100%;
       font-family: Arial, Helvetica, sans-serif;
       color: var(--text);
-      background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
-      background-attachment: fixed;
     }
+
     body {
       position: relative;
       overflow-x: hidden;
     }
+
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url("Clubhochkant.png");
+      background:
+        linear-gradient(
+          rgba(0, 0, 0, 0.3),
+          rgba(0, 0, 0, 0.4)
+        ),
+        url("Clubhochkant.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       z-index: -3;
     }
+
     body::after {
       content: "";
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 18% 18%, rgba(255, 51, 51, 0.15), transparent 28%),
-                  radial-gradient(circle at 85% 8%, rgba(255, 180, 80, 0.12), transparent 26%),
-                  radial-gradient(circle at 50% 95%, rgba(115, 41, 130, 0.15), transparent 34%);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 51, 51, 0.18), transparent 28%),
+        radial-gradient(circle at 85% 8%, rgba(255, 180, 80, 0.14), transparent 26%),
+        radial-gradient(circle at 50% 95%, rgba(255, 51, 120, 0.14), transparent 34%);
       z-index: -2;
       pointer-events: none;
     }
 
     /* =========================================
-       HALLOWEEN MODE CSS 
+       HALLOWEEN MODE CSS - DIE VERFLUCHUNG
        ========================================= */
+    
     @keyframes bg-pulse {
       0% { filter: brightness(1) contrast(1.2); }
       100% { filter: brightness(0.6) contrast(1.5); }
     }
+
     body.halloween-mode::before {
-      background: linear-gradient(rgba(20, 0, 0, 0.8), rgba(0, 0, 0, 0.95)), url("Halloween.png"), url("Clubhochkant.png");
+      background:
+        linear-gradient(
+          rgba(20, 0, 0, 0.8),
+          rgba(0, 0, 0, 0.95)
+        ),
+        url("Halloween.png"), url("Clubhochkant.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       animation: bg-pulse 4s infinite alternate;
     }
+
+    body.halloween-mode::after {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 0, 0, 0.25), transparent 35%),
+        radial-gradient(circle at 85% 8%, rgba(138, 3, 3, 0.2), transparent 30%),
+        radial-gradient(circle at 50% 95%, rgba(255, 60, 0, 0.15), transparent 40%);
+    }
+
     .lightning-overlay {
       display: none;
       position: fixed;
@@ -80,244 +104,602 @@
       z-index: 9999;
       pointer-events: none;
     }
+    
     @keyframes storm-flash {
       0%, 92%, 96%, 100% { opacity: 0; }
       93% { opacity: 0.7; }
       94% { opacity: 0; }
       97% { opacity: 0.4; }
     }
+
     body.halloween-mode .lightning-overlay {
       display: block;
       animation: storm-flash 7s infinite;
     }
+
     @keyframes cursed-flicker {
       0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        opacity: 1; text-shadow: 0 0 8px #ff0000, 0 0 20px #ff0000, 0 0 40px #8a0303; transform: scale(1) rotate(0deg);
+        opacity: 1;
+        text-shadow: 0 0 8px #ff0000, 0 0 20px #ff0000, 0 0 40px #8a0303;
+        transform: scale(1) rotate(0deg);
       }
       20%, 24%, 55% {
-        opacity: 0.3; text-shadow: none; transform: scale(0.98) rotate(-2deg);
+        opacity: 0.3;
+        text-shadow: none;
+        transform: scale(0.98) rotate(-2deg);
       }
-      85% { transform: scale(1.02) rotate(1deg); }
+      85% {
+        transform: scale(1.02) rotate(1deg);
+      }
     }
-    body.halloween-mode #heroHeadline {
+
+    body.halloween-mode h1 {
       color: #ff3333;
       animation: cursed-flicker 4.5s infinite;
       font-family: "Courier New", Courier, monospace;
       letter-spacing: 0.05em;
-      text-transform: uppercase;
     }
-    .halloween-section-title {
-      font-size: 1.15rem;
-      text-align: center;
-      color: #ff3333;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin: 10px 0 15px 0;
-      text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-      animation: cursed-flicker 4s infinite;
+
+    @keyframes eerie-float {
+      0%, 100% { transform: translateY(0); color: #ff6600; text-shadow: 0 0 10px rgba(255, 102, 0, 0.5); }
+      50% { transform: translateY(-5px); color: #ff1111; text-shadow: 0 0 25px rgba(255, 17, 17, 0.9); }
     }
-    .halloween-drink-card { align-items: center; margin-bottom: 15px; }
-    .halloween-shooters-card { flex-direction: column; align-items: flex-start; }
-    .h-img-large {
-      width: 75px; height: 95px; object-fit: cover; border-radius: 12px;
-      border: 1px solid rgba(255, 0, 0, 0.4); box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+
+    body.halloween-mode .intro {
+      animation: eerie-float 3s infinite ease-in-out;
+      font-weight: bold;
     }
-    .h-shooters-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
-    .h-shot { text-align: center; }
-    .h-shot img {
-      width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px;
-      border: 1px solid rgba(255, 0, 0, 0.4); box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); margin-bottom: 6px;
+
+    body.halloween-mode .kicker {
+      color: #8a0303;
+      text-shadow: 0 0 10px red;
     }
-    .h-shot span { display: block; font-size: 0.75rem; font-weight: bold; color: #ffb450; text-transform: uppercase; }
-    .bloody-tag { background: #8a0303 !important; box-shadow: 0 0 8px rgba(255, 0, 0, 0.4); }
+
+    body.halloween-mode .menu-card:active,
+    body.halloween-mode .menu-card.open {
+      border-color: #ff0000;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+    }
     
     /* =========================================
-       KARNEVAL MODE CSS (Modernisiert)
+       KARNEVAL MODE CSS - DIE 5. JAHRESZEIT
        ========================================= */
-    /* Dynamischer CSS-Verlauf ersetzt das fehlende Bild */
+
     body.karneval-mode::before {
-      background: radial-gradient(circle at 50% 30%, rgba(80, 10, 20, 0.7), rgba(0, 0, 0, 0.95));
+      background:
+        linear-gradient(
+          rgba(0, 0, 0, 0.15),
+          rgba(0, 0, 0, 0.55)
+        ),
+        url("Karneval.webp");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
     }
-    
-    .karneval-confetti {
-      display: none;
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      background-image:
-        radial-gradient(circle at 15% 20%, #E40303 6px, transparent 7px),
-        radial-gradient(circle at 35% 70%, #FFED00 8px, transparent 9px),
-        radial-gradient(circle at 65% 30%, #008026 5px, transparent 6px),
-        radial-gradient(circle at 85% 80%, #24408E 7px, transparent 8px),
-        radial-gradient(circle at 50% 15%, #732982 6px, transparent 7px),
-        radial-gradient(circle at 20% 85%, #FF8C00 9px, transparent 10px),
-        radial-gradient(circle at 75% 65%, #E40303 5px, transparent 6px);
-      background-size: 120px 120px;
-      animation: confetti-fall 4s linear infinite;
-      opacity: 0.95;
+
+    @keyframes carnival-colors {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
     }
-    @keyframes confetti-fall {
-      0% { background-position: 0 -120px; }
-      100% { background-position: 0 100vh; }
+
+    body.karneval-mode::after {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 0, 0, 0.35), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(255, 234, 0, 0.35), transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(51, 153, 255, 0.35), transparent 50%);
+      animation: carnival-colors 8s infinite linear;
+      z-index: -2;
     }
-    body.karneval-mode .karneval-confetti {
-      display: block;
+
+    @keyframes jeck-bounce {
+      0%, 100% { transform: translateY(0) rotate(-2deg); color: #ff3333; }
+      33% { transform: translateY(-4px) rotate(2deg); color: #ffea00; }
+      66% { transform: translateY(0) rotate(-1deg); color: #ffffff; }
     }
-    body.karneval-mode #heroHeadline {
-      color: #FFED00;
-      text-shadow: 0 0 15px rgba(255, 237, 0, 0.6);
+
+    body.karneval-mode h1 {
+      animation: jeck-bounce 2s infinite ease-in-out;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
     }
+
     body.karneval-mode .kicker {
-      color: #E40303;
-      text-shadow: 0 0 8px rgba(228, 3, 3, 0.5);
-    }
-
-    /* NEUES KARTEN DESIGN FÜR KARNEVAL (angelehnt an Vorlage) */
-    .karneval-card {
-      flex-direction: column;
-      align-items: flex-start;
-      border: 1px solid #FFED00 !important;
-      box-shadow: 0 0 20px rgba(255, 237, 0, 0.25), inset 0 0 10px rgba(255, 237, 0, 0.05) !important;
-      background: rgba(20, 10, 10, 0.92) !important;
-      padding: 24px;
-      animation: none !important; /* Stoppt das Standard-Pulsen für mehr Eleganz */
-      position: relative;
+      color: #ffea00;
+      font-size: 0.85rem;
+      text-shadow: 0 0 8px rgba(255, 234, 0, 0.7);
     }
     
-    /* Regenbogen-Linie an der linken Seite */
-    .karneval-card::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 8px !important;
-      background: linear-gradient(to bottom, #E40303, #FFED00, #008026, #24408E) !important;
-      box-shadow: 2px 0 10px rgba(255, 255, 255, 0.2) !important;
-    }
-
-    /* Banner Container (Rot & Orange) */
-    .k-banners {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-
-    .k-banner {
-      width: 100%;
-      text-align: center;
-      padding: 8px;
-      border-radius: 6px;
-      font-weight: 800;
-      font-size: 0.9rem;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
-
-    .k-banner.red {
-      background: #E40303;
-      border: 1px solid #ff4d4d;
-    }
-
-    .k-banner.orange {
-      background: #FF8C00;
-      border: 1px solid #ffaa33;
-    }
-
-    /* Titel und Preis (Linksbündig) */
-    .k-header {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .k-title {
-      color: #FFED00;
-      font-size: 1.6rem;
-      font-weight: 900;
-      margin: 0;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-    }
-
-    .k-price {
-      background: #008026;
-      color: #fff;
-      font-weight: 900;
-      font-size: 1rem;
-      padding: 6px 14px;
-      border-radius: 6px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Drinks (Zentriert) */
-    .k-drinks {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .k-drinks span {
-      color: #fff;
-      font-size: 1.15rem;
+    body.karneval-mode .intro {
+      color: #ffffff;
       font-weight: bold;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
     }
 
-    /* Zweite Kachel: Bitte Karnevalspreise beachten */
-    .karneval-card-small {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      border: 1px solid #E40303 !important;
-      box-shadow: 0 0 15px rgba(228, 3, 3, 0.3) !important;
-      background: rgba(20, 10, 10, 0.95) !important;
-      padding: 18px;
-      margin-top: 15px;
-      animation: none !important;
-    }
-    
-    .karneval-card-small::before {
-      background: #E40303 !important;
-      box-shadow: 0 0 10px #E40303 !important;
+    /* Bunte Karten-Hover-Effekte */
+    @keyframes carnival-border {
+      0% { border-color: #ff3333; box-shadow: 0 0 15px rgba(255,51,51,0.6); }
+      33% { border-color: #ffea00; box-shadow: 0 0 15px rgba(255,234,0,0.6); }
+      66% { border-color: #3399ff; box-shadow: 0 0 15px rgba(51,153,255,0.6); }
+      100% { border-color: #ff3333; box-shadow: 0 0 15px rgba(255,51,51,0.6); }
     }
 
-    .karneval-alert {
-      color: #FFED00;
-      margin: 0;
-      font-size: 1.15rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+    body.karneval-mode .menu-card:active,
+    body.karneval-mode .menu-card.open {
+      animation: carnival-border 1.5s infinite;
     }
 
     /* =========================================
-       LAYOUT / STANDARD CSS
+       ENDE KARNEVAL MODE CSS
        ========================================= */
+
     .page {
       width: 100%;
       max-width: 480px;
       min-height: 100svh;
       margin: 0 auto;
-      padding: 14px 14px 40px;
+      padding: 14px 14px 20px;
       display: flex;
       flex-direction: column;
     }
-    .header-nav { margin-bottom: 20px; }
-    .back-btn {
-      display: inline-flex; align-items: center; color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: bold;
-      text-transform: uppercase; letter-spacing: 0.1em; background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 999px;
+
+    .hero {
+      text-align: center;
+      padding-top: 2px;
+      margin-bottom: 8px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .logo-mark {
+      width: 118px;
+      height: 118px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.72);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo-mark img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .kicker {
+      margin: 0 0 7px;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 800;
+      transition: color 0.3s ease;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.15rem, 12vw, 3.1rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -0.07em;
+    }
+
+    .intro {
+      margin: 10px auto 0;
+      max-width: 320px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .menu-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .menu-card {
+      position: relative;
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      min-height: 104px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      isolation: isolate;
+      touch-action: manipulation;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .menu-card:active {
+      transform: scale(0.985);
+      border-color: rgba(255, 51, 51, 0.75);
+    }
+
+    .menu-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.36;
+      z-index: -2;
+    }
+
+    .menu-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.9),
+          rgba(0, 0, 0, 0.52)
+        ),
+        radial-gradient(circle at 90% 10%, var(--accent-soft), transparent 35%);
+      z-index: -1;
+    }
+
+    .menu-card-content {
+      min-height: 104px;
+      padding: 17px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .menu-card h2 {
+      margin: 0 0 5px;
+      font-size: 1.35rem;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+
+    .menu-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.32;
+      max-width: 250px;
+    }
+
+    .icon {
+      flex: 0 0 auto;
+      width: 43px;
+      height: 43px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.11);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 1.25rem;
+    }
+
+    /* Dropdown Styling für Wein + Sekt */
+    .dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
+      padding: 0 18px;
+      opacity: 0;
+      background: rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 2;
+    }
+
+    .menu-card.open .dropdown-content {
+      max-height: 150px;
+      padding: 0 18px 18px 18px;
+      opacity: 1;
+    }
+
+    .dropdown-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .dropdown-item:not(:last-child) {
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+    }
+
+    .item-name {
+      font-weight: bold;
+    }
+
+    .item-price {
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .cocktails::before { background-image: url("Cocktailtaste.png"); }
+    .shots::before { background-image: url("shottaste.png"); }
+    .longdrinks::before { background-image: url("VodkaE .png"); }
+    .biere::before { background-image: url("Bier.webp"); }
+    .flaschen::before { background-image: url("Flaschen.webp"); }
+
+    .footer-note {
+      margin: 18px 0 0;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 0.72rem;
+      line-height: 1.35;
+    }
+
+    @media (max-height: 700px) {
+      .page { padding-top: 10px; padding-bottom: 14px; }
+      .hero { margin-bottom: 8px; }
+      .logo-mark { width: 92px; height: 92px; padding: 10px; }
+      .logo-wrap { margin-bottom: 8px; }
+      h1 { font-size: 2rem; }
+      .intro { display: none; }
+      .menu-card, .menu-card-content { min-height: 92px; }
+      .menu-card-content { padding: 14px 16px; }
+      .footer-note { margin-top: 12px; }
+    }
+
+    @media (min-width: 700px) {
+      .page { max-width: 860px; padding: 34px 22px; }
+      .hero { margin-bottom: 20px; }
+      .logo-mark { width: 136px; height: 136px; padding: 14px; }
+      .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .menu-card, .menu-card-content { min-height: 160px; }
+      .menu-card-content { align-items: flex-end; padding: 22px; }
+      .menu-card h2 { font-size: 1.6rem; }
+      .menu-card p { font-size: 0.95rem; }
+      .icon { width: 50px; height: 50px; font-size: 1.45rem; }
+    }
+
+    /* --- CSS für den leuchtenden & schimmernden Weekend Specials Button --- */
+    .specials {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(255, 51, 51, 0.7);
+      background: rgba(30, 0, 0, 0.7);
+      animation: pulse-glow 3s infinite;
+    }
+
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 10px rgba(255, 51, 51, 0.4); }
+      50% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4); }
+      100% { box-shadow: 0 0 10px rgba(255, 51, 51, 0.4); }
+    }
+
+    .specials::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4) 15%,
+        rgba(255, 51, 51, 0.5) 30%,
+        transparent
+      );
+      transform: skewX(-20deg);
+      z-index: 1;
+      animation: shine-sweep 5s infinite;
+    }
+
+    @keyframes shine-sweep {
+      0% { left: -150%; }
+      20% { left: 150%; }
+      100% { left: 150%; }
+    }
+
+    .specials .menu-card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .specials h2 {
+      color: #fff;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    }
+
+    .specials p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .specials:hover {
+      animation: pulse-glow-hover 1.5s infinite;
+      border-color: rgba(255, 51, 51, 1);
+    }
+
+    @keyframes pulse-glow-hover {
+      0% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(255, 51, 51, 1), 0 0 60px rgba(255, 51, 51, 0.6); }
+      100% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 51, 51, 0.4); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Gewitter-Overlay für den Halloween Modus -->
+  <div class="lightning-overlay"></div>
+
+  <main class="page">
+    <section class="hero">
+      <div class="logo-wrap">
+        <div class="logo-mark">
+          <img
+            src="https://roonburg.de/media/default/assets/config/roonburg/images/roonburg-logo.png"
+            alt="Roonburg Logo"
+          />
+        </div>
+      </div>
+
+      <p class="kicker" id="mainKicker">Roonburg</p>
+      <h1 id="mainHeadline">Getränke<br>karte</h1>
+      <p class="intro" id="mainIntro">
+        Wähle deine Kategorie und finde den passenden Drink für den Abend.
+      </p>
+    </section>
+
+    <section class="menu-grid" aria-label="Getränkekategorien">
+      <a class="menu-card cocktails" href="https://www.roonburg-cocktails.de/">
+        <div class="menu-card-content">
+          <div>
+            <h2>Cocktails</h2>
+            <p>Classics, Signatures und Roonburg Favorites.</p>
+          </div>
+          <div class="icon">🍸</div>
+        </div>
+      </a>
+
+      <a class="menu-card shots" href="shooters.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Shooters (Shotbar)</h2>
+            <p>Kurz, direkt und perfekt für die nächste Runde.</p>
+          </div>
+          <div class="icon">🧪</div>
+        </div>
+      </a>
+
+      <a class="menu-card longdrinks" href="longdrinks.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Longdrinks</h2>
+            <p>Einfach, stark und immer eine sichere Wahl.</p>
+          </div>
+          <div class="icon">🍹</div>
+        </div>
+      </a>
+
+      <a class="menu-card shots" href="shots.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Shots</h2>
+            <p>Kurz, direkt, stark</p>
+          </div>
+          <div class="icon">🥃</div>
+        </div>
+      </a>
+
+      <a class="menu-card biere" href="bier.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Biere</h2>
+            <p>Frisch vom Fass oder kühl aus der Flasche.</p>
+          </div>
+          <div class="icon">🍺</div>
+        </div>
+      </a>
+
+      <div class="menu-card wein-sekt" id="weinSektToggle" tabindex="0" role="button" aria-expanded="false">
+        <div class="menu-card-content">
+          <div>
+            <h2>Wein + Sekt</h2>
+            <p>Prickelnde Traubenerzeugnisse</p>
+          </div>
+          <div class="icon">🥂</div>
+        </div>
+        <div class="dropdown-content">
+          <div class="dropdown-item">
+            <span class="item-name">Weißwein Cuvée</span>
+            <span class="item-price">4,00 €</span>
+          </div>
+          <div class="dropdown-item">
+            <span class="item-name">Glas Sekt</span>
+            <span class="item-price">4,00 €</span>
+          </div>
+        </div>
+      </div>
+
+      <a class="menu-card flaschen" href="flaschen.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Flaschen</h2>
+            <p>Vodka, Champagner & Co. für die ganze Crew.</p>
+          </div>
+          <div class="icon">🍾</div>
+        </div>
+      </a>
+
+      <a class="menu-card specials" href="specials.html">
+        <div class="menu-card-content">
+          <div>
+            <h2>Weekend Specials</h2>
+            <p>Der Fahrplan für Freitag & Samstag. Stündlich neue Deals!</p>
+          </div>
+          <div class="icon">🔥</div>
+        </div>
+      </a>
+    </section>
+
+    <p class="footer-note">
+      Roonburg Köln · Bitte verantwortungsvoll genießen
+    </p>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // --- EVENT WEICHEN (Halloween & Karneval) ---
+      const testDate = new Date(); 
+      const month = testDate.getMonth(); // 0-basiert: 9 = Okt, 10 = Nov
+      const day = testDate.getDate();
+      
+      const isHalloween = month === 9 && (day === 30 || day === 31);
+      // Karneval greift im November (10) bis einschließlich 12.11.
+      const isKarneval = month === 10 && day <= 12; 
+      
+      const kickerEl = document.getElementById("mainKicker");
+      const headlineEl = document.getElementById("mainHeadline");
+      const introEl = document.getElementById("mainIntro");
+
+      if (isKarneval) {
+        document.body.classList.add("karneval-mode");
+        
+        if (kickerEl) kickerEl.innerText = "Kölle Alaaf!";
+        if (headlineEl) headlineEl.innerHTML = "Karnevals<br>karte";
+        if (introEl) introEl.innerHTML = "Feiert mit uns die fünfte Jahreszeit! Bunt, laut und lecker.";
+        
+      } else if (isHalloween) {
+        document.body.classList.add("halloween-mode");
+        
+        if (kickerEl) kickerEl.innerText = "Happy Halloween";
+        if (headlineEl) headlineEl.innerHTML = "Blut &<br>Getränke";
+        if (introEl) introEl.innerHTML = "Wähle dein Gift für diese verfluchte Nacht...";
+      }
+
+      // --- NORMALE LOGIK FÜR DAS DROPDOWN ---
+      const weinSektBtn = document.getElementById("weinSektToggle");
+      if(weinSektBtn) {
+        weinSektBtn.addEventListener("click", () => {
+          weinSektBtn.classList.toggle("open");
+          
+          // ARIA Status für Barrierefreiheit updaten
+          const isOpen = weinSektBtn.classList.contains("open");
+          weinSektBtn.setAttribute("aria-expanded", isOpen);
+        });
+      }
+    });
+  </script>
+</body>
+</html>spacing: 0.1em; background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 999px;
       border: 1px solid var(--border);
     }
     .back-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
