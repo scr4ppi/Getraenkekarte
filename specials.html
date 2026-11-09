@@ -132,14 +132,16 @@
     .bloody-tag { background: #8a0303 !important; box-shadow: 0 0 8px rgba(255, 0, 0, 0.4); }
     
     /* =========================================
-       KARNEVAL MODE CSS 
+       KARNEVAL MODE CSS (Modernisiert)
        ========================================= */
+    /* Dynamischer CSS-Verlauf ersetzt das fehlende Bild */
     body.karneval-mode::before {
-      background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8)), url("Karneval.webp");
+      background: radial-gradient(circle at 50% 30%, rgba(80, 10, 20, 0.7), rgba(0, 0, 0, 0.95));
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
     }
+    
     .karneval-confetti {
       display: none;
       position: fixed;
@@ -173,41 +175,131 @@
       color: #E40303;
       text-shadow: 0 0 8px rgba(228, 3, 3, 0.5);
     }
+
+    /* NEUES KARTEN DESIGN FÜR KARNEVAL (angelehnt an Vorlage) */
     .karneval-card {
+      flex-direction: column;
+      align-items: flex-start;
+      border: 1px solid #FFED00 !important;
+      box-shadow: 0 0 20px rgba(255, 237, 0, 0.25), inset 0 0 10px rgba(255, 237, 0, 0.05) !important;
+      background: rgba(20, 10, 10, 0.92) !important;
+      padding: 24px;
+      animation: none !important; /* Stoppt das Standard-Pulsen für mehr Eleganz */
+      position: relative;
+    }
+    
+    /* Regenbogen-Linie an der linken Seite */
+    .karneval-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 8px !important;
+      background: linear-gradient(to bottom, #E40303, #FFED00, #008026, #24408E) !important;
+      box-shadow: 2px 0 10px rgba(255, 255, 255, 0.2) !important;
+    }
+
+    /* Banner Container (Rot & Orange) */
+    .k-banners {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .k-banner {
+      width: 100%;
+      text-align: center;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .k-banner.red {
+      background: #E40303;
+      border: 1px solid #ff4d4d;
+    }
+
+    .k-banner.orange {
+      background: #FF8C00;
+      border: 1px solid #ffaa33;
+    }
+
+    /* Titel und Preis (Linksbündig) */
+    .k-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .k-title {
+      color: #FFED00;
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin: 0;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+    }
+
+    .k-price {
+      background: #008026;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1rem;
+      padding: 6px 14px;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Drinks (Zentriert) */
+    .k-drinks {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .k-drinks span {
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: bold;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    /* Zweite Kachel: Bitte Karnevalspreise beachten */
+    .karneval-card-small {
       flex-direction: column;
       align-items: center;
       text-align: center;
-      border: 2px solid #FFED00 !important;
-      box-shadow: 0 0 25px rgba(255, 237, 0, 0.3) !important;
+      border: 1px solid #E40303 !important;
+      box-shadow: 0 0 15px rgba(228, 3, 3, 0.3) !important;
+      background: rgba(20, 10, 10, 0.95) !important;
+      padding: 18px;
+      margin-top: 15px;
+      animation: none !important;
     }
-    .karneval-card::before {
-      background: linear-gradient(to bottom, #E40303, #FFED00, #008026, #24408E) !important;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4) !important;
+    
+    .karneval-card-small::before {
+      background: #E40303 !important;
+      box-shadow: 0 0 10px #E40303 !important;
     }
-    .karneval-title {
-      font-size: 1.4rem;
+
+    .karneval-alert {
       color: #FFED00;
-      margin: 10px 0;
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 800;
       text-transform: uppercase;
-      font-weight: 900;
-      letter-spacing: 0.05em;
-    }
-    .karneval-list {
-      list-style: none;
-      padding: 0;
-      margin: 15px 0 5px 0;
-      font-size: 1.1rem;
-      font-weight: bold;
-      line-height: 1.8;
-      color: #fff;
-    }
-    .k-tag-container {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 5px;
-      align-items: center;
-      width: 100%;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
     }
 
     /* =========================================
@@ -401,30 +493,34 @@
     <!-- KARNEVAL SPECIALS (Bis 12.11, 05:00 Uhr) -->
     <section id="karneval-specials" style="display: none; margin-top: 10px;">
       
+      <!-- HAUPTKARTE COCKTAILS (An Vorlage Bild angepasst) -->
       <div class="special-card active karneval-card">
-        <div class="k-tag-container">
-          <span class="price-tag" style="background: #E40303; width: 100%;">📍 An der Cocktailbar</span>
-          <span class="price-tag" style="background: #FF8C00; width: 100%;">Wegen Karneval eingeschränktere Auswahl</span>
+        
+        <div class="k-banners">
+          <div class="k-banner red">📍 An der Cocktailbar</div>
+          <div class="k-banner orange">Wegen Karneval eingeschränktere Auswahl</div>
         </div>
         
-        <h2 class="karneval-title">Cocktails</h2>
-        <span class="price-tag" style="background: #008026; font-size: 1rem; padding: 6px 15px; margin-top: 5px;">9,50€ | 0,3l</span>
+        <div class="k-header">
+          <h2 class="k-title">Cocktails</h2>
+          <div class="k-price">9,50€ | 0,3l</div>
+        </div>
         
-        <ul class="karneval-list">
-          <li>Cuba Libre</li>
-          <li>Soler</li>
-          <li>Melon Sour</li>
-          <li>Tequila Sunrise</li>
-          <li>Touchdown</li>
-          <li>Daiquiri</li>
-        </ul>
+        <div class="k-drinks">
+          <span>Cuba Libre</span>
+          <span>Soler</span>
+          <span>Melon Sour</span>
+          <span>Tequila Sunrise</span>
+          <span>Touchdown</span>
+          <span>Daiquiri</span>
+        </div>
       </div>
 
-      <div class="special-card active karneval-card" style="margin-top: 15px; padding: 18px;">
-        <h2 class="karneval-title" style="margin: 0; color: #E40303; text-shadow: 0 0 10px rgba(228, 3, 3, 0.4);">
-          Bitte Karnevalspreise beachten!
-        </h2>
+      <!-- KACHEL ZUSATZINFO -->
+      <div class="special-card active karneval-card-small">
+        <h2 class="karneval-alert">Bitte Karnevalspreise beachten!</h2>
       </div>
+      
     </section>
 
     <!-- HALLOWEEN SPECIALS -->
