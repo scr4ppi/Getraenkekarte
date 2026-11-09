@@ -58,7 +58,9 @@
       pointer-events: none;
     }
 
-    /* HALLOWEEN MODE CSS */
+    /* =========================================
+       HALLOWEEN MODE CSS 
+       ========================================= */
     @keyframes bg-pulse {
       0% { filter: brightness(1) contrast(1.2); }
       100% { filter: brightness(0.6) contrast(1.5); }
@@ -129,7 +131,88 @@
     .h-shot span { display: block; font-size: 0.75rem; font-weight: bold; color: #ffb450; text-transform: uppercase; }
     .bloody-tag { background: #8a0303 !important; box-shadow: 0 0 8px rgba(255, 0, 0, 0.4); }
     
-    /* Layout */
+    /* =========================================
+       KARNEVAL MODE CSS 
+       ========================================= */
+    body.karneval-mode::before {
+      background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8)), url("Karneval.webp");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .karneval-confetti {
+      display: none;
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        radial-gradient(circle at 15% 20%, #E40303 6px, transparent 7px),
+        radial-gradient(circle at 35% 70%, #FFED00 8px, transparent 9px),
+        radial-gradient(circle at 65% 30%, #008026 5px, transparent 6px),
+        radial-gradient(circle at 85% 80%, #24408E 7px, transparent 8px),
+        radial-gradient(circle at 50% 15%, #732982 6px, transparent 7px),
+        radial-gradient(circle at 20% 85%, #FF8C00 9px, transparent 10px),
+        radial-gradient(circle at 75% 65%, #E40303 5px, transparent 6px);
+      background-size: 120px 120px;
+      animation: confetti-fall 4s linear infinite;
+      opacity: 0.95;
+    }
+    @keyframes confetti-fall {
+      0% { background-position: 0 -120px; }
+      100% { background-position: 0 100vh; }
+    }
+    body.karneval-mode .karneval-confetti {
+      display: block;
+    }
+    body.karneval-mode #heroHeadline {
+      color: #FFED00;
+      text-shadow: 0 0 15px rgba(255, 237, 0, 0.6);
+    }
+    body.karneval-mode .kicker {
+      color: #E40303;
+      text-shadow: 0 0 8px rgba(228, 3, 3, 0.5);
+    }
+    .karneval-card {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border: 2px solid #FFED00 !important;
+      box-shadow: 0 0 25px rgba(255, 237, 0, 0.3) !important;
+    }
+    .karneval-card::before {
+      background: linear-gradient(to bottom, #E40303, #FFED00, #008026, #24408E) !important;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4) !important;
+    }
+    .karneval-title {
+      font-size: 1.4rem;
+      color: #FFED00;
+      margin: 10px 0;
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+    }
+    .karneval-list {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0 5px 0;
+      font-size: 1.1rem;
+      font-weight: bold;
+      line-height: 1.8;
+      color: #fff;
+    }
+    .k-tag-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 5px;
+      align-items: center;
+      width: 100%;
+    }
+
+    /* =========================================
+       LAYOUT / STANDARD CSS
+       ========================================= */
     .page {
       width: 100%;
       max-width: 480px;
@@ -175,44 +258,17 @@
       margin-top: 2px;
     }
 
-    /* 1. Kästchen (Montag): Rot */
-    #card-monday .time-badge {
-      background: linear-gradient(135deg, #E40303, #b80000);
-    }
-    /* 2. Kästchen (Dienstag): Gelb / Orange */
-    #card-tuesday .time-badge {
-      background: linear-gradient(135deg, #FF8C00, #FFED00);
-      color: #111;
-      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
-      border-color: rgba(255, 237, 0, 0.6);
-    }
-    /* 3. Kästchen (Freitag): Grün */
-    #card-friday .time-badge {
-      background: linear-gradient(135deg, #008026, #00b336);
-    }
-    /* 4. Kästchen (Samstag Happy Hour): Blau */
-    #card-saturday-hh .time-badge {
-      background: linear-gradient(135deg, #24408E, #3b60c4);
-    }
-    /* 5. Kästchen (Samstag Cocktail): Violett */
-    #card-saturday-cocktail .time-badge {
-      background: linear-gradient(135deg, #732982, #9c3ab0);
-    }
+    #card-monday .time-badge { background: linear-gradient(135deg, #E40303, #b80000); }
+    #card-tuesday .time-badge { background: linear-gradient(135deg, #FF8C00, #FFED00); color: #111; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5); border-color: rgba(255, 237, 0, 0.6); }
+    #card-friday .time-badge { background: linear-gradient(135deg, #008026, #00b336); }
+    #card-saturday-hh .time-badge { background: linear-gradient(135deg, #24408E, #3b60c4); }
+    #card-saturday-cocktail .time-badge { background: linear-gradient(135deg, #732982, #9c3ab0); }
 
     /* AKTIVES SPECIAL HERVORHEBUNG */
     @keyframes card-pulse {
-      0% {
-        box-shadow: 0 0 25px rgba(255, 51, 51, 0.35), inset 0 0 12px rgba(255, 51, 51, 0.2);
-        border-color: rgba(255, 51, 51, 0.7);
-      }
-      50% {
-        box-shadow: 0 0 45px rgba(255, 51, 51, 0.85), inset 0 0 22px rgba(255, 51, 51, 0.45);
-        border-color: rgba(255, 51, 51, 1);
-      }
-      100% {
-        box-shadow: 0 0 25px rgba(255, 51, 51, 0.35), inset 0 0 12px rgba(255, 51, 51, 0.2);
-        border-color: rgba(255, 51, 51, 0.7);
-      }
+      0% { box-shadow: 0 0 25px rgba(255, 51, 51, 0.35), inset 0 0 12px rgba(255, 51, 51, 0.2); border-color: rgba(255, 51, 51, 0.7); }
+      50% { box-shadow: 0 0 45px rgba(255, 51, 51, 0.85), inset 0 0 22px rgba(255, 51, 51, 0.45); border-color: rgba(255, 51, 51, 1); }
+      100% { box-shadow: 0 0 25px rgba(255, 51, 51, 0.35), inset 0 0 12px rgba(255, 51, 51, 0.2); border-color: rgba(255, 51, 51, 0.7); }
     }
 
     .special-card.active {
@@ -224,14 +280,7 @@
     }
 
     .special-card.active::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 8px;
-      background: var(--accent);
-      box-shadow: 0 0 12px var(--accent);
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: var(--accent); box-shadow: 0 0 12px var(--accent);
     }
 
     .special-content { flex: 1; }
@@ -243,28 +292,20 @@
     .price-tag { display: inline-block; font-weight: bold; color: #fff; background: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; }
     
     .cocktail-btn {
-      display: block;
-      margin-top: 14px;
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      text-align: center;
-      transition: 0.3s ease;
+      display: block; margin-top: 14px; padding: 10px 14px; background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;
+      text-align: center; transition: 0.3s ease;
     }
     .cocktail-btn:hover { background: rgba(255, 255, 255, 0.15); border-color: #fff; }
     .footer-note { margin: 30px 0 0; text-align: center; color: rgba(255, 255, 255, 0.46); font-size: 0.75rem; line-height: 1.35; }
   </style>
 </head>
 <body>
-  <!-- Gewitter-Overlay für den Halloween Modus -->
+  <!-- Gewitter-Overlay (Halloween) -->
   <div class="lightning-overlay"></div>
+  
+  <!-- Konfetti-Overlay (Karneval) -->
+  <div class="karneval-confetti"></div>
 
   <main class="page">
     <nav class="header-nav">
@@ -281,8 +322,7 @@
 
     <!-- NORMALE SPECIALS -->
     <section class="timeline" id="specialTimeline">
-      
-      <!-- 1. MONTAGS SPECIAL (Rot) -->
+      <!-- 1. MONTAG -->
       <div class="special-card" id="card-monday">
         <div class="time-badge" id="badge-mo">Jeden<br>Montag</div>
         <div class="special-content">
@@ -294,7 +334,7 @@
         </div>
       </div>
 
-      <!-- 2. DIENSTAGS SPECIAL (Gelb/Orange) -->
+      <!-- 2. DIENSTAG -->
       <div class="special-card" id="card-tuesday">
         <div class="time-badge" id="badge-tu">Jeden<br>Dienstag</div>
         <div class="special-content">
@@ -313,7 +353,7 @@
         </div>
       </div>
 
-      <!-- 3. FREITAGS SPECIAL (Grün) -->
+      <!-- 3. FREITAG -->
       <div class="special-card" id="card-friday">
         <div class="time-badge" id="badge-fr">Jeden<br>Freitag</div>
         <div class="special-content">
@@ -330,7 +370,7 @@
         </div>
       </div>
 
-      <!-- 4. SAMSTAGS SPECIAL 1: HAPPY HOUR (Blau) -->
+      <!-- 4. SAMSTAG (Happy Hour) -->
       <div class="special-card" id="card-saturday-hh">
         <div class="time-badge" id="badge-sa-hh">Samstag<br>21:00–22:30</div>
         <div class="special-content">
@@ -343,7 +383,7 @@
         </div>
       </div>
 
-      <!-- 5. SAMSTAGS SPECIAL 2: COCKTAIL DES ABENDS (Violett) -->
+      <!-- 5. SAMSTAG (Cocktail des Abends) -->
       <div class="special-card" id="card-saturday-cocktail">
         <div class="time-badge" id="badge-sa-cot">Samstag<br>Ab 23 Uhr</div>
         <div class="special-content">
@@ -358,7 +398,36 @@
       </div>
     </section>
 
-    <!-- HALLOWEEN SPECIALS (Versteckt) -->
+    <!-- KARNEVAL SPECIALS (Bis 12.11, 05:00 Uhr) -->
+    <section id="karneval-specials" style="display: none; margin-top: 10px;">
+      
+      <div class="special-card active karneval-card">
+        <div class="k-tag-container">
+          <span class="price-tag" style="background: #E40303; width: 100%;">📍 An der Cocktailbar</span>
+          <span class="price-tag" style="background: #FF8C00; width: 100%;">Wegen Karneval eingeschränktere Auswahl</span>
+        </div>
+        
+        <h2 class="karneval-title">Cocktails</h2>
+        <span class="price-tag" style="background: #008026; font-size: 1rem; padding: 6px 15px; margin-top: 5px;">9,50€ | 0,3l</span>
+        
+        <ul class="karneval-list">
+          <li>Cuba Libre</li>
+          <li>Soler</li>
+          <li>Melon Sour</li>
+          <li>Tequila Sunrise</li>
+          <li>Touchdown</li>
+          <li>Daiquiri</li>
+        </ul>
+      </div>
+
+      <div class="special-card active karneval-card" style="margin-top: 15px; padding: 18px;">
+        <h2 class="karneval-title" style="margin: 0; color: #E40303; text-shadow: 0 0 10px rgba(228, 3, 3, 0.4);">
+          Bitte Karnevalspreise beachten!
+        </h2>
+      </div>
+    </section>
+
+    <!-- HALLOWEEN SPECIALS -->
     <section id="halloween-specials" style="display: none; margin-top: 10px;">
       <h2 class="halloween-section-title">Probiert unsere schaurigen Misshandlungen</h2>
       <div class="special-card active halloween-drink-card">
@@ -410,7 +479,11 @@
       const day = testDate.getDate();
       const hour = testDate.getHours();
       
+      // Monatslogik in JS: 9 = Oktober, 10 = November
       const isHalloween = (month === 9 && (day === 30 || day === 31)) || (month === 10 && day === 1 && hour < 6);
+      
+      // Karnevalslogik: Bis 12.11 um 05:00 Uhr (also Tage 9, 10, 11 und Tag 12 bis 5 Uhr)
+      const isKarneval = (month === 10) && ((day >= 9 && day <= 11) || (day === 12 && hour < 5));
       
       const cardMo = document.getElementById("card-monday");
       const cardTu = document.getElementById("card-tuesday");
@@ -425,10 +498,34 @@
       const badgeSaCot = document.getElementById("badge-sa-cot");
 
       const hwSpecials = document.getElementById("halloween-specials");
+      const karnSpecials = document.getElementById("karneval-specials");
       const kickerEl = document.getElementById("heroKicker");
       const headlineEl = document.getElementById("heroHeadline");
       const introEl = document.getElementById("heroIntro");
 
+      // 1. KARNEVALS-CHECK
+      if (isKarneval) {
+        document.body.classList.add("karneval-mode");
+        document.body.classList.remove("halloween-mode");
+        
+        if (cardMo) cardMo.style.display = "none";
+        if (cardTu) cardTu.style.display = "none";
+        if (cardFr) cardFr.style.display = "none";
+        if (cardSaHH) cardSaHH.style.display = "none";
+        if (cardSaCocktail) cardSaCocktail.style.display = "none";
+        if (hwSpecials) hwSpecials.style.display = "none";
+        
+        if (karnSpecials) karnSpecials.style.display = "block";
+        if (kickerEl) kickerEl.innerText = "Kölle Alaaf";
+        if (headlineEl) headlineEl.innerHTML = "Karneval<br>Specials";
+        if (introEl) introEl.innerHTML = "11.11. Ausnahmezustand im Roonburg! 🎉🎭";
+        return; // Hier abbrechen, damit Normal-Specials nicht laden
+      } else {
+        document.body.classList.remove("karneval-mode");
+        if (karnSpecials) karnSpecials.style.display = "none";
+      }
+
+      // 2. HALLOWEEN-CHECK
       if (isHalloween) {
         document.body.classList.add("halloween-mode");
         if (cardMo) cardMo.style.display = "none";
@@ -446,6 +543,7 @@
         if (hwSpecials) hwSpecials.style.display = "none";
       }
 
+      // 3. NORMALE SPECIALS
       const formatter = new Intl.DateTimeFormat("de-DE", {
         timeZone: "Europe/Berlin",
         hour: "numeric",
@@ -510,7 +608,6 @@
         kickerEl.innerText = "Studenten Deal";
         headlineEl.innerHTML = "Tuesday<br>Special";
         
-        // Dynamischer Text je nachdem ob gerade Freibier-Zeit ist
         if (currentHour >= 21 && currentHour < 23) {
           introEl.innerText = "Es ist Freibier-Zeit! Die beste Partynacht der Woche läuft.";
         } else {
